@@ -41,7 +41,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Xen.Ex.ModelImporter">
-      <HintPath>..\..\..\..\..\..\Downloads\xen 2.0\xen\bin\Xen.Ex.ModelImporter\Xen.Ex.ModelImporter.dll</HintPath>
+      <HintPath>..\..\ThirdParty\Xen.Ex.ModelImporter.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
