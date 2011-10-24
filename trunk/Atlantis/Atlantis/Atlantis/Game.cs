@@ -9,13 +9,13 @@ using Xen.Graphics;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Atlantis
 {
     public class Game : Application
     {
         private DrawTargetScreen drawToScreen;
-
 
         protected override void Initialise()
         {
@@ -42,6 +42,8 @@ namespace Atlantis
         protected override void Update(UpdateState state)
         {
            //update logic
+            if(Keyboard.GetState().IsKeyDown(Keys.F1))
+
         }
 
         protected override void Frame(FrameState state)
