@@ -26,6 +26,26 @@ namespace Atlantis
 
         private String filename;
 
+        private Vector3 position;
+        private float scale;
+
+       
+        public Vector3 Position
+        {
+            get
+            {
+                return this.position;
+            }
+        }
+
+        public float Scale
+        {
+            get
+            {
+                return this.scale;
+            }
+        }
+
       /// <summary>
       /// create a new actor
       /// </summary>
@@ -35,6 +55,9 @@ namespace Atlantis
       /// <param name="scale_factor">scale</param>
         public Actor(ContentRegister content,String modelfile, Vector3 position, float scale_factor)
         {
+            this.scale = scale_factor;
+            this.position = position;
+
             Matrix.CreateTranslation(ref position, out this.worldMatrix);
             Matrix.CreateScale(scale_factor,out this.scaleMatrix);
 
