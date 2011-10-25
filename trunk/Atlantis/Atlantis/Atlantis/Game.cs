@@ -17,6 +17,8 @@ namespace Atlantis
     {
         private DrawTargetScreen drawToScreen;
         private Actor actor;
+        private RasterizerState rs;
+        private GraphicsDevice gs; 
 
 #if DEBUG
         private Console console;
@@ -36,6 +38,9 @@ namespace Atlantis
 
             console = new Console(400, 200);
 
+             rs = new RasterizerState();
+             rs.FillMode = FillMode.WireFrame;
+
             //create the draw target.
             this.drawToScreen = new DrawTargetScreen(camera);
 
@@ -49,6 +54,11 @@ namespace Atlantis
 
             //at runtime, pressing 'F12' will toggle the overlay (or holding both thumbsticks on x360)
             this.statisticsOverlay = new Xen.Ex.Graphics2D.Statistics.DrawStatisticsDisplay(this.UpdateManager);
+
+
+            var terrain = new Terrain(this.Content, "chunkheightmap", Vector3.Zero, 1f);
+      
+           drawToScreen.Add(terrain);
 
             //add statistics to screen
             drawToScreen.Add(statisticsOverlay);
@@ -70,6 +80,7 @@ namespace Atlantis
             console.setFont(xnaSpriteFont);
 
             this.statisticsOverlay.Font = xnaSpriteFont;
+            gs = state.GraphicsDevice;
 
             base.LoadContent(state);
         }
@@ -80,13 +91,15 @@ namespace Atlantis
 
 #if DEBUG
             console.clear();
-            console.add("position: " + actor.Position.ToString());
+            //console.add("position: " + terrain.Position.ToString());
 #endif
 
         }
 
         protected override void Frame(FrameState state)
         {
+            gs.RasterizerState = rs;
+
             //perform the draw to the screen.
             drawToScreen.Draw(state);
 
