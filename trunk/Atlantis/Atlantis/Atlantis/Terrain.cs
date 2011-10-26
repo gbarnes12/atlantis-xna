@@ -10,82 +10,64 @@ using Xen.Ex.Material;
 
 namespace Atlantis
 {
-    /// <summary>
-    /// Generates a basic terrain without any texturizing just based on a heightmap.
-    /// Algorithm based upon: http://mitohnehaare.de/2011/09/07/terrain-101-land-in-sicht/
-    /// </summary>
-    public class Terrain : IDraw, IContentOwner
+
+
+    struct CustomVertex
     {
+        public Vector3 position;
+        public Vector3 normal;
+        public Vector2 texCoord;	//texture coord is unused in this example, but is required by MaterialShader
 
-        struct CustomVertexPositionColor
+        //NEW CODE
+        //add a vertex colour (which defaults to white)
+        public Vector4 colour;
+
+
+        //constructor
+        public CustomVertex(Vector3 position, Vector3 normal)
         {
-            public Vector3 position;
-            public Vector3 normal;
-            public Vector4 colour;
-            public Vector2 texCoord;	//texture coord is unused in this example, but is required by MaterialShader
-
-            //constructor
-            public CustomVertexPositionColor(Vector3 position, Vector3 normal, Vector4 colour)
-            {
-                this.position = position;
-                this.normal = normal;
-                this.colour = colour;
-                this.texCoord = new Vector2();
-            }
+            this.position = position;
+            this.normal = normal;
+            this.texCoord = new Vector2();
+            //NEW CODE
+            this.colour = Vector4.One;
         }
+    }
 
-        private Matrix worldMatrix;
-        private Matrix scaleMatrix;
-        private Matrix rotationMatrix;
+    class Terrain : IDraw, IContentOwner
+    {
+        //vertex and index buffers
+        private IVertices vertices;
+        private IIndices indices;
+        private CustomVertex[] vertexData;
 
         private Texture2D heightmap;
-
         private string file;
+        public Texture2D Texture;
+        public Texture2D NormalMap;
 
-        private IIndices Indices;
-        private IVertices Vertices;
-        private IShader Shader;
-
-        public Terrain(ContentRegister content, string file, Vector3 position, float scale)
+        //setup and create the vertices/indices
+        public Terrain(ContentRegister content, string file)
         {
             this.file = file;
 
             content.Add(this);
-
-            Matrix.CreateTranslation(ref position, out this.worldMatrix);
-            Matrix.CreateScale(scale, out this.scaleMatrix);
         }
 
         public void LoadContent(ContentState state)
         {
             this.heightmap = state.Load<Texture2D>(file);
-
-            MaterialShader material = new MaterialShader();
-            /*material.SpecularColour = Color.LightYellow.ToVector3() * 0.5f;
-
-            Vector3 lightDirection = new Vector3(-1, -1, -1); //a dramatic direction
-
-            //Note: To use vertex colours with a MaterialShader, UseVertexColour has to be set to true
-            material.UseVertexColour = true;
-
-            //create a directional light
-            MaterialLightCollection lights = new MaterialLightCollection();
-            lights.CreateDirectionalLight(-lightDirection, Color.WhiteSmoke);
-
-            material.LightCollection = lights;*/
-            material.UseVertexColour = true;
-            Shader = material;
-
+            this.Texture = state.Load<Texture2D>("grass2");
+            
             SetupFirstChunk();
         }
-
 
         private void SetupFirstChunk()
         {
             Color[] heights = new Color[heightmap.Width * heightmap.Height];
             heightmap.GetData<Color>(heights);
 
-            CustomVertexPositionColor[] Vertices = new CustomVertexPositionColor[128 * 128];
+            vertexData = new CustomVertex[128 * 128];
 
             int index = 0;
 
@@ -93,13 +75,15 @@ namespace Atlantis
             {
                 for (int x = 0; x < 128; x++)
                 {
-                    Vertices[z * 128 + x] = new CustomVertexPositionColor(new Vector3(x * 10.0f, heights[z * 128 + x].R, z * 10.0f),  Vector3.Up, new Vector4(122, 122, 122, 1));
+                    vertexData[z * 128 + x] = new CustomVertex(new Vector3(x * 10.0f, heights[z * 128 + x].R, z * 10.0f), Vector3.Up);
+                    vertexData[z * 128 + x].colour = Color.Green.ToVector4();
+                    vertexData[z * 128 + x].texCoord = new Vector2((float)x / 30.0f, (float)z / 30.0f);
 
                     //Vertices[z * 128 + x] = new VertexPositionColor(new Vector3(x * 10.0f, heights[z * 128 + x].R, z * 10.0f), Color.Green);
                 }
             }
 
-            this.Vertices = new Vertices<CustomVertexPositionColor>(Vertices);
+            this.vertices = new Vertices<CustomVertex>(vertexData);
 
             int[] indices = new int[127 * 127 * 6];
             index = 0;
@@ -119,30 +103,86 @@ namespace Atlantis
                 }
             }
 
-            Indices = new Indices<int>(indices);
+            this.indices = new Indices<int>(indices);
 
-            this.Vertices.ResourceUsage = ResourceUsage.Dynamic;
-        
+            this.vertices.ResourceUsage = ResourceUsage.Dynamic;
+        }
+
+
+        //draw the quad
+        public void Draw(DrawState state)
+        {
+            //draw as usual
+            this.vertices.Draw(state, this.indices, PrimitiveType.TriangleList);
+        }
+
+        public bool CullTest(ICuller culler)
+        {
+            //cull test with an bounding box...
+            //this time taking into account the z values can also range between -1 and 1
+            return true;
+        }
+    }
+
+
+    class TerrainDrawer : IDraw
+    {
+        private Terrain geometry;
+        private Matrix worldMatrix;
+        private IShader shader;
+
+        public TerrainDrawer(ContentRegister content ,Vector3 position)
+        {
+            //create the quad
+            geometry = new Terrain(content, "chunkheightmap");
+
+            //setup the world matrix
+            worldMatrix = Matrix.CreateTranslation(position);
+
+            //create a basic lighting shader with some average looking lighting :-)
+            MaterialShader material = new MaterialShader();
+            
+            //Note: To use vertex colours with a MaterialShader, UseVertexColour has to be set to true
+            material.UseVertexColour = false;
+            material.SpecularColour = new Vector3(1, 1, 1);
+            material.DiffuseColour = new Vector3(0.6f, 0.6f, 0.6f);
+            material.SpecularPower = 64;
+
+            MaterialTextures textures = new MaterialTextures();
+            textures.TextureMap = geometry.Texture;
+            textures.NormalMap = geometry.NormalMap;
+            textures.TextureMapSampler = TextureSamplerState.AnisotropicHighFiltering;
+            textures.EmissiveTextureMapSampler = TextureSamplerState.AnisotropicHighFiltering;
+            textures.NormalMapSampler = TextureSamplerState.AnisotropicHighFiltering;
+            material.Textures = textures;
+
+            material.LightCollection = new MaterialLightCollection();
+            material.LightCollection.AddLight(material.LightCollection.CreatePointLight(new Vector3(640.0f, 300.0f, 640.0f), 10000f, Color.WhiteSmoke));
+            material.LightingDisplayModel = LightingDisplayModel.ForcePerVertex;
+
+            this.shader = material;
+           
         }
 
         public void Draw(DrawState state)
         {
-            using (state.WorldMatrix.Push(ref worldMatrix))
+            //push the world matrix, multiplying by the current matrix if there is one
+            using (state.WorldMatrix.PushMultiply(ref worldMatrix))
             {
-                using (state.WorldMatrix.Push(ref scaleMatrix))
+                //cull test the geometry
+                if (geometry.CullTest(state))
                 {
-                    if (this.CullTest(state))
+                    //bind the shader
+                    using (state.Shader.Push(shader))
                     {
-                        //bind the shader
-                        using (state.Shader.Push(Shader))
-                        {
-                            Vertices.Draw(state, Indices, PrimitiveType.TriangleList);
-                        }
+                        //draw the custom geometry
+                        geometry.Draw(state);
                     }
                 }
             }
         }
 
+        //always draw.. don't cull yet
         public bool CullTest(ICuller culler)
         {
             return true;

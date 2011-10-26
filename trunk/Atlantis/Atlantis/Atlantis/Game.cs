@@ -33,13 +33,13 @@ namespace Atlantis
         {
             //all draw targets need a default camera.
             //create a 3D camera
-            var camera = new Camera3D();
-            camera.LookAt(Vector3.Zero, new Vector3(4, 6, -2), new Vector3(0, 0, -1));
+            var camera = new Xen.Camera.FirstPersonControlledCamera3D(this.UpdateManager, Vector3.Zero, false);
+
+            //don't allow the camera to move too fast
+            camera.MovementSensitivity *= 0.1f;
+            camera.LookAt(new Vector3(0.0f, 100.0f, 0.0f), new Vector3(640.0f, 300.0f, 640.0f), Vector3.Up);
 
             console = new Console(400, 200);
-
-             rs = new RasterizerState();
-             rs.FillMode = FillMode.WireFrame;
 
             //create the draw target.
             this.drawToScreen = new DrawTargetScreen(camera);
@@ -56,9 +56,9 @@ namespace Atlantis
             this.statisticsOverlay = new Xen.Ex.Graphics2D.Statistics.DrawStatisticsDisplay(this.UpdateManager);
 
 
-            var terrain = new Terrain(this.Content, "chunkheightmap", Vector3.Zero, 1f);
+            TerrainDrawer terrain = new TerrainDrawer(this.Content, Vector3.Zero);
       
-           drawToScreen.Add(terrain);
+            drawToScreen.Add(terrain);
 
             //add statistics to screen
             drawToScreen.Add(statisticsOverlay);
@@ -98,8 +98,6 @@ namespace Atlantis
 
         protected override void Frame(FrameState state)
         {
-            gs.RasterizerState = rs;
-
             //perform the draw to the screen.
             drawToScreen.Draw(state);
 
