@@ -43,6 +43,9 @@
     <Reference Include="Xen.Ex.ModelImporter">
       <HintPath>..\..\ThirdParty\Xen.Ex.ModelImporter.dll</HintPath>
     </Reference>
+    <Reference Include="Xen.Ex.ParticleSystemImporter">
+      <HintPath>..\..\..\..\..\..\Downloads\xen 2.0\xen\bin\Xen.Ex.ParticleSystemImporter\Xen.Ex.ParticleSystemImporter.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="tiny_4anim.x">
@@ -94,6 +97,20 @@
       <Name>example2_normaldeep</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="skydome\cloudMap.jpg">
+      <Name>cloudMap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="skydome\dome.x">
+      <Name>dome</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelImporter</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

@@ -128,6 +128,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Skydome.cs" />
     <Compile Include="Terrain.cs" />
   </ItemGroup>
   <ItemGroup>

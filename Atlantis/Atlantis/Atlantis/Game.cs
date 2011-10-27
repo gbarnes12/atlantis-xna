@@ -10,6 +10,9 @@ using Xen.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Xen.Ex.Graphics;
+using Xen.Ex.Graphics.Display;
+using Xen.Ex.Graphics.Content;
 
 namespace Atlantis
 {
@@ -18,7 +21,10 @@ namespace Atlantis
         private DrawTargetScreen drawToScreen;
         private Actor actor;
         private RasterizerState rs;
-        private GraphicsDevice gs; 
+        private GraphicsDevice gs;
+
+        private Skydome skydome;
+
 
 #if DEBUG
         private Console console;
@@ -49,8 +55,11 @@ namespace Atlantis
             this.drawToScreen.ClearBuffer.ClearColour = Color.CornflowerBlue;
 
 
+
             //create new actor ("tiny")
-            actor = new Actor(this.Content, "tiny_4anim", Vector3.Zero, 0.01f);
+            actor = new Actor(this.Content, "tiny_4anim", Vector3.Zero, 1f);
+
+            skydome = new Skydome(Content, new Vector3(500,100,700), 1000f);
 
             //at runtime, pressing 'F12' will toggle the overlay (or holding both thumbsticks on x360)
             this.statisticsOverlay = new Xen.Ex.Graphics2D.Statistics.DrawStatisticsDisplay(this.UpdateManager);
@@ -59,6 +68,8 @@ namespace Atlantis
             TerrainDrawer terrain = new TerrainDrawer(this.Content, Vector3.Zero);
       
             drawToScreen.Add(terrain);
+
+            drawToScreen.Add(skydome);
 
             //add statistics to screen
             drawToScreen.Add(statisticsOverlay);
@@ -81,6 +92,12 @@ namespace Atlantis
 
             this.statisticsOverlay.Font = xnaSpriteFont;
             gs = state.GraphicsDevice;
+
+
+            //NEW CODE
+            //Mask rendering for the different particle drawers.
+            //This allows the snow and fog particles to be drawn using different drawing methods
+
 
             base.LoadContent(state);
         }
