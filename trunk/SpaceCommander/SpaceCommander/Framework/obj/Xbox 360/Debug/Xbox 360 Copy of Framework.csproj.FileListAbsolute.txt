@@ -1,2 +1,0 @@
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\Framework\obj\Xbox 360\Debug\ResolveAssemblyReference.cache
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\Framework\obj\Xbox 360\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt

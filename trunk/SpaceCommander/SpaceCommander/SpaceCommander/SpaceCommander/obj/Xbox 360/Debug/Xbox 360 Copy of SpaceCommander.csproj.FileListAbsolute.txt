@@ -1,6 +1,0 @@
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\bin\Xbox 360\Debug\SpaceCommander.exe
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\bin\Xbox 360\Debug\SpaceCommander.pdb
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\obj\Xbox 360\Debug\ResolveAssemblyReference.cache
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\obj\Xbox 360\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\obj\Xbox 360\Debug\SpaceCommander.exe
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\obj\Xbox 360\Debug\SpaceCommander.pdb
