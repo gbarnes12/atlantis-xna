@@ -1,6 +1,0 @@
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\bin\x86\Debug\SpaceCommander.exe
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\bin\x86\Debug\SpaceCommander.pdb
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\obj\x86\Debug\ResolveAssemblyReference.cache
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\obj\x86\Debug\SpaceCommander.exe
-C:\Users\Gavin\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\SpaceCommander\SpaceCommander\obj\x86\Debug\SpaceCommander.pdb
