@@ -6,6 +6,7 @@
     using System.Text;
     using Microsoft.Xna.Framework.Input;
     using Actors;
+    using UI;
 
     /// <summary>
     /// Contains all the event types
@@ -16,7 +17,7 @@
         KeyboardEvent_KeyWasPressed,
         KeyboardEvent_KeyWasReleased,
         KeyboardEvent_KeyIsDown,
-
+        ButtonEvent_OnClick
     }
 
     /// <summary>
@@ -55,4 +56,6 @@
     public class KeyboardEvent_KeyWasPressed : Event { public Keys Key { get; set; } }
 
     public class KeyboardEvent_KeyWasReleased : Event { public Keys Key { get; set; } }
+
+    public class ButtonEvent_OnClick : Event { public Button button { get; set; } }
 }

@@ -94,8 +94,8 @@
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            if (Game1.graphics != null)
-                spriteBatch = new SpriteBatch(Game1.graphics.GraphicsDevice);
+            if (Framework.Instance.GetGraphics() != null)
+                spriteBatch = new SpriteBatch(Framework.Instance.GetGraphics());
 
             // load some basiseffect
             effect = new DefaultEffect(content.Load<Effect>("Effects\\DefaultEffect"));
@@ -114,12 +114,12 @@
             };
 
             //create vertexbuffer
-            vertexBuffer = new VertexBuffer(Game1.graphics.GraphicsDevice, typeof(VertexPositionColor), 6, BufferUsage.WriteOnly);
+            vertexBuffer = new VertexBuffer(Framework.Instance.GetGraphics(), typeof(VertexPositionColor), 6, BufferUsage.WriteOnly);
             vertexBuffer.SetData<VertexPositionColor>(vertices);
 
             //create indexbuffer
             uint[] indices = new uint[] { 0, 1, 2, 3, 4, 5 };
-            indexBuffer = new IndexBuffer(Game1.graphics.GraphicsDevice, IndexElementSize.ThirtyTwoBits, 6, BufferUsage.WriteOnly);
+            indexBuffer = new IndexBuffer(Framework.Instance.GetGraphics(), IndexElementSize.ThirtyTwoBits, 6, BufferUsage.WriteOnly);
             indexBuffer.SetData<uint>(indices);
         }
 
@@ -147,11 +147,11 @@
             effect.View = cam.View;
             effect.Projection = cam.Projection;
             effect.CurrentTechnique.Passes[0].Apply();
-            
 
-            Game1.graphics.GraphicsDevice.SetVertexBuffer(vertexBuffer);
-            Game1.graphics.GraphicsDevice.Indices = indexBuffer;
-            Game1.graphics.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, 6, 0, 3);
+
+            Framework.Instance.GetGraphics().SetVertexBuffer(vertexBuffer);
+            Framework.Instance.GetGraphics().Indices = indexBuffer;
+            Framework.Instance.GetGraphics().DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, 6, 0, 3);
 
         }
     }

@@ -117,8 +117,8 @@
             // clockwise winding
             short[] indices = new short[] { 0, 1, 2, 0, 2, 3 };
 
-            VertexBuffer = new VertexBuffer(Game1.graphics.GraphicsDevice, VertexPositionTexture.VertexDeclaration, 4, BufferUsage.WriteOnly);
-            IndexBuffer = new IndexBuffer(Game1.graphics.GraphicsDevice, IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly);
+            VertexBuffer = new VertexBuffer(Framework.Instance.GetGraphics(), VertexPositionTexture.VertexDeclaration, 4, BufferUsage.WriteOnly);
+            IndexBuffer = new IndexBuffer(Framework.Instance.GetGraphics(), IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly);
 
             VertexBuffer.SetData<VertexPositionTexture>(vertices);
             IndexBuffer.SetData<short>(indices);
@@ -152,8 +152,8 @@
         public void Render(GameTime gameTime)
         {
             FPSCamera cam = WorldManager.Instance.GetActor<FPSCamera>("camera");
-            
-            Game1.graphics.GraphicsDevice.SamplerStates[0] = new SamplerState()
+
+            Framework.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
             {
                 Filter = TextureFilter.Linear,
                 AddressU = TextureAddressMode.Wrap,
@@ -166,10 +166,10 @@
             effect.Projection = cam.Projection;
 
             effect.CurrentTechnique.Passes[0].Apply();
-            
-            Game1.graphics.GraphicsDevice.SetVertexBuffer(VertexBuffer);
-            Game1.graphics.GraphicsDevice.Indices = IndexBuffer;
-            Game1.graphics.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+
+            Framework.Instance.GetGraphics().SetVertexBuffer(VertexBuffer);
+            Framework.Instance.GetGraphics().Indices = IndexBuffer;
+            Framework.Instance.GetGraphics().DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
         }
 
     }
