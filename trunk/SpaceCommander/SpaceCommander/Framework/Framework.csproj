@@ -96,6 +96,7 @@
     <Compile Include="Actors\Cameras\Camera.cs" />
     <Compile Include="Actors\Cameras\FPSCamera.cs" />
     <Compile Include="Actors\Models\BaseModel.cs" />
+    <Compile Include="Actors\Models\SkySphere.cs" />
     <Compile Include="Actors\Primitives\Axis.cs" />
     <Compile Include="Actors\Primitives\Box.cs" />
     <Compile Include="Actors\Primitives\Plane.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Input\InputDeviceEventArgs.cs" />
     <Compile Include="Input\KeyboardDevice.cs" />
     <Compile Include="Input\MouseDevice.cs" />
+    <Compile Include="Input\Xbox360ControllerDevice.cs" />
     <Compile Include="Interfaces\IDrawableActor.cs" />
     <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IUIActor.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Shader\DefaultEffect.cs" />
     <Compile Include="Resources\Shader\TextureMappingEffect.cs" />
+    <Compile Include="UI\Button.cs" />
     <Compile Include="UI\TextElement.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="WorldManager.cs" />
