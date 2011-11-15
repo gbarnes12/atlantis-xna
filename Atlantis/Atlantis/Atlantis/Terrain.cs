@@ -166,6 +166,7 @@ namespace Atlantis
 
         public void Draw(DrawState state)
         {
+            
             //push the world matrix, multiplying by the current matrix if there is one
             using (state.WorldMatrix.PushMultiply(ref worldMatrix))
             {

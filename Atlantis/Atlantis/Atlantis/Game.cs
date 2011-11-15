@@ -13,16 +13,16 @@ using Microsoft.Xna.Framework.Input;
 using Xen.Ex.Graphics;
 using Xen.Ex.Graphics.Display;
 using Xen.Ex.Graphics.Content;
+using JigLibX.Physics;
+using JigLibX.Collision;
 
 namespace Atlantis
 {
     public class Game : Application
     {
+        private PhysicsSystem physics;
         private DrawTargetScreen drawToScreen;
         private Actor actor;
-        private RasterizerState rs;
-        private GraphicsDevice gs;
-
         private Skydome skydome;
 
 
@@ -37,9 +37,14 @@ namespace Atlantis
 
         protected override void Initialise()
         {
+            //initialize the physic stuff!
+            physics = new PhysicsSystem();
+            physics.CollisionSystem = new CollisionSystemSAP();
+
             //all draw targets need a default camera.
             //create a 3D camera
             var camera = new Xen.Camera.FirstPersonControlledCamera3D(this.UpdateManager, Vector3.Zero, false);
+
 
             //don't allow the camera to move too fast
             camera.MovementSensitivity *= 0.1f;
@@ -91,7 +96,6 @@ namespace Atlantis
             console.setFont(xnaSpriteFont);
 
             this.statisticsOverlay.Font = xnaSpriteFont;
-            gs = state.GraphicsDevice;
 
 
             //NEW CODE
@@ -105,6 +109,8 @@ namespace Atlantis
         protected override void Update(UpdateState state)
         {
             //update logic
+            float timeStep = (float)state.DeltaTimeTicks / TimeSpan.TicksPerSecond;
+            PhysicsSystem.CurrentPhysicsSystem.Integrate(timeStep);
 
 #if DEBUG
             console.clear();
@@ -117,8 +123,6 @@ namespace Atlantis
         {
             //perform the draw to the screen.
             drawToScreen.Draw(state);
-
-            //at this point the screen has been drawn...
         }
     }
 }
