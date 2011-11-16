@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\Planet.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="GameViews\MainMenu\MainMenuGameView.cs" />
     <Compile Include="Resources\Shader\PlanetEffect.cs" />
@@ -157,7 +158,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Actors\" />
     <Folder Include="GameViews\Gameplay\GameLogics\" />
     <Folder Include="GameViews\MainMenu\GameLogics\" />
   </ItemGroup>

@@ -6,6 +6,7 @@
     using System.Text;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
 
     using GameApplicationTools;
     using GameApplicationTools.Structures;
@@ -13,7 +14,8 @@
     using GameApplicationTools.Actors.Cameras;
     using GameApplicationTools.Actors.Primitives;
     using GameApplicationTools.Actors.Models;
-    using Microsoft.Xna.Framework.Graphics;
+
+    using Actors;
 
     public class MainMenuGameView : GameView, IGameView
     {
@@ -65,13 +67,17 @@
 
         public void LoadContent(ContentManager content)
         {
-            FPSCamera camera = new FPSCamera("camera", ID, new Vector3(0, 0, 3), Vector3.Zero);
+            FPSCamera camera = new FPSCamera("camera", ID, new Vector3(0, 0, 500), Vector3.Zero);
             camera.LoadContent(content);
             WorldManager.Instance.AddActor(camera);
 
             Axis axis = new Axis("axis", ID, Vector3.Zero, 1f);
             axis.LoadContent(content);
             WorldManager.Instance.AddActor(axis);
+
+            Planet planet = new Planet("earth", ID, Vector3.Zero, 100f);
+            planet.LoadContent(content);
+            WorldManager.Instance.AddActor(planet);
 
             SkySphere sky = new SkySphere("skysphere", ID, Vector3.Zero, "Textures\\space", 1000f);
             sky.LoadContent(content);
