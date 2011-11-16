@@ -80,6 +80,7 @@
             this.Position = position;
             this.Scale = scale;
             this.textureFile = textureFile;
+            this.Angle = 0;
         }
 
         /// <summary>
@@ -135,6 +136,10 @@
                 Matrix[] transforms = new Matrix[model.Bones.Count];
                 model.CopyAbsoluteBoneTransformsTo(transforms);
 
+                //set cullMode to None
+                RasterizerState rs = new RasterizerState();
+                rs.CullMode = CullMode.CullClockwiseFace;
+                GameApplication.Instance.GetGraphics().RasterizerState = rs;
 
                 // Draw the model. A model can have multiple meshes, so loop.
                 foreach (ModelMesh mesh in model.Meshes)
@@ -143,7 +148,7 @@
                     // as our camera and projection.
                     foreach (TextureMappingEffect eff in mesh.Effects)
                     {
-                        WorldMatrix = transforms[mesh.ParentBone.Index] * Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(Angle), new Vector3(0.002f, 0.002f, 0.002f));
+                        //WorldMatrix = transforms[mesh.ParentBone.Index] * Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(Angle), new Vector3(0.002f, 0.002f, 0.002f));
                         eff.World = Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(0), new Vector3(Scale));
                         eff.View = camera.View;
                         eff.Projection = camera.Projection;
@@ -151,6 +156,12 @@
                     // Draw the mesh, using the effects set above.
                     mesh.Draw();
                 }
+
+                //reset cullMode
+                rs = null;
+                rs = new RasterizerState();
+                rs.CullMode = CullMode.CullCounterClockwiseFace;
+                GameApplication.Instance.GetGraphics().RasterizerState = rs;
             }
         }
     }
