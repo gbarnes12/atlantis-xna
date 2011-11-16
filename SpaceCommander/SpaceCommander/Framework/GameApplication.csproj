@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Framework</RootNamespace>
+    <RootNamespace>GameApplication</RootNamespace>
     <AssemblyName>Framework</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -103,7 +103,7 @@
     <Compile Include="Actors\Primitives\Triangle.cs" />
     <Compile Include="Events\EventManager.cs" />
     <Compile Include="Events\Events.cs" />
-    <Compile Include="Framework.cs" />
+    <Compile Include="GameApplication.cs" />
     <Compile Include="Input\InputDeviceEventArgs.cs" />
     <Compile Include="Input\KeyboardDevice.cs" />
     <Compile Include="Input\MouseDevice.cs" />

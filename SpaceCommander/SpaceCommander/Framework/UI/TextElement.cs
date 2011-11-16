@@ -1,4 +1,4 @@
-﻿namespace Framework.UI
+﻿namespace GameApplication.UI
 {
     using System;
     using System.Collections.Generic;
@@ -92,8 +92,8 @@
             this.Scale = 1f;
 
             // initialize our sprite batch
-            if (Framework.Instance.GetGraphics() != null)
-                spriteBatch = new SpriteBatch(Framework.Instance.GetGraphics());
+            if (GameApplication.Instance.GetGraphics() != null)
+                spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
 
             spriteFont = Font;
         }

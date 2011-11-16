@@ -10,7 +10,7 @@ namespace SpaceCommander
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (SpaceCommander game = new SpaceCommander())
             {
                 game.Run();
             }

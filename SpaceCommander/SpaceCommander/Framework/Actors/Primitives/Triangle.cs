@@ -1,4 +1,4 @@
-﻿namespace Framework.Actors.Primitives
+﻿namespace GameApplication.Actors.Primitives
 {
     using System;
     using System.Collections.Generic;
@@ -96,8 +96,8 @@
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            if (Framework.Instance.GetGraphics() != null)
-                spriteBatch = new SpriteBatch(Framework.Instance.GetGraphics());
+            if (GameApplication.Instance.GetGraphics() != null)
+                spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
 
             // load some basiseffect
             effect = new DefaultEffect(content.Load<DefaultEffect>("DefaultEffect"));
@@ -111,12 +111,12 @@
             };
 
             //create vertexbuffer
-            vertexBuffer = new VertexBuffer(Framework.Instance.GetGraphics(), typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
+            vertexBuffer = new VertexBuffer(GameApplication.Instance.GetGraphics(), typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
             vertexBuffer.SetData<VertexPositionColor>(vertices);
 
             //create indexbuffer
             uint[] indices = new uint[] { 0, 1, 2 };
-            indexBuffer = new IndexBuffer(Framework.Instance.GetGraphics(), IndexElementSize.ThirtyTwoBits, 3, BufferUsage.WriteOnly);
+            indexBuffer = new IndexBuffer(GameApplication.Instance.GetGraphics(), IndexElementSize.ThirtyTwoBits, 3, BufferUsage.WriteOnly);
             indexBuffer.SetData<uint>(indices);
         }
 
@@ -151,9 +151,9 @@
 
             effect.CurrentTechnique.Passes[0].Apply();
 
-            Framework.Instance.GetGraphics().SetVertexBuffer(vertexBuffer);
-            Framework.Instance.GetGraphics().Indices = indexBuffer;
-            Framework.Instance.GetGraphics().DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 3, 0, 1);
+            GameApplication.Instance.GetGraphics().SetVertexBuffer(vertexBuffer);
+            GameApplication.Instance.GetGraphics().Indices = indexBuffer;
+            GameApplication.Instance.GetGraphics().DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 3, 0, 1);
         }
 
     }

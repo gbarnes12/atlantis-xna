@@ -1,4 +1,4 @@
-﻿namespace Framework.Actors.Primitives
+﻿namespace GameApplication.Actors.Primitives
 {
     using System;
     using System.Collections.Generic;
@@ -136,8 +136,8 @@
                 20, 21, 22, 22, 21, 23
             };
 
-            VertextBuffer = new VertexBuffer(Framework.Instance.GetGraphics(), VertexPositionTexture.VertexDeclaration, 24, BufferUsage.WriteOnly);
-            IndexBuffer = new IndexBuffer(Framework.Instance.GetGraphics(), IndexElementSize.SixteenBits, 36, BufferUsage.WriteOnly);
+            VertextBuffer = new VertexBuffer(GameApplication.Instance.GetGraphics(), VertexPositionTexture.VertexDeclaration, 24, BufferUsage.WriteOnly);
+            IndexBuffer = new IndexBuffer(GameApplication.Instance.GetGraphics(), IndexElementSize.SixteenBits, 36, BufferUsage.WriteOnly);
 
             VertextBuffer.SetData<VertexPositionTexture>(boxData);
             IndexBuffer.SetData<short>(boxIndices);
@@ -147,7 +147,7 @@
             effect = new TextureMappingEffect(content.Load<Effect>("Effects\\TextureMappingEffect"));
             effect.Texture = content.Load<Texture2D>("Textures\\crate");
 
-            Framework.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
+            GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
             {
                 Filter = textureFilter
             };
@@ -179,9 +179,9 @@
 
             effect.CurrentTechnique.Passes[0].Apply();
 
-            Framework.Instance.GetGraphics().SetVertexBuffer(VertextBuffer);
-            Framework.Instance.GetGraphics().Indices = IndexBuffer;
-            Framework.Instance.GetGraphics().DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 24, 0, 12);
+            GameApplication.Instance.GetGraphics().SetVertexBuffer(VertextBuffer);
+            GameApplication.Instance.GetGraphics().Indices = IndexBuffer;
+            GameApplication.Instance.GetGraphics().DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 24, 0, 12);
         }
     }
 }

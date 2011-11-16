@@ -1,4 +1,4 @@
-﻿namespace Framework.Cameras
+﻿namespace GameApplication.Actors.Cameras
 {
     using System;
     using System.Collections.Generic;

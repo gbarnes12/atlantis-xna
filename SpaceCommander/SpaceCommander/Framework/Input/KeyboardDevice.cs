@@ -1,4 +1,4 @@
-﻿namespace Framework.Input
+﻿namespace GameApplication.Input
 {
     using System;
     using System.Collections.Generic;

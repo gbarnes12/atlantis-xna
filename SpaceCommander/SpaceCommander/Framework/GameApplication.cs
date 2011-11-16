@@ -1,4 +1,4 @@
-namespace Framework
+namespace GameApplication
 {
     using System;
     using System.Collections.Generic;
@@ -11,31 +11,30 @@ namespace Framework
     using Microsoft.Xna.Framework.Input;
     using Microsoft.Xna.Framework.Media;
 
-    public class Framework
+    public class GameApplication
     {
         #region Private
-        private static Framework instance; 
+        private static GameApplication instance;
         private GraphicsDevice GraphicsDevice { get; set; }
         private Game Game { get; set; }
         #endregion
 
-        public static Framework Instance
+        public static GameApplication Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new Framework();
+                    instance = new GameApplication();
                 }
                 return instance;
             }
         }
 
-        private Framework()
+        private GameApplication()
         {
 
         }
-
 
         public GraphicsDevice GetGraphics()
         {
@@ -51,6 +50,16 @@ namespace Framework
                 return Game;
             else
                 throw new Exception("Game hasn't been passed over!");
+        }
+
+        public void SetGraphicsDevice(GraphicsDevice graphics)
+        {
+            this.GraphicsDevice = graphics;
+        }
+
+        public void SetGame(Game game)
+        {
+            this.Game = game;
         }
 
     }
