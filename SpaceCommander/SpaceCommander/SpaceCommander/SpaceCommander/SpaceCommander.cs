@@ -31,6 +31,7 @@ namespace SpaceCommander
         public SpaceCommander()
         {
             graphics = new GraphicsDeviceManager(this);
+            //graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
         }
 

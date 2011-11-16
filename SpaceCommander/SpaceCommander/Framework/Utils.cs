@@ -64,7 +64,7 @@
             return Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
                             (float)GameApplication.Instance.GetGraphics().Viewport.Width /
                             (float)GameApplication.Instance.GetGraphics().Viewport.Height,
-                            .01f, 5000
+                            .01f, 100000
                         );
         }
 
