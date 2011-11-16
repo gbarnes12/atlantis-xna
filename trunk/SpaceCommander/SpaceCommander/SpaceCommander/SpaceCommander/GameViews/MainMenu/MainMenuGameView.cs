@@ -67,7 +67,7 @@
 
         public void LoadContent(ContentManager content)
         {
-            FPSCamera camera = new FPSCamera("camera", ID, new Vector3(0, 0, 500), Vector3.Zero);
+            FPSCamera camera = new FPSCamera("camera", ID, new Vector3(0, 0, 1000), Vector3.Zero);
             camera.LoadContent(content);
             WorldManager.Instance.AddActor(camera);
 
@@ -75,11 +75,11 @@
             axis.LoadContent(content);
             WorldManager.Instance.AddActor(axis);
 
-            Planet planet = new Planet("earth", ID, Vector3.Zero, 100f);
+            Planet planet = new Planet("earth", ID, Vector3.Zero, 400f);
             planet.LoadContent(content);
             WorldManager.Instance.AddActor(planet);
 
-            SkySphere sky = new SkySphere("skysphere", ID, Vector3.Zero, "Textures\\space", 1000f);
+            SkySphere sky = new SkySphere("skysphere", ID, Vector3.Zero, "Textures\\space", 10000f);
             sky.LoadContent(content);
             WorldManager.Instance.AddActor(sky);
 

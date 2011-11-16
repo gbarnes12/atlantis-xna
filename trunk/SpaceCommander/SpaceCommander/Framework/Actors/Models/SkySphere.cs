@@ -114,6 +114,7 @@
 
             //set texture to the effect
             effect.Texture = texture;
+           
 
             //set the effect to every part of every mesh of the model
             foreach (ModelMesh mesh in model.Meshes)
@@ -135,11 +136,20 @@
 
                 Matrix[] transforms = new Matrix[model.Bones.Count];
                 model.CopyAbsoluteBoneTransformsTo(transforms);
-
+                
                 //set cullMode to None
                 RasterizerState rs = new RasterizerState();
                 rs.CullMode = CullMode.CullClockwiseFace;
                 GameApplication.Instance.GetGraphics().RasterizerState = rs;
+
+                GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
+                {
+                    Filter = TextureFilter.Linear,
+                    
+                    AddressU = TextureAddressMode.Wrap,
+                    AddressV = TextureAddressMode.Wrap,
+                    AddressW = TextureAddressMode.Wrap
+                };
 
                 // Draw the model. A model can have multiple meshes, so loop.
                 foreach (ModelMesh mesh in model.Meshes)
