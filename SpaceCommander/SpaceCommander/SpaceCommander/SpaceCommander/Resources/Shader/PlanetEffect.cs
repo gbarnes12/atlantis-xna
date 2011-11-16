@@ -6,7 +6,7 @@
     using System.Text;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework;
-    using GameApplication.Interfaces;
+    using GameApplicationTools.Interfaces;
 
     /// <summary>
     /// 

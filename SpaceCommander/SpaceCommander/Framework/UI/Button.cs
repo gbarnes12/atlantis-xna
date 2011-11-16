@@ -1,4 +1,4 @@
-﻿namespace GameApplication.UI
+﻿namespace GameApplicationTools.UI
 {
     using System;
     using System.Collections.Generic;
@@ -76,6 +76,11 @@
             set;
         }
 
+        /// <summary>
+        /// Determines whether the 
+        /// actor gets updated or not
+        /// </summary>
+        public bool IsUpdateable { get; set; }
         #endregion
 
         #region Private
@@ -92,11 +97,32 @@
         /// <param name="texture">background-texture of the button</param>
         /// <param name="width">button's width (has not to be the same as the baackground-texture's width)</param>
         /// <param name="height">button's heighth(as not to be the same as the baackground-texture's width)</param>
-        public Button(String id, Vector2 position, Texture2D texture, int width, int height)
-            : base(id)
+        public Button(String ID, Vector2 position, Texture2D texture, int width, int height)
+            : base(ID, null)
         {
             this.Position = position;
-            this.ID = id;
+            this.IsUpdateable = true;
+            this.Texture = texture;
+
+            this.Rectangle = new Rectangle((int)position.X, (int)position.Y, width, height);
+
+            // initialize our sprite batch
+            if (GameApplication.Instance.GetGraphics() != null)
+                spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
+        }
+
+        /// <summary>
+        /// create a new button to click on and fire an event
+        /// </summary>
+        /// <param name="id">actor's (button) id</param>
+        /// <param name="position">position relative to the upper-left corner (0|0)</param>
+        /// <param name="texture">background-texture of the button</param>
+        /// <param name="width">button's width (has not to be the same as the baackground-texture's width)</param>
+        /// <param name="height">button's heighth(as not to be the same as the baackground-texture's width)</param>
+        public Button(String ID, String GameViewID ,Vector2 position, Texture2D texture, int width, int height)
+            : base(ID, GameViewID)
+        {
+            this.Position = position;
             this.Texture = texture;
 
             this.Rectangle = new Rectangle((int)position.X, (int)position.Y, width, height);

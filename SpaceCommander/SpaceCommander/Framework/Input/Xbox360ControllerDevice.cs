@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 
-namespace GameApplication.Input
+namespace GameApplicationTools.Input
 {
     public class Xbox360ControllerDevice : InputDevice<GamePadState>
     {

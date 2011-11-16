@@ -1,4 +1,4 @@
-﻿namespace GameApplication.Actors.Primitives
+﻿namespace GameApplicationTools.Actors.Primitives
 {
     using System;
     using System.Collections.Generic;
@@ -70,7 +70,14 @@
         /// actor gets drawn or not
         /// </summary>
         public bool IsVisible { get; set; }
+
+        /// <summary>
+        /// Determines whether the 
+        /// actor gets updated or not
+        /// </summary>
+        public bool IsUpdateable { get; set; }
         #endregion
+
 
         /// <summary>
         /// Just pass over the ID of this
@@ -79,12 +86,32 @@
         /// </summary>
         /// <param name="ID"></param>
         /// <param name="Position"></param>
-        public Triangle(String ID, Vector3 Position) 
-            : base(ID) 
+        public Triangle(String ID, Vector3 Position)
+            : base(ID, null)
         {
             this.Position = Position;
             this.Angle = 0f;
             this.IsVisible = true;
+            this.IsUpdateable = true;
+
+            WorldMatrix = Matrix.Identity;
+        }
+
+        /// <summary>
+        /// Just pass over the ID of this
+        /// triangle and the position you want
+        /// to have it set to!
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="GameViewID"></param>
+        /// <param name="Position"></param>
+        public Triangle(String ID, String GameViewID, Vector3 Position)
+            : base(ID, GameViewID) 
+        {
+            this.Position = Position;
+            this.Angle = 0f;
+            this.IsVisible = true;
+            this.IsUpdateable = true;
 
             WorldMatrix = Matrix.Identity;
         }
@@ -143,7 +170,7 @@
         /// <param name="gameTime"></param>
         public void Render(GameTime gameTime)
         {
-            FPSCamera cam = WorldManager.Instance.GetActor<FPSCamera>("camera");
+            Camera cam = WorldManager.Instance.GetActor("camera") as Camera;
 
             effect.World = WorldMatrix;
             effect.View = cam.View;

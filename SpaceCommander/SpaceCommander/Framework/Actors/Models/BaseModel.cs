@@ -1,4 +1,4 @@
-﻿namespace GameApplication.Actors.Models
+﻿namespace GameApplicationTools.Actors.Models
 {
     using System;
     using System.Collections.Generic;
@@ -23,18 +23,33 @@
         public bool IsVisible { get; set; }
 
         public float Scale { get; set; }
+
+        /// <summary>
+        /// Determines whether the 
+        /// actor gets updated or not
+        /// </summary>
+        public bool IsUpdateable { get; set; }
         #endregion
 
         String _fileName;
 
         public BaseModel(String ID, String File, Vector3 Position) 
-            : base(ID)
+            : base(ID, null)
         {
             IsVisible = true;
             _fileName = File;
             this.Position = Position;
+            this.IsUpdateable = true;
         }
 
+        public BaseModel(String ID, String GameViewID, String File, Vector3 Position)
+            : base(ID, GameViewID)
+        {
+            IsVisible = true;
+            _fileName = File;
+            this.Position = Position;
+            IsUpdateable = true;
+        }
         
 
         public void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
@@ -52,7 +67,7 @@
         {
             if(Model != null)
             {
-                FPSCamera camera = WorldManager.Instance.GetActor("camera") as FPSCamera;
+                Camera camera = WorldManager.Instance.GetActor("camera") as Camera;
 
                 Matrix[] transforms = new Matrix[Model.Bones.Count];
                 Model.CopyAbsoluteBoneTransformsTo(transforms);

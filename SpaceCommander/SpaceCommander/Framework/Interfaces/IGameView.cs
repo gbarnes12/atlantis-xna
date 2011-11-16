@@ -7,29 +7,38 @@
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework;
 
-
     /// <summary>
-    /// You can create an actor that inherits from
-    /// this interface which will tell the user that
-    /// this is only an actor that only gets updated
-    /// and not drawn.
+    /// This interface needs to be implemented into
+    /// every game view we have in the game!
     /// 
     /// Author: Gavin Barnes
     /// Version: 1.0
     /// </summary>
-    public interface IUpdateableActor
+    public interface IGameView
     {
+        #region Public
         /// <summary>
-        /// The Position of this Actor 
-        /// in the World. 
+        /// Determines whether rendering should be processed 
+        /// or not for specific actors generated within this game view.
         /// </summary>
-        Vector3 Position { get; set; }
+        bool BlocksRendering { set; get; }
 
         /// <summary>
-        /// Determines whether the 
-        /// actor gets updated or not
+        /// Determines whether updating should be processed 
+        /// or not for specific actors.
         /// </summary>
-        bool IsUpdateable { get; set; }
+        bool BlocksUpdating { get; set; }
+
+        /// <summary>
+        /// Can be used to block any input within the current game view
+        /// </summary>
+        bool BlocksInput { get; set; }
+
+        /// <summary>
+        /// Can be used to block any loading processes.
+        /// </summary>
+        bool BlocksLoading { get; set; }
+        #endregion
 
         /// <summary>
         /// The body of a load content method which
@@ -45,5 +54,6 @@
         /// </summary>
         /// <param name="gameTime"></param>
         void Update(GameTime gameTime);
+
     }
 }

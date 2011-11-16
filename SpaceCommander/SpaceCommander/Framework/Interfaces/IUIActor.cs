@@ -1,4 +1,4 @@
-﻿namespace GameApplication.Interfaces
+﻿namespace GameApplicationTools.Interfaces
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +17,7 @@
     /// Author: Gavin Barnes
     /// Version: 1.0
     /// </summary>
-    interface IUIActor
+    public interface IUIActor
     {
         /// <summary>
         /// The Position of this Actor 
@@ -41,6 +41,12 @@
         /// Sets the scale of our model
         /// </summary>
         float Scale { get; set; }
+
+        /// <summary>
+        /// Determines whether the 
+        /// actor gets updated or not
+        /// </summary>
+        bool IsUpdateable { get; set; }
 
         /// <summary>
         /// The body of a load content method which

@@ -1,4 +1,4 @@
-﻿namespace GameApplication.Actors.Primitives
+﻿namespace GameApplicationTools.Actors.Primitives
 {
     using System;
     using System.Collections.Generic;
@@ -74,15 +74,35 @@
         /// actor gets drawn or not
         /// </summary>
         public bool IsVisible { get; set; }
+
+        /// <summary>
+        /// Determines whether the 
+        /// actor gets updated or not
+        /// </summary>
+        public bool IsUpdateable { get; set; }
         #endregion
 
         public Axis(String ID, Vector3 Position, float Scale) 
-            : base(ID) 
+            : base(ID, null) 
         {
             this.Position = Position;
             this.Angle = 0f;
             this.Scale = Scale;
             this.IsVisible = true;
+            this.IsUpdateable = true;
+
+            WorldMatrix = Matrix.Identity;
+        }
+
+
+        public Axis(String ID, String GameViewID, Vector3 Position, float Scale)
+            : base(ID, GameViewID)
+        {
+            this.Position = Position;
+            this.Angle = 0f;
+            this.Scale = Scale;
+            this.IsVisible = true;
+            this.IsUpdateable = true;
 
             WorldMatrix = Matrix.Identity;
         }
@@ -141,7 +161,7 @@
         /// <param name="gameTime"></param>
         public void Render(GameTime gameTime)
         {
-            Camera cam = WorldManager.Instance.GetActor<Camera>("camera");
+            Camera cam = WorldManager.Instance.GetActor("camera") as Camera;
 
             effect.World = WorldMatrix;
             effect.View = cam.View;

@@ -1,4 +1,4 @@
-﻿namespace GameApplication.Actors.Primitives
+﻿namespace GameApplicationTools.Actors.Primitives
 {
     using System;
     using System.Collections.Generic;
@@ -72,15 +72,35 @@
         /// actor gets drawn or not
         /// </summary>
         public bool IsVisible { get; set; }
+
+        /// <summary>
+        /// Determines whether the 
+        /// actor gets updated or not
+        /// </summary>
+        public bool IsUpdateable { get; set; }
         #endregion
 
         public Plane(String ID, Vector3 Position)
-            : base(ID)
+            : base(ID, null)
         {
             this.Position = Position;
             this.Angle = 0f;
             this.Scale = 1f;
             this.IsVisible = true;
+            this.IsUpdateable = true;
+
+            WorldMatrix = Matrix.Identity;
+
+        }
+
+        public Plane(String ID, String GameViewID, Vector3 Position)
+            : base(ID, GameViewID)
+        {
+            this.Position = Position;
+            this.Angle = 0f;
+            this.Scale = 1f;
+            this.IsVisible = true;
+            this.IsUpdateable = true;
 
             WorldMatrix = Matrix.Identity;
 
@@ -151,7 +171,7 @@
         /// <param name="gameTime"></param>
         public void Render(GameTime gameTime)
         {
-            FPSCamera cam = WorldManager.Instance.GetActor<FPSCamera>("camera");
+            Camera cam = WorldManager.Instance.GetActor("camera") as Camera;
 
             GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
             {

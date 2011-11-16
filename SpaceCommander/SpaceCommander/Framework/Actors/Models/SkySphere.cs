@@ -1,4 +1,4 @@
-﻿namespace GameApplication.Actors.Models
+﻿namespace GameApplicationTools.Actors.Models
 {
     using System;
     using System.Collections.Generic;
@@ -44,6 +44,12 @@
             set;
         }
 
+        /// <summary>
+        /// Determines whether the 
+        /// actor gets updated or not
+        /// </summary>
+        public bool IsUpdateable { get; set; }
+
         #endregion
 
         #region Private
@@ -66,10 +72,28 @@
         /// <param name="position">center of the skysphere</param>
         /// <param name="textureFile">texture for the skysphere</param>
         /// <param name="scale">scale of the skysphere</param>
-        public SkySphere(String id, Vector3 position,String textureFile, float scale)
-            : base(id)
+        public SkySphere(String ID, Vector3 position,String textureFile, float scale)
+            : base(ID, null)
         {
             IsVisible = true;
+            IsUpdateable = true;
+            this.Position = position;
+            this.Scale = scale;
+            this.textureFile = textureFile;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="position">center of the skysphere</param>
+        /// <param name="textureFile">texture for the skysphere</param>
+        /// <param name="scale">scale of the skysphere</param>
+        public SkySphere(String ID, String GameViewID, Vector3 position, String textureFile, float scale)
+            : base(ID, GameViewID)
+        {
+            IsVisible = true;
+            IsUpdateable = true;
             this.Position = position;
             this.Scale = scale;
             this.textureFile = textureFile;
@@ -79,10 +103,10 @@
         public void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
         {
             //create a new effect
-            effect = new TextureMappingEffect(content.Load<Effect>("Effects/TextureMappingEffect"));
+            effect = new TextureMappingEffect(content.Load<Effect>("Effects\\TextureMappingEffect"));
 
             //load the sphere; model stays the same for every kind of skysphere
-            model = content.Load<Model>("Models/sphere");
+            model = content.Load<Model>("Models\\sphere");
 
             //load the model's texture 
             texture = content.Load<Texture2D>(textureFile);
@@ -106,7 +130,7 @@
             if (model != null)
             {
                 //get camera (View & Projection Matrix)
-                FPSCamera camera = WorldManager.Instance.GetActor("camera") as FPSCamera;
+                Camera camera = WorldManager.Instance.GetActor("camera") as Camera;
 
                 Matrix[] transforms = new Matrix[model.Bones.Count];
                 model.CopyAbsoluteBoneTransformsTo(transforms);
