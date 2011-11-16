@@ -8,6 +8,7 @@
     using Microsoft.Xna.Framework.Input;
     using Events;
     using UI;
+    using Input;
 
     public class FPSCamera : Camera
     {
@@ -56,15 +57,15 @@
 
         public override void Update(GameTime gameTime)
         {
-            if (Game1.keyboard != null && Game1.mouse != null)
+            if (KeyboardDevice.Instance != null && MouseDevice.Instance != null)
             {
                 Vector3 inputModifier = new Vector3(
-                (Game1.keyboard.IsKeyDown(Keys.A) ? -1 : 0) + (Game1.keyboard.IsKeyDown(Keys.D) ? 1 : 0),
-                (Game1.keyboard.IsKeyDown(Keys.Q) ? -1 : 0) + (Game1.keyboard.IsKeyDown(Keys.E) ? 1 : 0),
-                (Game1.keyboard.IsKeyDown(Keys.W) ? -1 : 0) + (Game1.keyboard.IsKeyDown(Keys.S) ? 1 : 0)
+                (KeyboardDevice.Instance.IsKeyDown(Keys.A) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.D) ? 1 : 0),
+                (KeyboardDevice.Instance.IsKeyDown(Keys.Q) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.E) ? 1 : 0),
+                (KeyboardDevice.Instance.IsKeyDown(Keys.W) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.S) ? 1 : 0)
                 );
 
-                RotateTranslate(new Vector3(Game1.mouse.Delta.Y * -.002f, Game1.mouse.Delta.X * -.002f, 0), inputModifier * .05f);
+                RotateTranslate(new Vector3(MouseDevice.Instance.Delta.Y * -.002f, MouseDevice.Instance.Delta.X * -.002f, 0), inputModifier * .05f);
 
                 Rotation = Utils.Vector3ToMatrix(rotation);
 

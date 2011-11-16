@@ -56,9 +56,23 @@
         public event InputEventHandler<MouseButtons, MouseState> ButtonReleased;
         public event InputEventHandler<MouseButtons, MouseState> ButtonHeld;
 
+        private static MouseDevice instance;
+
+        public static MouseDevice Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new MouseDevice();
+                }
+                return instance;
+            }
+        }
+
         // Constructor gets the initial MouseState, moves the mouse to the
         // center of the screen, and does the first update
-        public MouseDevice()
+        private MouseDevice()
         {
             if (ResetMouseAfterUpdate)
                 Position = new Vector2(

@@ -69,6 +69,20 @@ namespace Framework.Input
         #endregion
 
 
+        private static Xbox360ControllerDevice instance;
+
+        public static Xbox360ControllerDevice Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Xbox360ControllerDevice();
+                }
+                return instance;
+            }
+        }
+
         /// <summary>
         /// Constructor; creates a new instance of Xbox360ControllerDevice
         /// </summary>

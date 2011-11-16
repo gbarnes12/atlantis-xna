@@ -27,6 +27,20 @@
         public event InputEventHandler<Keys, KeyboardState> KeyReleased;
         public event InputEventHandler<Keys, KeyboardState> KeyHeld;
 
+        private static KeyboardDevice instance;
+
+        public static KeyboardDevice Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new KeyboardDevice();
+                }
+                return instance;
+            }
+        }
+
         // Constructor sets up the current state and updates for the
         // first time
         public KeyboardDevice()
