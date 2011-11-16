@@ -13,7 +13,7 @@
     /// Author: Gavin Barnes
     /// Version: 1.0
     /// </summary>
-    interface IResource
+    public interface IResource
     {
         /// <summary>
         /// The body of a load content method which
