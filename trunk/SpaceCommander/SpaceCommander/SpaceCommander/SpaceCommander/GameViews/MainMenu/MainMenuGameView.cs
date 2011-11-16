@@ -13,6 +13,7 @@
     using GameApplicationTools.Actors.Cameras;
     using GameApplicationTools.Actors.Primitives;
     using GameApplicationTools.Actors.Models;
+    using Microsoft.Xna.Framework.Graphics;
 
     public class MainMenuGameView : GameView, IGameView
     {
@@ -75,6 +76,9 @@
             SkySphere sky = new SkySphere("skysphere", ID, Vector3.Zero, "Textures\\space", 1000f);
             sky.LoadContent(content);
             WorldManager.Instance.AddActor(sky);
+
+           
+
         }
 
         public void Update(GameTime gameTime)
