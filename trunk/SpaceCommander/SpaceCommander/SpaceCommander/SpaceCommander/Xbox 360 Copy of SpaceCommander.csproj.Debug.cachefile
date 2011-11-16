@@ -1,5 +1,13 @@
 Content\Effects\DefaultEffect.xnb
 Content\Effects\PlanetEarthEffect.xnb
 Content\Effects\TextureMappingEffect.xnb
-Content\Textures\space.xnb
 Content\Models\sphere.xnb
+Content\Textures\space.xnb
+Content\Textures\PlanetEarth\Earth_Atmos.xnb
+Content\Textures\PlanetEarth\Earth_Cloud.xnb
+Content\Textures\PlanetEarth\Earth_Diffuse.xnb
+Content\Textures\PlanetEarth\Earth_Night.xnb
+Content\Textures\PlanetEarth\Earth_NormalMap.xnb
+Content\Textures\PlanetEarth\Earth_ReflectionMask.xnb
+Content\Textures\PlanetEarth\WaterRipples.xnb
+Content\Models\planet.xnb

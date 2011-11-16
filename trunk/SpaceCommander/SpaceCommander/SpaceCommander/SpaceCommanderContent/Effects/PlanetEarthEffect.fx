@@ -278,7 +278,7 @@ technique PlanetShader
 		PixelShader = compile ps_2_0 PS_OuterAtmoshpere(true);
 	}
 	
-	pass UpperOuterAtmoshpere
+	/*pass UpperOuterAtmoshpere
 	{
 		//AlphaBlendEnable = True;
         //SrcBlend = SrcAlpha;
@@ -287,6 +287,6 @@ technique PlanetShader
 		VertexShader = compile vs_2_0 VS_OuterAtmoshpere(.2);
 		PixelShader = compile ps_2_0 PS_OuterAtmoshpere(false);
 		CullMode = CW;
-	}	
+	}*/	
 	
 }
