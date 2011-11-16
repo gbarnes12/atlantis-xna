@@ -1,4 +1,4 @@
-﻿namespace Framework.Input
+﻿namespace GameApplication.Input
 {
     using System;
     using System.Collections.Generic;
@@ -76,8 +76,8 @@
         {
             if (ResetMouseAfterUpdate)
                 Position = new Vector2(
-                    Framework.Instance.GetGraphics().Viewport.Width / 2,
-                    Framework.Instance.GetGraphics().Viewport.Height / 2);
+                    GameApplication.Instance.GetGraphics().Viewport.Width / 2,
+                    GameApplication.Instance.GetGraphics().Viewport.Height / 2);
 
             current = Mouse.GetState();
             Update();
@@ -108,8 +108,8 @@
             {
                 // Find the center of the screen
                 Vector2 center = new Vector2(
-                    Framework.Instance.GetGraphics().Viewport.Width / 2,
-                    Framework.Instance.GetGraphics().Viewport.Height / 2);
+                    GameApplication.Instance.GetGraphics().Viewport.Width / 2,
+                    GameApplication.Instance.GetGraphics().Viewport.Height / 2);
 
                 // Find the mouse's distance from the center of the screen to
                 // find the change in position

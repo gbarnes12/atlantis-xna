@@ -1,4 +1,4 @@
-﻿namespace Framework.Events
+﻿namespace GameApplication.Events
 {
     using System;
     using System.Collections.Generic;

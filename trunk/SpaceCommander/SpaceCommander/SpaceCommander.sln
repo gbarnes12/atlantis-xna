@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceCommander", "SpaceCommander\SpaceCommander\SpaceCommander.csproj", "{505CC32E-9E2D-44C7-99CB-1436982C581C}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "SpaceCommanderContent", "SpaceCommander\SpaceCommanderContent\SpaceCommanderContent.contentproj", "{AEFAD7A4-8212-441F-A5C6-4DD20023A90A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceCommanderContent", "SpaceCommander\SpaceCommanderContent\SpaceCommanderContent.contentproj", "{AEFAD7A4-8212-441F-A5C6-4DD20023A90A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox 360 Copy of SpaceCommander", "SpaceCommander\SpaceCommander\Xbox 360 Copy of SpaceCommander.csproj", "{374B8242-EE97-488C-ACF1-CC4A94F2BC82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework", "Framework\Framework.csproj", "{1B7A24EC-1D63-46AA-B658-9B859839FF21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameApplication", "Framework\GameApplication.csproj", "{1B7A24EC-1D63-46AA-B658-9B859839FF21}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox 360 Copy of Framework", "Framework\Xbox 360 Copy of Framework.csproj", "{2C41CCE0-2BDF-4B9C-98B9-7BB82FBEF9E7}"
 EndProject

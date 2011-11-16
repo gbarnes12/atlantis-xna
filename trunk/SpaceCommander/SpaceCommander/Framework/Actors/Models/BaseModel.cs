@@ -1,4 +1,4 @@
-﻿namespace Framework.Actors.Models
+﻿namespace GameApplication.Actors.Models
 {
     using System;
     using System.Collections.Generic;

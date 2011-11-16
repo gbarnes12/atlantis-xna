@@ -1,4 +1,4 @@
-﻿namespace Framework.UI
+﻿namespace GameApplication.UI
 {
     using System;
     using System.Collections.Generic;
@@ -102,8 +102,8 @@
             this.Rectangle = new Rectangle((int)position.X, (int)position.Y, width, height);
 
             // initialize our sprite batch
-            if (Framework.Instance.GetGraphics() != null)
-                spriteBatch = new SpriteBatch(Framework.Instance.GetGraphics());
+            if (GameApplication.Instance.GetGraphics() != null)
+                spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
         }
 
         public void LoadContent(ContentManager content)

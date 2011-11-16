@@ -1,4 +1,4 @@
-﻿namespace Framework.Actors.Primitives
+﻿namespace GameApplication.Actors.Primitives
 {
     using System;
     using System.Collections.Generic;
@@ -94,8 +94,8 @@
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            if (Framework.Instance.GetGraphics() != null)
-                spriteBatch = new SpriteBatch(Framework.Instance.GetGraphics());
+            if (GameApplication.Instance.GetGraphics() != null)
+                spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
 
             // load some basiseffect
             effect = new DefaultEffect(content.Load<Effect>("Effects\\DefaultEffect"));
@@ -114,12 +114,12 @@
             };
 
             //create vertexbuffer
-            vertexBuffer = new VertexBuffer(Framework.Instance.GetGraphics(), typeof(VertexPositionColor), 6, BufferUsage.WriteOnly);
+            vertexBuffer = new VertexBuffer(GameApplication.Instance.GetGraphics(), typeof(VertexPositionColor), 6, BufferUsage.WriteOnly);
             vertexBuffer.SetData<VertexPositionColor>(vertices);
 
             //create indexbuffer
             uint[] indices = new uint[] { 0, 1, 2, 3, 4, 5 };
-            indexBuffer = new IndexBuffer(Framework.Instance.GetGraphics(), IndexElementSize.ThirtyTwoBits, 6, BufferUsage.WriteOnly);
+            indexBuffer = new IndexBuffer(GameApplication.Instance.GetGraphics(), IndexElementSize.ThirtyTwoBits, 6, BufferUsage.WriteOnly);
             indexBuffer.SetData<uint>(indices);
         }
 
@@ -141,7 +141,7 @@
         /// <param name="gameTime"></param>
         public void Render(GameTime gameTime)
         {
-            FPSCamera cam = WorldManager.Instance.GetActor<FPSCamera>("camera");
+            Camera cam = WorldManager.Instance.GetActor<Camera>("camera");
 
             effect.World = WorldMatrix;
             effect.View = cam.View;
@@ -149,9 +149,9 @@
             effect.CurrentTechnique.Passes[0].Apply();
 
 
-            Framework.Instance.GetGraphics().SetVertexBuffer(vertexBuffer);
-            Framework.Instance.GetGraphics().Indices = indexBuffer;
-            Framework.Instance.GetGraphics().DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, 6, 0, 3);
+            GameApplication.Instance.GetGraphics().SetVertexBuffer(vertexBuffer);
+            GameApplication.Instance.GetGraphics().Indices = indexBuffer;
+            GameApplication.Instance.GetGraphics().DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, 6, 0, 3);
 
         }
     }

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Framework.Cameras;
-using Microsoft.Xna.Framework;
-using Framework.Resources;
-using Microsoft.Xna.Framework.Graphics;
-using Framework.Interfaces;
-
-namespace Framework.Actors.Models
+﻿namespace GameApplication.Actors.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Interfaces;
+    using Cameras;
+    using Resources;
+
     public class SkySphere : Actor, IDrawableActor
     {
         #region Public 

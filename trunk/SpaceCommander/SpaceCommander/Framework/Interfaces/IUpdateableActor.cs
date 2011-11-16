@@ -1,4 +1,4 @@
-﻿namespace Framework.Interfaces
+﻿namespace GameApplication.Interfaces
 {
     using System;
     using System.Collections.Generic;

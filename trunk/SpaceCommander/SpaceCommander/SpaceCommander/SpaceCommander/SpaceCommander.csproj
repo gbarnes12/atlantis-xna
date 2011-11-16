@@ -110,20 +110,21 @@
     <Compile Include="Resources\Shader\PlanetEffect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="SpaceCommander.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.csproj">
+    <ProjectReference Include="..\..\Framework\GameApplication.csproj">
       <Project>{1B7A24EC-1D63-46AA-B658-9B859839FF21}</Project>
-      <Name>Framework</Name>
+      <Name>GameApplication</Name>
     </ProjectReference>
     <ProjectReference Include="..\SpaceCommanderContent\SpaceCommanderContent.contentproj">
-      <Name>SpaceCommanderContent</Name>
+      <Name>SpaceCommanderContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{AEFAD7A4-8212-441F-A5C6-4DD20023A90A}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

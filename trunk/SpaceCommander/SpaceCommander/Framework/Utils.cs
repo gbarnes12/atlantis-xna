@@ -1,4 +1,4 @@
-﻿namespace Framework
+﻿namespace GameApplication
 {
     using System;
     using System.Collections.Generic;
@@ -62,8 +62,8 @@
         public static Matrix CreateProjectionMatrix()
         {
             return Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
-                            (float)Framework.Instance.GetGraphics().Viewport.Width /
-                            (float)Framework.Instance.GetGraphics().Viewport.Height,
+                            (float)GameApplication.Instance.GetGraphics().Viewport.Width /
+                            (float)GameApplication.Instance.GetGraphics().Viewport.Height,
                             .01f, 5000
                         );
         }
