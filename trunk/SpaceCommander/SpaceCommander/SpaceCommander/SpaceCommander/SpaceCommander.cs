@@ -10,9 +10,15 @@ namespace SpaceCommander
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
     using Microsoft.Xna.Framework.Media;
-    using GameApplication;
-    using GameApplication.Actors.Primitives;
-    using GameApplication.Actors.Cameras;
+
+    using GameApplicationTools;
+    using GameApplicationTools.Actors.Primitives;
+    using GameApplicationTools.Actors.Cameras;
+    using GameApplicationTools.Events;
+
+    using Events;
+    using GameViews.MainMenu;
+    using GameApplicationTools.Input;
 
 
     /// <summary>
@@ -36,9 +42,18 @@ namespace SpaceCommander
         /// </summary>
         protected override void Initialize()
         {
-            // set our necessary files for the game
+            
+
+            // set our necessary classes for the game
             GameApplication.Instance.SetGame(this);
             GameApplication.Instance.SetGraphicsDevice(GraphicsDevice);
+
+            // set up our game views
+            MainMenuGameView mainMenu = new MainMenuGameView();
+            GameViewManager.Instance.AddGameView(mainMenu);
+
+            // is used to reset the mouse after every update!
+            MouseDevice.Instance.ResetMouseAfterUpdate = true;
 
             base.Initialize();
         }
@@ -49,13 +64,7 @@ namespace SpaceCommander
         /// </summary>
         protected override void LoadContent()
         {
-            Camera camera = new Camera("camera", new Vector3(0, 3, 3), Vector3.Zero);
-            camera.LoadContent(Content);
-            WorldManager.Instance.AddActor(camera);
-
-            Axis axis = new Axis("axis", Vector3.Zero, 1f);
-            axis.LoadContent(Content);
-            WorldManager.Instance.AddActor(axis);
+            GameViewManager.Instance.LoadContent(Content);
         }
 
         /// <summary>
@@ -76,8 +85,14 @@ namespace SpaceCommander
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+            else if (KeyboardDevice.Instance.WasKeyPressed(Keys.Escape))
+                this.Exit();
 
-            WorldManager.Instance.Update(gameTime);
+            GameViewManager.Instance.Update(gameTime);
+            GameApplication.Instance.Update(gameTime);
+
+            KeyboardDevice.Instance.Update();
+            MouseDevice.Instance.Update();
 
             base.Update(gameTime);
         }
@@ -88,9 +103,9 @@ namespace SpaceCommander
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            WorldManager.Instance.Render(gameTime);
+            GameApplication.Instance.Render(gameTime);
 
             base.Draw(gameTime);
         }

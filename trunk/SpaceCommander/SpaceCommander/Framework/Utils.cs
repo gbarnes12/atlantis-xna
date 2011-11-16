@@ -1,4 +1,4 @@
-﻿namespace GameApplication
+﻿namespace GameApplicationTools
 {
     using System;
     using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿namespace GameApplication.UI
+﻿namespace GameApplicationTools.UI
 {
     using System;
     using System.Collections.Generic;
@@ -68,6 +68,12 @@
         /// should get drawn or not!
         /// </summary>
         public bool IsVisible { get; set; }
+
+        /// <summary>
+        /// Determines whether the 
+        /// actor gets updated or not
+        /// </summary>
+        public bool IsUpdateable { get; set; }
         #endregion
 
         /// <summary>
@@ -81,7 +87,36 @@
         /// <param name="Font">And finally the type of font you want to use</param>
         public TextElement(String ID, Vector2 Position, 
             Color Color, String Text, SpriteFont Font) 
-            : base(ID)
+            : base(ID, null)
+        {
+            this.IsVisible = true;
+            this.IsUpdateable = true;
+            this.Position = Position;
+            this.Color = Color;
+            this.Text = Text;
+
+            this.Angle = 0f;
+            this.Scale = 1f;
+
+            // initialize our sprite batch
+            if (GameApplication.Instance.GetGraphics() != null)
+                spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
+
+            spriteFont = Font;
+        }
+
+        /// <summary>
+        /// Creates a new TextElement but make sure to not 
+        /// forget to assign it to our world manager. 
+        /// </summary>
+        /// <param name="ID">The ID of this TextElement</param>
+        /// <param name="Position">The position on the screen.</param>
+        /// <param name="Color">Some sort of color.</param>
+        /// <param name="Text">The message you want to present</param>
+        /// <param name="Font">And finally the type of font you want to use</param>
+        public TextElement(String ID, String GameViewID ,Vector2 Position,
+            Color Color, String Text, SpriteFont Font)
+            : base(ID, GameViewID)
         {
             this.IsVisible = true;
             this.Position = Position;

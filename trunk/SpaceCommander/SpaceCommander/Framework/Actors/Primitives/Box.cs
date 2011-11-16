@@ -1,4 +1,4 @@
-﻿namespace GameApplication.Actors.Primitives
+﻿namespace GameApplicationTools.Actors.Primitives
 {
     using System;
     using System.Collections.Generic;
@@ -65,14 +65,30 @@
         /// actor gets drawn or not
         /// </summary>
         public bool IsVisible { get; set; }
+
+        /// <summary>
+        /// Determines whether the 
+        /// actor gets updated or not
+        /// </summary>
+        public bool IsUpdateable { get; set; }
         #endregion
 
         public Box(String ID, Vector3 Position, float Scale) 
-            : base(ID)
+            : base(ID, null)
         {
             this.Position = Position;
             this.IsVisible = true;
             this.Scale = Scale;
+            this.IsUpdateable = true;
+        }
+
+        public Box(String ID, String GameViewID, Vector3 Position, float Scale)
+            : base(ID, GameViewID)
+        {
+            this.Position = Position;
+            this.IsVisible = true;
+            this.Scale = Scale;
+            this.IsUpdateable = true;
         }
 
         /// <summary>
@@ -171,7 +187,7 @@
         /// <param name="gameTime"></param>
         public void Render(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            FPSCamera cam = WorldManager.Instance.GetActor<FPSCamera>("camera");
+            Camera cam = WorldManager.Instance.GetActor("camera") as Camera;
 
             effect.World = WorldMatrix;
             effect.View = cam.View;

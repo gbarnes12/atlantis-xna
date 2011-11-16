@@ -1,4 +1,4 @@
-﻿namespace GameApplication.Actors.Cameras
+﻿namespace GameApplicationTools.Actors.Cameras
 {
     using System;
     using System.Collections.Generic;
@@ -40,8 +40,15 @@
         }
 
 
+
         public FPSCamera(String ID, Vector3 Position, Vector3 Target)
             : base(ID, Position, Target)
+        {
+            View = Matrix.CreateLookAt(Position, Target, Vector3.Up);
+        }
+
+        public FPSCamera(String ID, String GameViewID, Vector3 Position, Vector3 Target)
+            : base(ID, GameViewID, Position, Target)
         {
             View = Matrix.CreateLookAt(Position, Target, Vector3.Up);
         }

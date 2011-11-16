@@ -1,4 +1,4 @@
-﻿namespace GameApplication.Actors
+﻿namespace GameApplicationTools.Actors
 {
     using System;
     using System.Collections.Generic;
@@ -36,6 +36,14 @@
         /// some error. 
         /// </summary>
         public String ID { get; set; }
+
+        /// <summary>
+        /// Returns or sets the current ID of the GameView
+        /// in which this Actors was created. This will be 
+        /// an unique ID and can be used to retrieve this
+        /// actor by its GV ID.
+        /// </summary>
+        public String GameViewID { get; set; }
         #endregion
 
         /// <summary>
@@ -44,10 +52,11 @@
         /// inherits from this.
         /// </summary>
         /// <param name="ID">The Actor-ID this needs to be unique.</param>
-        public Actor(String ID)
+        public Actor(String ID, String GameViewID)
         {
             // generate the ID
             this.ID = ID;
+            this.GameViewID = GameViewID;
         }
 
     }
