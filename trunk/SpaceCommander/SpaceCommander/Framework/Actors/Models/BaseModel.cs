@@ -8,6 +8,7 @@
     using Microsoft.Xna.Framework;
     using Interfaces;
     using Cameras;
+    using Misc;
 
     public class BaseModel : Actor, IDrawableActor
     {

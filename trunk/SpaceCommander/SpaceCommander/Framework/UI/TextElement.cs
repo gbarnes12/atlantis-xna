@@ -159,6 +159,9 @@
             spriteBatch.Begin();
             spriteBatch.DrawString(spriteFont, Text, Position, Color, Angle, Vector2.Zero, Scale, SpriteEffects.None, 1f);
             spriteBatch.End();
+
+            GameApplication.Instance.GetGraphics().BlendState = BlendState.Opaque;
+            GameApplication.Instance.GetGraphics().DepthStencilState = DepthStencilState.Default;
         }
 
        

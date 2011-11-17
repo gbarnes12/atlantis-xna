@@ -52,7 +52,7 @@ namespace SpaceCommander
             GameViewManager.Instance.AddGameView(mainMenu);
 
             // is used to reset the mouse after every update!
-            MouseDevice.Instance.ResetMouseAfterUpdate = true;
+            //MouseDevice.Instance.ResetMouseAfterUpdate = true;
 
             base.Initialize();
         }

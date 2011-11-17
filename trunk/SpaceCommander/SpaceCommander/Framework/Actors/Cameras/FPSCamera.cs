@@ -9,6 +9,7 @@
     using Events;
     using UI;
     using Input;
+    using Misc;
 
     public class FPSCamera : Camera
     {

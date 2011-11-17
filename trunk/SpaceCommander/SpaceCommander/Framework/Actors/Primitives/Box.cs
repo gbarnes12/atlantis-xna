@@ -10,6 +10,7 @@
     using Interfaces;
     using Resources;
     using Cameras;
+    using Misc;
 
     /// <summary>
     /// Some basic box which loads a crate texture

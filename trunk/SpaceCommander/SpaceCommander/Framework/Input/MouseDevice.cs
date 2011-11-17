@@ -6,6 +6,7 @@
     using System.Text;
     using Microsoft.Xna.Framework.Input;
     using Microsoft.Xna.Framework;
+    using Misc;
 
     // An enum of buttons on the mouse, since XNA doesn't provide one
     public enum MouseButtons { Left, Right, Middle, X1, X2 };

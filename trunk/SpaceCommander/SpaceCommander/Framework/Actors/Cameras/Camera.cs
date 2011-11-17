@@ -7,6 +7,7 @@
     using Microsoft.Xna.Framework;
     using Actors;
     using Interfaces;
+    using Misc;
 
     public class Camera : Actor, IUpdateableActor
     {

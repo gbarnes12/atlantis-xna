@@ -115,7 +115,8 @@
     <Compile Include="Interfaces\IScript.cs" />
     <Compile Include="Interfaces\IUIActor.cs" />
     <Compile Include="Interfaces\IUpdateableActor.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Misc\Logger.cs" />
+    <Compile Include="MediaManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Shader\DefaultEffect.cs" />
     <Compile Include="Resources\Shader\TextureMappingEffect.cs" />
@@ -123,7 +124,7 @@
     <Compile Include="Structures\GameView.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\TextElement.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Misc\Utils.cs" />
     <Compile Include="WorldManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

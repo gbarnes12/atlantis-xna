@@ -158,6 +158,9 @@
             spriteBatch.Begin();
             spriteBatch.Draw(Texture, Rectangle, Color.White);
             spriteBatch.End();
+
+            GameApplication.Instance.GetGraphics().BlendState = BlendState.Opaque;
+            GameApplication.Instance.GetGraphics().DepthStencilState = DepthStencilState.Default;
         }
     }
 }

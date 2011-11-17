@@ -14,6 +14,7 @@
     using Cameras;
     using Events;
     using Resources;
+    using Misc;
 
     /// <summary>
     /// This will create a normal triangle with the length of 1 which

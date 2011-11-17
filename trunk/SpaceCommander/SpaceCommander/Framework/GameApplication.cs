@@ -13,6 +13,7 @@ namespace GameApplicationTools
     using Actors;
     using Interfaces;
     using Events;
+    using Misc;
 
     public class GameApplication
     {
