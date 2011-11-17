@@ -7,12 +7,15 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
+
     using GameApplicationTools.Resources;
     using GameApplicationTools.Actors.Cameras;
     using GameApplicationTools.Actors;
     using GameApplicationTools.Interfaces;
-    using Resources.Shader;
     using GameApplicationTools;
+    using GameApplicationTools.Misc;
+
+    using Resources.Shader;
 
     /// <summary>
     /// 
@@ -217,6 +220,15 @@
             WorldMatrix = Utils.CreateWorldMatrix(Position, Matrix.CreateFromQuaternion(Rotation), new Vector3(Scale));
             Matrix wvp = WorldMatrix * camera.View * camera.Projection;
 
+            GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
+            {
+                Filter = TextureFilter.Linear,
+
+                AddressU = TextureAddressMode.Wrap,
+                AddressV = TextureAddressMode.Wrap,
+                AddressW = TextureAddressMode.Wrap
+            };
+
             Effect.World= WorldMatrix;
             Effect.WVP = wvp;
 
@@ -250,10 +262,10 @@
                 }
             }
 
-            GameApplication.Instance.GetGraphics().BlendState = new Microsoft.Xna.Framework.Graphics.BlendState()
+           /* GameApplication.Instance.GetGraphics().BlendState = new Microsoft.Xna.Framework.Graphics.BlendState()
             {
                 AlphaSourceBlend = Blend.SourceAlpha
-            };
+            };*/
 
             RasterizerState rs = new RasterizerState();
             rs.CullMode = CullMode.CullCounterClockwiseFace;

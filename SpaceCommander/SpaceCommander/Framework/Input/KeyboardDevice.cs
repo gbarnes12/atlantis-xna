@@ -6,6 +6,7 @@
     using System.Text;
     using Microsoft.Xna.Framework.Input;
     using Events;
+    using Misc;
 
     // An input device that manages the Keyboard and KeyboardState
     public class KeyboardDevice : InputDevice<KeyboardState>

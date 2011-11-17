@@ -11,6 +11,7 @@
     using Cameras;
     using Interfaces;
     using Resources;
+    using Misc;
 
     /// <summary>
     /// This will create a plane in the size of 

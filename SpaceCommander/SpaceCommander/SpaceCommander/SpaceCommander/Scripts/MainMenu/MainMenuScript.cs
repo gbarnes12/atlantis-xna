@@ -4,8 +4,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+
     using GameApplicationTools;
     using GameApplicationTools.Interfaces;
+    using GameApplicationTools.Misc;
+    using Microsoft.Xna.Framework.Media;
+    using GameApplicationTools.Input;
 
     /// <summary>
     /// This is just an example of a Script file 
@@ -25,7 +29,11 @@
         public static IEnumerator<float> OnCreateEvent()
         {
             Console.WriteLine("Created MainMenuGameView");
+
+
             #if !XBOX360
+            MouseDevice.Instance.ResetMouseAfterUpdate = false;
+            GameApplication.Instance.GetGame().IsMouseVisible = true;
             Logger.Instance.Write("Created MainMenuGameView", LogType.Info);
             #endif
             yield return 0.0f;
@@ -39,6 +47,12 @@
         public static IEnumerator<float> OnLoadEvent()
         {
             Console.WriteLine("Loaded Content MainMenuGameView");
+
+            MediaManager.Instance.AddMusic("MainMenu", GameApplication.Instance.GetGame().Content.Load<Song>("Audio\\Sleep Away"));
+            yield return 2.0f;
+
+            MediaManager.Instance.PlayMusic("MainMenu");
+
             #if !XBOX360
             Logger.Instance.Write("Loaded Content MainMenuGameView", LogType.Info);
             #endif
