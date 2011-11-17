@@ -43,8 +43,6 @@ namespace SpaceCommander
         /// </summary>
         protected override void Initialize()
         {
-            
-
             // set our necessary classes for the game
             GameApplication.Instance.SetGame(this);
             GameApplication.Instance.SetGraphicsDevice(GraphicsDevice);
@@ -85,10 +83,11 @@ namespace SpaceCommander
         {
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+                GameApplication.Instance.ExitGame();
             else if (KeyboardDevice.Instance.WasKeyPressed(Keys.Escape))
-                this.Exit();
+                GameApplication.Instance.ExitGame();
 
+            ScriptManager.Instance.Update(gameTime);
             GameViewManager.Instance.Update(gameTime);
             GameApplication.Instance.Update(gameTime);
 

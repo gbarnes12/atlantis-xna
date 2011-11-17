@@ -144,7 +144,7 @@
         {
             AmbientColor = Color.Black;
             AmbientIntensity = .02f;
-            CloudSpeed = .0025f;
+            CloudSpeed = .0000025f;
             CloudHeight = .0001f;
             CloudShadowIntensity = .2f;
 
