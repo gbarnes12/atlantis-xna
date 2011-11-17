@@ -50,6 +50,12 @@ namespace GameApplicationTools
             drawQueue = new List<Actor>();
             updateUIQueue = new List<Actor>();
             drawUIQueue = new List<Actor>();
+
+            Logger.Instance.LogPath = "Log.txt";
+
+            #if DEBUG
+            Logger.Instance.LogType = LogType.Debug;
+            #endif
         }
 
         public GraphicsDevice GetGraphics()
@@ -76,6 +82,12 @@ namespace GameApplicationTools
         public void SetGame(Game game)
         {
             this.Game = game;
+        }
+
+        public void ExitGame()
+        {
+            if (Game != null)
+                Game.Exit();
         }
 
         /// <summary>

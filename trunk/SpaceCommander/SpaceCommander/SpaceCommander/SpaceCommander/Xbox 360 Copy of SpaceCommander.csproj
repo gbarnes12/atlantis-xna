@@ -72,9 +72,13 @@
     <Compile Include="Actors\Planet.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="GameViews\MainMenu\MainMenuGameView.cs" />
+    <Compile Include="GameViews\MainMenu\MainMenuGameView.Designer.cs">
+      <DependentUpon>MainMenuGameView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Resources\Shader\PlanetEffect.cs" />
+    <Compile Include="Scripts\MainMenu\MainMenuScript.cs" />
     <Compile Include="SpaceCommander.cs" />
   </ItemGroup>
   <ItemGroup>

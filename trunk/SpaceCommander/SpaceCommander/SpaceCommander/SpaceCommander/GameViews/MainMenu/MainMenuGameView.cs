@@ -16,8 +16,10 @@
     using GameApplicationTools.Actors.Models;
 
     using Actors;
+    using GameApplicationTools.UI;
+    using Scripts.MainMenu;
 
-    public class MainMenuGameView : GameView, IGameView
+    public partial class MainMenuGameView : GameView, IGameView
     {
         #region Private
         bool _blocksRendering;
@@ -63,28 +65,14 @@
             BlocksLoading = false;
             BlocksUpdating = false;
             BlocksRendering = false;
+
+            ScriptManager.Instance.ExecuteScript(MainMenuScript.OnCreateEvent);
         }
 
         public void LoadContent(ContentManager content)
         {
-            FPSCamera camera = new FPSCamera("camera", ID, new Vector3(0, 0, 1000), Vector3.Zero);
-            camera.LoadContent(content);
-            WorldManager.Instance.AddActor(camera);
-
-            Axis axis = new Axis("axis", ID, Vector3.Zero, 1f);
-            axis.LoadContent(content);
-            WorldManager.Instance.AddActor(axis);
-
-            Planet planet = new Planet("earth", ID, Vector3.Zero, 400f);
-            planet.LoadContent(content);
-            WorldManager.Instance.AddActor(planet);
-
-            SkySphere sky = new SkySphere("skysphere", ID, Vector3.Zero, "Textures\\space", 10000f);
-            sky.LoadContent(content);
-            WorldManager.Instance.AddActor(sky);
-
-           
-
+            LoadActors();
+            ScriptManager.Instance.ExecuteScript(MainMenuScript.OnLoadEvent);
         }
 
         public void Update(GameTime gameTime)

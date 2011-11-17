@@ -175,7 +175,7 @@
 
             GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
             {
-                Filter = TextureFilter.Linear,
+                Filter = textureFilter,
                 AddressU = TextureAddressMode.Wrap,
                 AddressV = TextureAddressMode.Wrap,
                 AddressW = TextureAddressMode.Wrap
