@@ -79,6 +79,7 @@ struct VS_IN
 	float3 Normal : NORMAL;
 	float3 Tangent : TANGENT;
 };
+
 struct VS_OUT
 {
 	float4 Position : POSITION;
@@ -88,6 +89,7 @@ struct VS_OUT
 	float4 posS : TEXCOORD3;
 	float3 Normal : TEXCOORD4;	
 };
+
 struct VS_OUT2
 {
 	float4 Position : POSITION;
@@ -95,6 +97,7 @@ struct VS_OUT2
 	float3 Normal : TEXCOORD1;
 	float4 pos : TEXCOORD2;
 };
+
 struct PS_OUT
 {
 	float4 Color : COLOR;
@@ -159,6 +162,7 @@ PS_OUT PS_Color(VS_OUT input)
 	
 	return output;
 }
+
 PS_OUT PS_Cloud(VS_OUT2 input)
 {
 	PS_OUT output = (PS_OUT)0;
@@ -195,7 +199,8 @@ PS_OUT PS_Water(VS_OUT input)
 	
 	return output;
 }
-PS_OUT PS_OuterAtmoshpere(VS_OUT2 input,uniform bool flip)
+
+PS_OUT PS_OuterAtmoshpere(VS_OUT2 input, uniform bool flip)
 {
 	PS_OUT output = (PS_OUT)0;
 	
@@ -208,7 +213,7 @@ PS_OUT PS_OuterAtmoshpere(VS_OUT2 input,uniform bool flip)
 	
 	// Was playing about to see if I could get a better scatter, worked a bit, but not 100%
 	// Guess I will need to read up on how to do it properly :P
-	float Diffuse = 1-saturate(dot(normalize(LightDirection),-regN))*4;
+	float Diffuse = 2-saturate(dot(normalize(LightDirection),-regN))*4;
 		
 	if(flip)
 	{		
@@ -217,26 +222,28 @@ PS_OUT PS_OuterAtmoshpere(VS_OUT2 input,uniform bool flip)
 	}
 	else
 	{
-		//specular = 1-saturate(1.125 + dot(regN,Half));
+		specular = 1-saturate(4.0 + dot(regN,Half));
 		specular = 1-saturate(1.1 + dot(regN,Half));
 		atmos *= specular;
 	}
 	
-	output.Color = atmos;// * Diffuse;
+	output.Color = (atmos * Diffuse) / 0.7;
 	
 	return output;
 }
 
-VS_OUT2 VS_OuterAtmoshpere(VS_IN input,uniform float size)
+VS_OUT2 VS_OuterAtmoshpere(VS_IN input, uniform float size)
 {
 	VS_OUT2 output = (VS_OUT2)0;
 	output.Normal = mul(input.Normal, world);
-	output.Position = mul(input.Position, wvp) + (mul(size, mul(input.Normal, wvp)));
+	output.Position = mul(input.Position, wvp) + (mul(size, mul(input.Normal, wvp))-1);
 	output.TexCoord = input.TexCoord;
 	output.pos = mul(input.Position,world);
 	
 	return output;
 }
+
+
 technique PlanetShader
 {
 	pass Colors
@@ -254,8 +261,8 @@ technique PlanetShader
         DestBlend = One;
         
 		PixelShader = compile ps_2_0 PS_Water();
-	}
-
+	}	
+	
 	pass Clouds
 	{
 		// Already set, no need to set again, keep them incase I move the passes about though.
@@ -263,30 +270,30 @@ technique PlanetShader
         //SrcBlend = SrcAlpha;
         //DestBlend = One;
         
-        VertexShader = compile vs_2_0 VS_OuterAtmoshpere(.02);
+        VertexShader = compile vs_2_0 VS_OuterAtmoshpere(.04);
 		PixelShader = compile ps_2_0 PS_Cloud();
-	}		
-	
+	}	
+
 	pass OuterAtmoshpere
 	{
-		//AlphaBlendEnable = True;
-        //SrcBlend = SrcAlpha;
+		AlphaBlendEnable = True;
+        SrcBlend = SrcAlpha;
         DestBlend = InvSrcAlpha;
         
         // No need to move it out again, can use the same geom as the clouds.
 		//VertexShader = compile vs_2_0 VS_OuterAtmoshpere(.02);
 		PixelShader = compile ps_2_0 PS_OuterAtmoshpere(true);
-	}
-	
-	/*pass UpperOuterAtmoshpere
+	}	
+
+	pass UpperOuterAtmoshpere
 	{
 		//AlphaBlendEnable = True;
         //SrcBlend = SrcAlpha;
         //DestBlend = InvSrcAlpha;
         
-		VertexShader = compile vs_2_0 VS_OuterAtmoshpere(.2);
+		VertexShader = compile vs_2_0 VS_OuterAtmoshpere(.08);
 		PixelShader = compile ps_2_0 PS_OuterAtmoshpere(false);
 		CullMode = CW;
-	}*/	
+	}
 	
 }

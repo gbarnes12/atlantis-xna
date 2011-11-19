@@ -164,7 +164,7 @@
         {
             AmbientColor = Color.Black;
             AmbientIntensity = .02f;
-            CloudSpeed = .0025f;
+            CloudSpeed = .00025f;
             CloudHeight = .0001f;
             CloudShadowIntensity = .2f;
 
@@ -195,6 +195,7 @@
             ReflectionMap = content.Load<Texture2D>("Textures\\PlanetEarth\\Earth_ReflectionMask");
             CloudMap = content.Load<Texture2D>("Textures\\PlanetEarth\\Earth_Cloud");
             WaterMap = content.Load<Texture2D>("Textures\\PlanetEarth\\WaterRipples");
+            AtmosphereMap = content.Load<Texture2D>("Textures\\PlanetEarth\\Earth_Atmosx");
         }
 
         /// <summary>
@@ -251,6 +252,8 @@
 
             Effect.CameraPosition = camera.Position;
 
+       
+
             for (int pass = 0; pass < Effect.CurrentTechnique.Passes.Count; pass++)
             {
                 for (int msh = 0; msh < Model.Meshes.Count; msh++)
@@ -262,10 +265,10 @@
                 }
             }
 
-           /* GameApplication.Instance.GetGraphics().BlendState = new Microsoft.Xna.Framework.Graphics.BlendState()
+            GameApplication.Instance.GetGraphics().BlendState = new Microsoft.Xna.Framework.Graphics.BlendState()
             {
                 AlphaSourceBlend = Blend.SourceAlpha
-            };*/
+            };
 
             RasterizerState rs = new RasterizerState();
             rs.CullMode = CullMode.CullCounterClockwiseFace;
