@@ -118,7 +118,7 @@
                 spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
 
             // load some basiseffect
-            effect = new DefaultEffect(content.Load<Effect>("Effects\\DefaultEffect"));
+            effect = new DefaultEffect(content.Load<Effect>(GameApplication.Instance.EffectPath + "DefaultEffect"));
  
 
             // set up our vertices

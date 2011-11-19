@@ -42,68 +42,68 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Effects\DefaultEffect.fx">
+    <Compile Include="Assets\Effects\DefaultEffect.fx">
       <Name>DefaultEffect</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>
-    <Compile Include="Effects\PlanetEarthEffect.fx">
+    <Compile Include="Assets\Effects\PlanetEarthEffect.fx">
       <Name>PlanetEarthEffect</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>
-    <Compile Include="Effects\TextureMappingEffect.fx">
+    <Compile Include="Assets\Effects\TextureMappingEffect.fx">
       <Name>TextureMappingEffect</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\space.png">
+    <Compile Include="Assets\Textures\space.png">
       <Name>space</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\PlanetEarth\Earth_Atmos.dds">
+    <Compile Include="Assets\Textures\PlanetEarth\Earth_Atmos.dds">
       <Name>Earth_Atmos</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Textures\PlanetEarth\Earth_Cloud.dds">
+    <Compile Include="Assets\Textures\PlanetEarth\Earth_Cloud.dds">
       <Name>Earth_Cloud</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Textures\PlanetEarth\Earth_Diffuse.dds">
+    <Compile Include="Assets\Textures\PlanetEarth\Earth_Diffuse.dds">
       <Name>Earth_Diffuse</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Textures\PlanetEarth\Earth_Night.dds">
+    <Compile Include="Assets\Textures\PlanetEarth\Earth_Night.dds">
       <Name>Earth_Night</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Textures\PlanetEarth\Earth_NormalMap.dds">
+    <Compile Include="Assets\Textures\PlanetEarth\Earth_NormalMap.dds">
       <Name>Earth_NormalMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Textures\PlanetEarth\Earth_ReflectionMask.dds">
+    <Compile Include="Assets\Textures\PlanetEarth\Earth_ReflectionMask.dds">
       <Name>Earth_ReflectionMask</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Textures\PlanetEarth\WaterRipples.dds">
+    <Compile Include="Assets\Textures\PlanetEarth\WaterRipples.dds">
       <Name>WaterRipples</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\planet.x">
+    <Compile Include="Assets\Models\planet.x">
       <Name>planet</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
@@ -111,39 +111,42 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\sphere.x">
+    <Compile Include="Assets\Models\sphere.x">
       <Name>sphere</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fonts\Arial.spritefont">
+    <Compile Include="Assets\Fonts\Arial.spritefont">
       <Name>Arial</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio\Sleep Away.mp3">
+    <Compile Include="Assets\Audio\Sleep Away.mp3">
       <Name>Sleep Away</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\PlanetEarth\Earth_Atmosx.png">
+    <Compile Include="Assets\Textures\PlanetEarth\Earth_Atmosx.png">
       <Name>Earth_Atmosx</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI\Buttons\startnewgame_button.png">
+    <Compile Include="Assets\UI\Buttons\startnewgame_button.png">
       <Name>startnewgame_button</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GameData\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

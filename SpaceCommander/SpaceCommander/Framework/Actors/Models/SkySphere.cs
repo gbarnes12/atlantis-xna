@@ -107,10 +107,10 @@
         public void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
         {
             //create a new effect
-            effect = new TextureMappingEffect(content.Load<Effect>("Effects\\TextureMappingEffect"));
+            effect = new TextureMappingEffect(content.Load<Effect>(GameApplication.Instance.EffectPath + "TextureMappingEffect"));
 
             //load the sphere; model stays the same for every kind of skysphere
-            model = content.Load<Model>("Models\\sphere");
+            model = content.Load<Model>(GameApplication.Instance.ModelPath + "sphere");
 
             //load the model's texture 
             texture = content.Load<Texture2D>(textureFile);

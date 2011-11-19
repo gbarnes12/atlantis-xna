@@ -33,6 +33,7 @@ namespace GameApplicationTools
         private List<Actor> drawUIQueue;
         #endregion
 
+        #region Public
         public static GameApplication Instance
         {
             get
@@ -45,12 +46,41 @@ namespace GameApplicationTools
             }
         }
 
+        // path variables so we have some better handling
+        public String AssetPath { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public String TexturePath { get; set; }
+
+        public String EffectPath { get; set; }
+
+        public String AudioPath { get; set; }
+
+        public String FontPath { get; set; }
+
+        public String ModelPath { get; set; }
+
+        public String UIPath { get; set; }
+        #endregion
+
         private GameApplication()
         {
             updateQueue = new List<Actor>();
             drawQueue = new List<Actor>();
             updateUIQueue = new List<Actor>();
             drawUIQueue = new List<Actor>();
+
+            // set up all path variables we need thus 
+            // we don't create any errors
+            AssetPath = "Assets\\";
+            TexturePath = AssetPath + "Textures\\";
+            AudioPath = AssetPath + "Audio\\";
+            EffectPath = AssetPath + "Effects\\";
+            FontPath = AssetPath + "Fonts\\";
+            UIPath = AssetPath + "UI\\";
+            ModelPath = AssetPath + "Models\\";
 
             Logger.Instance.LogPath = "Log.txt";
 
