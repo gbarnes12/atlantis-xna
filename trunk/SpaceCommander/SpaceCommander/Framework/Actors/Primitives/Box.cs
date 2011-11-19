@@ -161,8 +161,8 @@
             boxData = null;
             boxIndices = null;
 
-            effect = new TextureMappingEffect(content.Load<Effect>("Effects\\TextureMappingEffect"));
-            effect.Texture = content.Load<Texture2D>("Textures\\crate");
+            effect = new TextureMappingEffect(content.Load<Effect>(GameApplication.Instance.EffectPath + "TextureMappingEffect"));
+            effect.Texture = content.Load<Texture2D>(GameApplication.Instance.TexturePath + "crate");
 
             GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
             {

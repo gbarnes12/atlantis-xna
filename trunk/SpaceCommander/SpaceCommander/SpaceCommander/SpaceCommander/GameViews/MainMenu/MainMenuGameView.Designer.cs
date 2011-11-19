@@ -30,17 +30,17 @@
             planet.LoadContent(GameApplication.Instance.GetGame().Content);
             WorldManager.Instance.AddActor(planet);
 
-            SkySphere sky = new SkySphere("SkySphereSky", ID, Vector3.Zero, "Textures\\space", 10000f);
+            SkySphere sky = new SkySphere("SkySphereSky", ID, Vector3.Zero, GameApplication.Instance.TexturePath + "space", 10000f);
             sky.LoadContent(GameApplication.Instance.GetGame().Content);
             WorldManager.Instance.AddActor(sky);
             #endregion
 
             #region UI Stuff
-            TextElement headline = new TextElement("TextElementHeadline", ID, new Vector2(400, 100), Color.Yellow, "Space Commander", GameApplication.Instance.GetGame().Content.Load<SpriteFont>("Fonts\\Arial"));
+            TextElement headline = new TextElement("TextElementHeadline", ID, new Vector2(400, 100), Color.Yellow, "Space Commander", GameApplication.Instance.GetGame().Content.Load<SpriteFont>(GameApplication.Instance.FontPath + "Arial"));
             headline.Scale = 1f;
             WorldManager.Instance.AddActor(headline);
 
-            Button startNewGameButton = new Button("ButtonStartNewGame", ID, new Vector2(400, 150), GameApplication.Instance.GetGame().Content.Load<Texture2D>("UI\\Buttons\\startnewgame_button"), 312, 83);
+            Button startNewGameButton = new Button("ButtonStartNewGame", ID, new Vector2(400, 150), GameApplication.Instance.GetGame().Content.Load<Texture2D>(GameApplication.Instance.UIPath + "Buttons\\startnewgame_button"), 312, 83);
             startNewGameButton.IsVisible = true;
             startNewGameButton.IsUpdateable = true;
             startNewGameButton.LoadContent(GameApplication.Instance.GetGame().Content);

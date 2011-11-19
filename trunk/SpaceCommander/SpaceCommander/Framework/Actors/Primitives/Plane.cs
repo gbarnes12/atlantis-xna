@@ -148,8 +148,8 @@
 
             // now we need to load our texture mapping effect and of course our texture into cache
             // this may need to be redesigned once we use some sort of resource manager!
-            effect = new TextureMappingEffect(content.Load<Effect>("Effects\\TextureMappingEffect"));
-            effect.Texture = content.Load<Texture2D>("Textures\\Kachel2_bump");
+            effect = new TextureMappingEffect(content.Load<Effect>(GameApplication.Instance.EffectPath + "TextureMappingEffect"));
+            effect.Texture = content.Load<Texture2D>(GameApplication.Instance.TexturePath + "Kachel2_bump");
 
         }
 
