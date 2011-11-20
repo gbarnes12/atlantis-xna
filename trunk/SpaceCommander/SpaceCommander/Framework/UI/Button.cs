@@ -11,6 +11,7 @@
     using Interfaces;
     using Microsoft.Xna.Framework.Input;
     using Events;
+    using GameApplicationTools.Input;
 
 
     public class Button : Actor, IUIActor
@@ -138,16 +139,13 @@
 
         public void Update(GameTime gameTime)
         {
-            MouseState mouseState = Mouse.GetState();
-
-            if (mouseState.LeftButton == ButtonState.Pressed)
+            if (MouseDevice.Instance.WasButtonPressed(MouseButtons.Left))
             {
-                if (new Rectangle(mouseState.X, mouseState.Y, 1, 1).Intersects(Rectangle))
+                if (new Rectangle(MouseDevice.Instance.State.X, MouseDevice.Instance.State.Y, 1, 1).Intersects(Rectangle))
                 {
                     //fire event ! onClickButton
                     ButtonEvent_OnClick Event = new ButtonEvent_OnClick();
                     Event.Sender = this;
-                    Event.button = this;
                     EventManager.Instance.HookEvent(EventType.ButtonEvent_OnClick, Event);
                 }
             }

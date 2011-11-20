@@ -173,11 +173,11 @@
         /// <param name="gameTime"></param>
         public void Render(GameTime gameTime)
         {
-            Camera cam = WorldManager.Instance.GetActor("camera") as Camera;
+            Camera camera = CameraManager.Instance.GetCurrentCamera();
 
             effect.World = WorldMatrix;
-            effect.View = cam.View;
-            effect.Projection = cam.Projection;
+            effect.View = camera.View;
+            effect.Projection = camera.Projection;
 
             effect.CurrentTechnique.Passes[0].Apply();
 

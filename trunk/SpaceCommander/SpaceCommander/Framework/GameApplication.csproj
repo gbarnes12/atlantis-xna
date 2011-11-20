@@ -102,6 +102,7 @@
     <Compile Include="Actors\Primitives\Box.cs" />
     <Compile Include="Actors\Primitives\Plane.cs" />
     <Compile Include="Actors\Primitives\Triangle.cs" />
+    <Compile Include="CameraManager.cs" />
     <Compile Include="EventManager.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="GameApplication.cs" />

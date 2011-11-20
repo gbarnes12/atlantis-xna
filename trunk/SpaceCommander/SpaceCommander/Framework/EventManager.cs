@@ -6,6 +6,7 @@
     using System.Text;
     using Actors;
     using Events;
+    using GameApplicationTools.Structures;
 
     /// <summary>
     /// The EventManager handles all our 
@@ -171,8 +172,16 @@
                                             //set listener id
                                             Event.Listener = ListenerID;
 
-                                            if (!WorldManager.Instance.GetActor(ListenerID).ProcessEvents(EventType, Event) && Event.HookAgain)
-                                                this.HookEvent(EventType, Event); // if we failed for some reason we need to send it back to the queue
+                                            if (WorldManager.Instance.GetActors().ContainsKey(ListenerID))
+                                            {
+                                                if (!WorldManager.Instance.GetActor(ListenerID).ProcessEvents(EventType, Event) && Event.HookAgain)
+                                                    this.HookEvent(EventType, Event); // if we failed for some reason we need to send it back to the queue
+                                            }
+                                            else if (GameViewManager.Instance.GetGameViews().ContainsKey(ListenerID))
+                                            {
+                                                if (!((GameView)GameViewManager.Instance.GetGameView(ListenerID)).ProcessEvents(EventType, Event) && Event.HookAgain)
+                                                    this.HookEvent(EventType, Event); // if we failed for some reason we need to send it back to the queue
+                                            }
                                         }
                                     }
                                 }

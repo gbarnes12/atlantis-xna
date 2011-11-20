@@ -46,6 +46,9 @@
             // create projection matrix
             Projection = Utils.CreateProjectionMatrix();
 
+            // add the camera to the camera manager
+            CameraManager.Instance.AddCamera(this.ID);
+
         }
 
         public Camera(String ID, String GameViewID, Vector3 Position, Vector3 Target)
@@ -62,6 +65,8 @@
             // create projection matrix
             Projection = Utils.CreateProjectionMatrix();
 
+            // add the camera to the camera manager
+            CameraManager.Instance.AddCamera(this.ID);
         }
 
 

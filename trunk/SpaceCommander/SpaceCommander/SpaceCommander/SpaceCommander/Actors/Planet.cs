@@ -218,7 +218,7 @@
         /// <param name="gameTime"></param>
         public virtual void Render(GameTime gameTime)
         {
-            Camera camera = WorldManager.Instance.GetActor("camera") as Camera;
+            Camera camera = CameraManager.Instance.GetCurrentCamera();
 
             WorldMatrix = Utils.CreateWorldMatrix(Position, Matrix.CreateFromQuaternion(Rotation), new Vector3(Scale));
             Matrix wvp = WorldMatrix * camera.View * camera.Projection;

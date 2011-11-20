@@ -20,7 +20,7 @@
     /// Author: Gavin Barnes
     /// Version: 1.0
     /// </summary>
-    public class GameView
+    public class GameView : EventListener
     {
         #region Public
         /// <summary>
