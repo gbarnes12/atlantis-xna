@@ -22,9 +22,12 @@
         public void LoadActors()
         {
             #region 3D Stuff
-            FPSCamera camera = new FPSCamera("camera", ID, new Vector3(0, 0, 1000), Vector3.Zero);
+            /*
+          FPSCamera camera = new FPSCamera("camera", ID, new Vector3(0, 0, 1000), Vector3.Zero);
             camera.LoadContent(GameApplication.Instance.GetGame().Content);
             WorldManager.Instance.AddActor(camera);
+        */
+            
 
             Planet planet = new Planet("PlanetEarth", ID, new Vector3(-700, 0, 0), 400f);
             planet.LoadContent(GameApplication.Instance.GetGame().Content);
@@ -33,6 +36,15 @@
             SkySphere sky = new SkySphere("SkySphereSky", ID, Vector3.Zero, GameApplication.Instance.TexturePath + "space", 10000f);
             sky.LoadContent(GameApplication.Instance.GetGame().Content);
             WorldManager.Instance.AddActor(sky);
+
+            Ship ship = new Ship("SpaceShip", ID, Vector3.Zero);
+            ship.LoadContent(GameApplication.Instance.GetGame().Content);
+            WorldManager.Instance.AddActor(ship);
+
+            ThirdPersonCamera tpcamera = new ThirdPersonCamera("camera",new Vector3(0,100,300),ship);
+            tpcamera.LoadContent(GameApplication.Instance.GetGame().Content);
+            WorldManager.Instance.AddActor(tpcamera);
+ 
             #endregion
 
             #region UI Stuff

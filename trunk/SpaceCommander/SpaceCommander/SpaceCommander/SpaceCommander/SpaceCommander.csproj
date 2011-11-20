@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\Planet.cs" />
+    <Compile Include="Actors\Ship.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="GameViews\MainMenu\MainMenuGameView.cs" />
     <Compile Include="Resources\Shader\PlanetEffect.cs" />

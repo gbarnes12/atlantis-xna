@@ -41,6 +41,8 @@
             set;
         }
 
+        public Microsoft.Xna.Framework.Matrix RotationMatrix { get; set; }
+
         public bool IsVisible
         {
             get;
