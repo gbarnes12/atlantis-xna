@@ -22,7 +22,7 @@
         public void LoadActors()
         {
             #region 3D Stuff
-            Camera camera = new Camera("camera", ID, new Vector3(0, 0, 1000), Vector3.Zero);
+            FPSCamera camera = new FPSCamera("camera", ID, new Vector3(0, 0, 1000), Vector3.Zero);
             camera.LoadContent(GameApplication.Instance.GetGame().Content);
             WorldManager.Instance.AddActor(camera);
 

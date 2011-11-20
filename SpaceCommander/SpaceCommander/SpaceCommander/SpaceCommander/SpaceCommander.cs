@@ -19,6 +19,7 @@ namespace SpaceCommander
     using Events;
     using GameViews.MainMenu;
     using GameApplicationTools.Input;
+    using GameApplicationTools.UI;
 
 
     /// <summary>
@@ -27,12 +28,14 @@ namespace SpaceCommander
     public class SpaceCommander : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
+        KeyboardInputService keyboardInputService;
+        Color BackgroundColor = Color.Black;
 
         public SpaceCommander()
         {
             graphics = new GraphicsDeviceManager(this);
-            //graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
+
         }
 
         /// <summary>
@@ -47,12 +50,21 @@ namespace SpaceCommander
             GameApplication.Instance.SetGame(this);
             GameApplication.Instance.SetGraphicsDevice(GraphicsDevice);
 
+            // the console breaks with our current structure but its still a Singleton
+            // thus its not that bad. This needs to have some more workarounds but 
+            // currently its ok the way it is!
+            keyboardInputService = new KeyboardInputService();
+            Services.AddService(typeof(GameConsole.IKeyboardInputService), keyboardInputService);
+            Components.Add(new GameConsole(Services, "Content\\" + GameApplication.Instance.FontPath + "ConsoleFont"));
+            GameConsole.Instance.StringParser = new StringParser();
+            GameConsole.Instance.ToggleKey = Keys.F11;
+
+            //GameConsole.Instance.SelectedObjects.Add(WorldManager.Instance);
+            GameConsole.Instance.SelectedObjects.Add(this);
+
             // set up our game views
             MainMenuGameView mainMenu = new MainMenuGameView();
             GameViewManager.Instance.AddGameView(mainMenu);
-
-            // is used to reset the mouse after every update!
-            //MouseDevice.Instance.ResetMouseAfterUpdate = true;
 
             base.Initialize();
         }
@@ -64,6 +76,11 @@ namespace SpaceCommander
         protected override void LoadContent()
         {
             GameViewManager.Instance.LoadContent(Content);
+        }
+
+        public void ChangeColor(Color color)
+        {
+            BackgroundColor = color;
         }
 
         /// <summary>
@@ -81,6 +98,10 @@ namespace SpaceCommander
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            // this is necessary for our console settings!
+            keyboardInputService.previousKeyboard = keyboardInputService.currentKeyboard;
+            keyboardInputService.currentKeyboard = Keyboard.GetState();
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 GameApplication.Instance.ExitGame();
@@ -103,7 +124,7 @@ namespace SpaceCommander
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(BackgroundColor);
 
             GameApplication.Instance.Render(gameTime);
 

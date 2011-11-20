@@ -10,6 +10,8 @@
     using GameApplicationTools.Misc;
     using Microsoft.Xna.Framework.Media;
     using GameApplicationTools.Input;
+    using GameApplicationTools.UI;
+    using Microsoft.Xna.Framework;
 
     /// <summary>
     /// This is just an example of a Script file 
@@ -28,9 +30,6 @@
         /// <returns>float</returns>
         public static IEnumerator<float> OnCreateEvent()
         {
-            Console.WriteLine("Created MainMenuGameView");
-
-
             #if !XBOX360
             MouseDevice.Instance.ResetMouseAfterUpdate = false;
             GameApplication.Instance.GetGame().IsMouseVisible = true;
@@ -46,7 +45,7 @@
         /// <returns></returns>
         public static IEnumerator<float> OnLoadEvent()
         {
-            Console.WriteLine("Loaded Content MainMenuGameView");
+            GameConsole.Instance.WriteLine("Loaded Content MainMenuGameView", Color.White);
 
             MediaManager.Instance.AddMusic("MainMenu", GameApplication.Instance.GetGame().Content.Load<Song>(GameApplication.Instance.AudioPath + "Sleep Away"));
             yield return 2.0f;
