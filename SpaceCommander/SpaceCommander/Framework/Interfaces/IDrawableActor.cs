@@ -44,6 +44,12 @@
         Matrix WorldMatrix { get; set; }
 
         /// <summary>
+        /// The rotation matrix of the inheriting actor
+        /// that we need to set the current rotation.
+        /// </summary>
+        Matrix RotationMatrix { get; set; }
+
+        /// <summary>
         /// Determines whether the 
         /// actor gets drawn or not
         /// </summary>

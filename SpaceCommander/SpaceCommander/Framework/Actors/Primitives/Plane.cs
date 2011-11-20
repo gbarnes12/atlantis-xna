@@ -68,6 +68,8 @@
         /// </summary>
         public Matrix WorldMatrix { get; set; }
 
+        public Matrix RotationMatrix { get; set; }
+
         /// <summary>
         /// Determines whether the 
         /// actor gets drawn or not

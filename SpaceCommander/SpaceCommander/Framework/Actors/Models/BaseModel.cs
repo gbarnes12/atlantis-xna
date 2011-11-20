@@ -21,6 +21,8 @@
 
         public Microsoft.Xna.Framework.Matrix WorldMatrix { get; set; }
 
+        public Microsoft.Xna.Framework.Matrix RotationMatrix { get; set; }
+
         public bool IsVisible { get; set; }
 
         public float Scale { get; set; }

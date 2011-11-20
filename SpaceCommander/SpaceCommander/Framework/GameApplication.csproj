@@ -95,6 +95,7 @@
     <Compile Include="Actors\Actor.cs" />
     <Compile Include="Actors\Cameras\Camera.cs" />
     <Compile Include="Actors\Cameras\FPSCamera.cs" />
+    <Compile Include="Actors\Cameras\ThirdPersonCamera.cs" />
     <Compile Include="Actors\Models\BaseModel.cs" />
     <Compile Include="Actors\Models\SkySphere.cs" />
     <Compile Include="Actors\Primitives\Axis.cs" />
