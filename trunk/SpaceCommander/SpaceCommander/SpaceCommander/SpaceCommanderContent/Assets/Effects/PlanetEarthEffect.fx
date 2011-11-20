@@ -227,7 +227,7 @@ PS_OUT PS_OuterAtmoshpere(VS_OUT2 input, uniform bool flip)
 		atmos *= specular;
 	}
 	
-	output.Color = (atmos * Diffuse) / 0.7;
+	output.Color = (atmos * Diffuse);
 	
 	return output;
 }
@@ -236,7 +236,7 @@ VS_OUT2 VS_OuterAtmoshpere(VS_IN input, uniform float size)
 {
 	VS_OUT2 output = (VS_OUT2)0;
 	output.Normal = mul(input.Normal, world);
-	output.Position = mul(input.Position, wvp) + (mul(size, mul(input.Normal, wvp))-1);
+	output.Position = mul(input.Position, wvp) + (mul(size, mul(input.Normal, wvp)));
 	output.TexCoord = input.TexCoord;
 	output.pos = mul(input.Position,world);
 	
@@ -291,7 +291,7 @@ technique PlanetShader
         //SrcBlend = SrcAlpha;
         //DestBlend = InvSrcAlpha;
         
-		VertexShader = compile vs_2_0 VS_OuterAtmoshpere(.08);
+		VertexShader = compile vs_2_0 VS_OuterAtmoshpere(.02);
 		PixelShader = compile ps_2_0 PS_OuterAtmoshpere(false);
 		CullMode = CW;
 	}

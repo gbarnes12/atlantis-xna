@@ -57,6 +57,7 @@
     <Compile Include="GameViewManager.cs" />
     <Compile Include="Input\InputDeviceEventArgs.cs" />
     <Compile Include="Input\KeyboardDevice.cs" />
+    <Compile Include="Input\KeyboardInputService.cs" />
     <Compile Include="Input\MouseDevice.cs" />
     <Compile Include="Input\Xbox360ControllerDevice.cs" />
     <Compile Include="Interfaces\IDrawableActor.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="ScriptManager.cs" />
     <Compile Include="Structures\GameView.cs" />
     <Compile Include="UI\Button.cs" />
+    <Compile Include="UI\Console.cs" />
     <Compile Include="UI\TextElement.cs" />
     <Compile Include="WorldManager.cs" />
   </ItemGroup>

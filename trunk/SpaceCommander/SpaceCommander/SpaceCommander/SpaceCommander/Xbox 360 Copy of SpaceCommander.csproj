@@ -80,6 +80,7 @@
     <Compile Include="Resources\Shader\PlanetEffect.cs" />
     <Compile Include="Scripts\MainMenu\MainMenuScript.cs" />
     <Compile Include="SpaceCommander.cs" />
+    <Compile Include="StringParse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
