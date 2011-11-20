@@ -1,4 +1,5 @@
-﻿namespace SpaceCommander.GameViews.MainMenu
+﻿using GameApplicationTools.Events;
+namespace SpaceCommander.GameViews.MainMenu
 {
     using System;
     using System.Collections.Generic;
@@ -19,15 +20,19 @@
 
     public partial class MainMenuGameView
     {
-        public void LoadActors()
+        public void RegisterEvents()
+        {
+            this.RegisterEvent(ID, EventType.ButtonEvent_OnClick, "onClickButtonEvent");
+        }
+
+        public void RegisterActors()
         {
             #region 3D Stuff
-            /*
-          FPSCamera camera = new FPSCamera("camera", ID, new Vector3(0, 0, 1000), Vector3.Zero);
+            
+            Camera camera = new Camera("mainMenuCamera", ID, new Vector3(0, 0, 1000), Vector3.Zero);
             camera.LoadContent(GameApplication.Instance.GetGame().Content);
             WorldManager.Instance.AddActor(camera);
-        */
-            
+            CameraManager.Instance.CurrentCamera = "mainMenuCamera";
 
             Planet planet = new Planet("PlanetEarth", ID, new Vector3(-700, 0, 0), 400f);
             planet.LoadContent(GameApplication.Instance.GetGame().Content);
@@ -37,13 +42,13 @@
             sky.LoadContent(GameApplication.Instance.GetGame().Content);
             WorldManager.Instance.AddActor(sky);
 
-            Ship ship = new Ship("SpaceShip", ID, Vector3.Zero);
+            /*Ship ship = new Ship("SpaceShip", ID, Vector3.Zero);
             ship.LoadContent(GameApplication.Instance.GetGame().Content);
             WorldManager.Instance.AddActor(ship);
 
-            ThirdPersonCamera tpcamera = new ThirdPersonCamera("camera",new Vector3(0,100,300),ship);
+            ThirdPersonCamera tpcamera = new ThirdPersonCamera("camera",new Vector3(0,100,300), ship);
             tpcamera.LoadContent(GameApplication.Instance.GetGame().Content);
-            WorldManager.Instance.AddActor(tpcamera);
+            WorldManager.Instance.AddActor(tpcamera);*/
  
             #endregion
 
@@ -59,6 +64,16 @@
             WorldManager.Instance.AddActor(startNewGameButton);
 
             #endregion
+        }
+
+        public bool onClickButtonEvent(Event Event)
+        {
+            if (((Button)((ButtonEvent_OnClick)Event).Sender).ID == "ButtonStartNewGame")
+            {
+                GameConsole.Instance.WriteLine("Button was clicked");
+            }
+
+            return true;
         }
     }
 }

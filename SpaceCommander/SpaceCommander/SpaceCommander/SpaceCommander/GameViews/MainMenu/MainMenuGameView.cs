@@ -72,7 +72,8 @@
 
         public void LoadContent(ContentManager content)
         {
-            LoadActors();
+            RegisterActors();
+            RegisterEvents();
             ScriptManager.Instance.ExecuteScript(MainMenuScript.OnLoadEvent);
         }
 

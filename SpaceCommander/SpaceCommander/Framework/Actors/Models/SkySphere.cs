@@ -137,7 +137,7 @@
             if (model != null)
             {
                 //get camera (View & Projection Matrix)
-                Camera camera = WorldManager.Instance.GetActor("camera") as Camera;
+                Camera camera = CameraManager.Instance.GetCurrentCamera();
 
                 Matrix[] transforms = new Matrix[model.Bones.Count];
                 model.CopyAbsoluteBoneTransformsTo(transforms);

@@ -107,7 +107,7 @@ namespace SpaceCommander.Actors
         {
             if (model != null)
             {
-                Camera camera = WorldManager.Instance.GetActor("camera") as Camera;
+                Camera camera = CameraManager.Instance.GetCurrentCamera();
 
                 Matrix[] transforms = new Matrix[model.Bones.Count];
                 model.CopyAbsoluteBoneTransformsTo(transforms);

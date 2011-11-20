@@ -90,7 +90,7 @@
         /// Registers an event at the event manager and its methods
         /// within the listener
         /// </summary>
-        /// <param name="ID">The ID of the Actor</param>
+        /// <param name="ID">The ID of the Actor or GameView</param>
         /// <param name="Event">The specific event which should get registrated!</param>
         /// <param name="Method"></param>
         protected void RegisterEvent(String ID, EventType Event, string Method)
