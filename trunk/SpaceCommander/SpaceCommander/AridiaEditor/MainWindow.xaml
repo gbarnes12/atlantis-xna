@@ -1,0 +1,85 @@
+﻿<!--
+// MainWindow.xaml
+//
+// Copyright 2011, Nick Gravelyn.
+// Licensed under the terms of the Ms-PL: http://www.microsoft.com/opensource/licenses.mspx#Ms-PL
+-->
+
+<Window x:Class="AridiaEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:my="clr-namespace:AridiaEditor"
+        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+        Title="MainWindow" Height="556" Width="882">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="File">
+                <MenuItem Header="Exit"/>
+            </MenuItem>
+        </Menu>
+        <ad:DockingManager x:Name="dockManager" Grid.Row="1">
+            <ad:ResizingPanel Orientation="Vertical">
+                <ad:ResizingPanel Orientation="Horizontal">
+                    <ad:DockablePane ad:ResizingPanel.ResizeWidth="150">
+                        <ad:DockableContent x:Name="classesContent" Title="Classes">
+                            <TreeView>
+                                <TreeViewItem Header="Class1"/>
+                                <TreeViewItem Header="Class2"/>
+                            </TreeView>
+                        </ad:DockableContent>
+                        <ad:DockableContent x:Name="toolsContent" Title="Tools">
+                            <ListBox>
+                                <ListBoxItem Content="Tool1"/>
+                                <ListBoxItem Content="Tool2"/>
+                                <ListBoxItem Content="Tool3"/>
+                            </ListBox>
+                        </ad:DockableContent>
+                    </ad:DockablePane>
+                    <ad:DocumentPane>
+                        <ad:DocumentContent Title="Welcome to Aridia Editor" ></ad:DocumentContent>
+                        <ad:DocumentContent Title="World View" IsEnabled="True">
+                            <my:GraphicsDeviceControl x:Name="xnaControl" LoadContent="loadContent" RenderXna="xnaControl_RenderXna" HwndMouseMove="xnaControl_MouseMove" HwndLButtonDown="xnaControl_HwndLButtonDown" HwndLButtonUp="xnaControl_HwndLButtonUp" />
+                        </ad:DocumentContent>
+                    </ad:DocumentPane>
+                    <ad:DockablePane ad:ResizingPanel.ResizeWidth="150">
+                        <ad:DockableContent x:Name="testContent" Title="Classes">
+                            <TreeView>
+                                <TreeViewItem Header="Class1"/>
+                                <TreeViewItem Header="Class2"/>
+                            </TreeView>
+                        </ad:DockableContent>
+                    </ad:DockablePane>
+                </ad:ResizingPanel>
+                <ad:DockablePane ad:ResizingPanel.ResizeHeight="100">
+                    <ad:DockableContent Title="Errors" x:Name="errorsContent">
+                        <ListView>
+                            <ListView.View>
+                                <GridView>
+                                    <GridView.Columns>
+                                        <GridViewColumn Header="Error"/>
+                                        <GridViewColumn Header="Page"/>
+                                        <GridViewColumn Header="File"/>
+                                        <GridViewColumn Header="Row"/>
+                                    </GridView.Columns>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </ad:DockableContent>
+                    <ad:DockableContent Title="Output" x:Name="output">
+
+                    </ad:DockableContent>
+                </ad:DockablePane>
+            </ad:ResizingPanel>
+        </ad:DockingManager>
+
+        <StatusBar Grid.Row="2">
+            <StatusBarItem Content="AridiaEditor Version 1.0"/>
+        </StatusBar>
+    </Grid>
+
+</Window>
