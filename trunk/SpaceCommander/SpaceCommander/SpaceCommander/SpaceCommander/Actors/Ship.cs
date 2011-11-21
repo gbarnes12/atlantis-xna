@@ -81,9 +81,9 @@ namespace SpaceCommander.Actors
 
         public void Update(GameTime gameTime)
         {
-            
 
-            if(KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A))
+
+            if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A))
             {
                 yaw += rotation_speed; //degrees
             }

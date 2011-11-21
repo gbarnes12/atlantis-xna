@@ -55,8 +55,6 @@ namespace GameApplicationTools.Actors.Cameras
 
         public override void Update(GameTime gameTime)
         {
-            
-
             shipRotationMatrix = Matrix.Lerp(shipRotationMatrix, actor.RotationMatrix, 0.1f);
 
             Position = Vector3.Transform(relativePosition,shipRotationMatrix)+actor.Position;

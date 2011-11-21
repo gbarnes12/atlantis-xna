@@ -20,6 +20,7 @@ namespace SpaceCommander
     using GameViews.MainMenu;
     using GameApplicationTools.Input;
     using GameApplicationTools.UI;
+    using GameViews.Gameplay;
 
 
     /// <summary>
@@ -64,7 +65,10 @@ namespace SpaceCommander
 
             // set up our game views
             MainMenuGameView mainMenu = new MainMenuGameView();
-            GameViewManager.Instance.AddGameView(mainMenu);
+            GamePlayView gamePlayView = new GamePlayView();
+
+            GameViewManager.Instance.AddGameView(gamePlayView);
+        //    GameViewManager.Instance.AddGameView(mainMenu);
 
             base.Initialize();
         }
