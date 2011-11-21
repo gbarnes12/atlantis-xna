@@ -32,7 +32,7 @@ using GameApplicationTools;
         public static IEnumerator<float> OnLoadEvent()
         {
             GameConsole.Instance.WriteLine("Loaded Content GamePlayView", Color.White);
-
+            CameraManager.Instance.CurrentCamera = "GamePlayCamera";
             #if !XBOX360
             Logger.Instance.Write("Loaded Content GamePlayView", LogType.Info);
             #endif
