@@ -33,11 +33,6 @@ using GameApplicationTools;
         {
             GameConsole.Instance.WriteLine("Loaded Content GamePlayView", Color.White);
 
-            MediaManager.Instance.AddMusic("GamePlayMusic", GameApplication.Instance.GetGame().Content.Load<Song>(GameApplication.Instance.AudioPath + "Sleep Away"));
-            yield return 1.0f;
-
-           // MediaManager.Instance.PlayMusic("GamePlayMusic");
-
             #if !XBOX360
             Logger.Instance.Write("Loaded Content GamePlayView", LogType.Info);
             #endif

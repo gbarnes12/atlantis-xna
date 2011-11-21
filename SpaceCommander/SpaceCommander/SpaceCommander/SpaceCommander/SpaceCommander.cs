@@ -21,6 +21,7 @@ namespace SpaceCommander
     using GameApplicationTools.Input;
     using GameApplicationTools.UI;
     using GameViews.Gameplay;
+    using GameApplicationTools.Interfaces;
 
 
     /// <summary>
@@ -64,11 +65,17 @@ namespace SpaceCommander
             GameConsole.Instance.SelectedObjects.Add(this);
 
             // set up our game views
-            MainMenuGameView mainMenu = new MainMenuGameView();
+            
             GamePlayView gamePlayView = new GamePlayView();
+            gamePlayView.BlocksInput = true;
+            gamePlayView.BlocksLoading = false;
+            gamePlayView.BlocksRendering = true;
+            gamePlayView.BlocksUpdating = true;
+
+            MainMenuGameView mainMenu = new MainMenuGameView();
 
             GameViewManager.Instance.AddGameView(gamePlayView);
-        //    GameViewManager.Instance.AddGameView(mainMenu);
+            GameViewManager.Instance.AddGameView(mainMenu);
 
             base.Initialize();
         }
@@ -80,6 +87,12 @@ namespace SpaceCommander
         protected override void LoadContent()
         {
             GameViewManager.Instance.LoadContent(Content);
+
+            IGameView gamplayView = GameViewManager.Instance.GetGameView("GamePlay") as IGameView;
+            gamplayView.BlocksInput = true;
+            gamplayView.BlocksLoading = false;
+            gamplayView.BlocksRendering = true;
+            gamplayView.BlocksUpdating = true;
         }
 
         public void ChangeColor(Color color)
