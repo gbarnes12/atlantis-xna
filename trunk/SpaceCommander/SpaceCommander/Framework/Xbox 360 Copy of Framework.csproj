@@ -44,9 +44,11 @@
   <ItemGroup>
     <Compile Include="Actors\Actor.cs" />
     <Compile Include="Actors\Cameras\Camera.cs" />
+    <Compile Include="Actors\Cameras\ChaseCamera.cs" />
     <Compile Include="Actors\Cameras\FPSCamera.cs" />
     <Compile Include="Actors\Cameras\ThirdPersonCamera.cs" />
     <Compile Include="Actors\Models\BaseModel.cs" />
+    <Compile Include="Actors\Models\CollisionObject.cs" />
     <Compile Include="Actors\Models\SkySphere.cs" />
     <Compile Include="Actors\Primitives\Axis.cs" />
     <Compile Include="Actors\Primitives\Box.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="Input\KeyboardInputService.cs" />
     <Compile Include="Input\MouseDevice.cs" />
     <Compile Include="Input\Xbox360ControllerDevice.cs" />
+    <Compile Include="Interfaces\ICollideable.cs" />
     <Compile Include="Interfaces\IDrawableActor.cs" />
     <Compile Include="Interfaces\IGameView.cs" />
     <Compile Include="Interfaces\IResource.cs" />

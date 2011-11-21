@@ -61,7 +61,13 @@ namespace SpaceCommander.Actors
 
         private float yaw, pitch, roll;
 
-        private float rotation_speed = 5;
+        private float max_yaw = 30;
+        private float max_roll = 30;
+
+        private float rotation_speed = 3;
+
+        private Vector3 velocity = Vector3.Zero;
+        private float speed = 10;
 
         #endregion
 
@@ -85,22 +91,50 @@ namespace SpaceCommander.Actors
 
             if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A))
             {
-                yaw += rotation_speed; //degrees
+                if (yaw < max_yaw)
+                    yaw += rotation_speed; //degrees
+
             }
             else if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D))
             {
+                if (yaw > -max_yaw)
+                    yaw -= rotation_speed;
+            }
+            else if(yaw<0)
+                yaw +=rotation_speed;
+            else if (yaw > 0)
                 yaw -= rotation_speed;
-            }
-            if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W))
-            {
-                roll -= rotation_speed;
-            }            
-            else if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S))
-            {
-                roll += rotation_speed;
-            }
 
-            RotationMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(roll)) * Matrix.CreateRotationY(MathHelper.ToRadians(yaw));
+            if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S))
+            {
+                if (roll > -max_roll)
+                    roll -= rotation_speed;
+            }
+            else if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W))
+            {
+                if (roll < max_roll)
+                    roll += rotation_speed;
+            }
+            else if (roll < 0)
+                roll += rotation_speed;
+            else if (roll > 0)
+                roll -= rotation_speed;
+
+            //move the ship
+            float speed_x=0,speed_y=0;
+
+            if(roll< 0)
+                speed_y = -1;
+            else if(roll > 0)
+                speed_y=1;
+               if(yaw <0)
+                   speed_x = -1;
+            else if(yaw > 0)
+                   speed_x = 1;
+                Position += new Vector3(-speed_x,speed_y,-1f) * speed;
+
+             //Matrix.CreateRotationX(MathHelper.ToRadians(roll)) * Matrix.CreateRotationY(MathHelper.ToRadians(yaw)) * Matrix.CreateRotationZ(0.0f);
+            RotationMatrix = Matrix.CreateFromYawPitchRoll(MathHelper.ToRadians(yaw), MathHelper.ToRadians(roll), MathHelper.ToRadians(pitch));
         }
 
         public void Render(GameTime gameTime)

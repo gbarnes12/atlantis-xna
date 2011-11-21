@@ -73,13 +73,7 @@
     <Compile Include="Actors\Ship.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="GameViews\Gameplay\GamePlayView.cs" />
-    <None Include="GameViews\Gameplay\GamePlayView.Designer.cs">
-      <DependentUpon>GamePlayView.cs</DependentUpon>
-    </None>
     <Compile Include="GameViews\MainMenu\MainMenuGameView.cs" />
-    <Compile Include="GameViews\MainMenu\MainMenuGameView.Designer.cs">
-      <DependentUpon>MainMenuGameView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Resources\Shader\PlanetEffect.cs" />
