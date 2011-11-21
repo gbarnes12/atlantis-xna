@@ -15,7 +15,9 @@ namespace SpaceCommander.GameViews.MainMenu
     using GameApplicationTools.UI;
 
     using Actors;
+    using Scripts.GamePlay;
     using Microsoft.Xna.Framework.Graphics;
+    
     
 
     public partial class MainMenuGameView
@@ -41,14 +43,6 @@ namespace SpaceCommander.GameViews.MainMenu
             SkySphere sky = new SkySphere("SkySphereSky", ID, Vector3.Zero, GameApplication.Instance.TexturePath + "space", 10000f);
             sky.LoadContent(GameApplication.Instance.GetGame().Content);
             WorldManager.Instance.AddActor(sky);
-
-            /*Ship ship = new Ship("SpaceShip", ID, Vector3.Zero);
-            ship.LoadContent(GameApplication.Instance.GetGame().Content);
-            WorldManager.Instance.AddActor(ship);
-
-            ThirdPersonCamera tpcamera = new ThirdPersonCamera("camera",new Vector3(0,100,300), ship);
-            tpcamera.LoadContent(GameApplication.Instance.GetGame().Content);
-            WorldManager.Instance.AddActor(tpcamera);*/
  
             #endregion
 
@@ -71,6 +65,19 @@ namespace SpaceCommander.GameViews.MainMenu
             if (((Button)((ButtonEvent_OnClick)Event).Sender).ID == "ButtonStartNewGame")
             {
                 GameConsole.Instance.WriteLine("Button was clicked");
+                IGameView gamplayView = GameViewManager.Instance.GetGameView("GamePlay") as IGameView;
+                gamplayView.BlocksInput = false;
+                gamplayView.BlocksLoading = false;
+                gamplayView.BlocksRendering = false;
+                gamplayView.BlocksUpdating = false;
+
+                BlocksInput = true;
+                BlocksLoading = true;
+                BlocksRendering = true;
+                BlocksUpdating = true;
+
+                ScriptManager.Instance.ExecuteScript(GamePlayScript.OnCreateEvent);
+                ScriptManager.Instance.ExecuteScript(GamePlayScript.OnLoadEvent);
             }
 
             return true;

@@ -39,6 +39,10 @@
             tpcamera.LoadContent(GameApplication.Instance.GetGame().Content);
             WorldManager.Instance.AddActor(tpcamera);
             CameraManager.Instance.CurrentCamera = "GamePlayCamera";
+
+            SkySphere sky = new SkySphere("SkySphereSkyGameView", ID, Vector3.Zero, GameApplication.Instance.TexturePath + "space", 10000f);
+            sky.LoadContent(GameApplication.Instance.GetGame().Content);
+            WorldManager.Instance.AddActor(sky);
             #endregion
 
             #region UI Stuff
