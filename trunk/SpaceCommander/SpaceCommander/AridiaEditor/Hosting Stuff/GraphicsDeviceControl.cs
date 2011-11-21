@@ -212,7 +212,7 @@ namespace AridiaEditor
             if (isMouseCaptured)
                 return;
 
-            NativeMethods.ShowCursor(false);
+            //NativeMethods.ShowCursor(false);
             isMouseCaptured = true;
 
             // Store the current cursor position so we can reset the cursor back

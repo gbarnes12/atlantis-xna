@@ -47,7 +47,7 @@
         {
             GameConsole.Instance.WriteLine("Loaded Content MainMenuGameView", Color.White);
 
-            MediaManager.Instance.AddMusic("MainMenu", GameApplication.Instance.GetGame().Content.Load<Song>(GameApplication.Instance.AudioPath + "Sleep Away"));
+            //MediaManager.Instance.AddMusic("MainMenu", GameApplication.Instance.GetGame().Content.Load<Song>(GameApplication.Instance.AudioPath + "Sleep Away"));
             yield return 2.0f;
 
             //MediaManager.Instance.PlayMusic("MainMenu");
