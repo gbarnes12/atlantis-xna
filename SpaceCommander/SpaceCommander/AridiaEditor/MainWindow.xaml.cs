@@ -22,9 +22,6 @@ namespace AridiaEditor
         // We use a Stopwatch to track our total time for cube animation
         private Stopwatch watch = new Stopwatch();
 
-        // A yaw and pitch applied to the second viewport based on input
-        private float yaw = 0f;
-        private float pitch = 0f;
 
         // The color applied to the cube in the second viewport
         Color cubeColor = Color.Red;
@@ -44,7 +41,7 @@ namespace AridiaEditor
             if (!watch.IsRunning)
             {
                 // Create our 3D cube object
-
+                propertyGrid.SelectedObject = this;
                 // Start the watch now that we're going to be starting our draw loop
                 watch.Start();
             }

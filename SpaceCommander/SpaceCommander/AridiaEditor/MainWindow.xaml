@@ -10,6 +10,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:my="clr-namespace:AridiaEditor"
         xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:swf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         Title="MainWindow" Height="556" Width="882">
     <Grid>
         <Grid.RowDefinitions>
@@ -19,7 +21,31 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="File">
+                <MenuItem Header="New" />
+                <MenuItem Header="Load" />
+                <MenuItem Header="Save as ..." />
+                <MenuItem Header="Save" />
                 <MenuItem Header="Exit"/>
+            </MenuItem>
+            <MenuItem Header="World">
+                <MenuItem Header="Cameras">
+                    <MenuItem Header="Camera" />
+                    <MenuItem Header="FPS Camera" />
+                    <MenuItem Header="ThirdPerson Camera" />
+                    <MenuItem Header="Chase Camera" />
+                </MenuItem>
+                <MenuItem Header="Lights"/>
+                <MenuItem Header="Primitives">
+                    <MenuItem Header="Plane" />
+                    <MenuItem Header="Box" />
+                    <MenuItem Header="Triangle" />
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Terrain">
+                <MenuItem Header="Create"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About"/>
             </MenuItem>
         </Menu>
         <ad:DockingManager x:Name="dockManager" Grid.Row="1">
@@ -41,17 +67,25 @@
                         </ad:DockableContent>
                     </ad:DockablePane>
                     <ad:DocumentPane>
-                        <ad:DocumentContent Title="Welcome to Aridia Editor" ></ad:DocumentContent>
+                        <ad:DocumentContent Title="Welcome to Aridia Editor">
+                            <Grid Background="White">
+                                <Label Content="Welcome to Aridia Editor" Margin="92,6,98,293" Height="34" FontWeight="Normal" FontSize="18" Width="346" Foreground="#FF8D8D8D" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                            </Grid>
+                        </ad:DocumentContent>
                         <ad:DocumentContent Title="World View" IsEnabled="True">
                             <my:GraphicsDeviceControl x:Name="xnaControl" LoadContent="loadContent" RenderXna="xnaControl_RenderXna" HwndMouseMove="xnaControl_MouseMove" HwndLButtonDown="xnaControl_HwndLButtonDown" HwndLButtonUp="xnaControl_HwndLButtonUp" />
                         </ad:DocumentContent>
                     </ad:DocumentPane>
                     <ad:DockablePane ad:ResizingPanel.ResizeWidth="150">
-                        <ad:DockableContent x:Name="testContent" Title="Classes">
+                        <ad:DockableContent x:Name="solutionExplorer" Title="Solution">
                             <TreeView>
-                                <TreeViewItem Header="Class1"/>
-                                <TreeViewItem Header="Class2"/>
+                                <TreeViewItem Header="World"/>
                             </TreeView>
+                        </ad:DockableContent>
+                        <ad:DockableContent x:Name="propertyExplorer" Title="Properties">
+                            <wfi:WindowsFormsHost>
+                                <swf:PropertyGrid x:Name="propertyGrid"/>
+                            </wfi:WindowsFormsHost>
                         </ad:DockableContent>
                     </ad:DockablePane>
                 </ad:ResizingPanel>
@@ -77,8 +111,10 @@
             </ad:ResizingPanel>
         </ad:DockingManager>
 
-        <StatusBar Grid.Row="2">
-            <StatusBarItem Content="AridiaEditor Version 1.0"/>
+        <StatusBar Grid.Row="2" Margin="1,0,-1,0">
+            <StatusBarItem Content="Ready" Background="{x:Null}" Width="500" />
+            <StatusBarItem Content="Camera: {X: 0, Y: 0, Z: 0}" Background="{x:Null}" Width="250" />
+            <StatusBarItem Content="FPS: 60" Background="{x:Null}" />
         </StatusBar>
     </Grid>
 
