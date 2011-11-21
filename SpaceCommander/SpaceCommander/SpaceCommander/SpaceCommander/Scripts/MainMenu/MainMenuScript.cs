@@ -50,7 +50,7 @@
             MediaManager.Instance.AddMusic("MainMenu", GameApplication.Instance.GetGame().Content.Load<Song>(GameApplication.Instance.AudioPath + "Sleep Away"));
             yield return 2.0f;
 
-            MediaManager.Instance.PlayMusic("MainMenu");
+            //MediaManager.Instance.PlayMusic("MainMenu");
 
             #if !XBOX360
             Logger.Instance.Write("Loaded Content MainMenuGameView", LogType.Info);

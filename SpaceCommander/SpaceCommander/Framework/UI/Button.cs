@@ -159,6 +159,7 @@
 
             GameApplication.Instance.GetGraphics().BlendState = BlendState.Opaque;
             GameApplication.Instance.GetGraphics().DepthStencilState = DepthStencilState.Default;
+            GameApplication.Instance.GetGraphics().SamplerStates[0] = SamplerState.LinearWrap;
         }
     }
 }
