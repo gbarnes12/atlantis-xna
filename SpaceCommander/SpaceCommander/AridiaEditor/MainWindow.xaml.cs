@@ -11,10 +11,15 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using Microsoft.Xna.Framework;
-using Primitives3D;
+
 using GameApplicationTools.Actors.Primitives;
 using GameApplicationTools;
 using GameApplicationTools.Actors.Cameras;
+using Microsoft.Xna.Framework.Content;
+using AridiaEditor.ContentDevice;
+using Microsoft.Xna.Framework.Graphics;
+using AridiaEditor.Properties;
+using System.Reflection;
 
 namespace AridiaEditor
 {
@@ -22,16 +27,40 @@ namespace AridiaEditor
     {
         private Axis axis;
         private Camera camera;
-        // We use a Stopwatch to track our total time for cube animation
+        
         private Stopwatch watch = new Stopwatch();
 
+        ContentBuilder contentBuilder;
+        ServiceContainer ServiceContainer;
 
         // The color applied to the cube in the second viewport
         Color cubeColor = Color.Red;
 
         public MainWindow()
         {
-            InitializeComponent();
+            // check if our content path settings are empty
+            // if yes than don't proceed and prompt the user
+            // to enter a content path!
+            if (!(Settings.Default.ContentPath == string.Empty))
+            {
+                InitializeComponent();
+                ServiceContainer = new ServiceContainer();
+            }
+            else
+            {
+                bool result = false;
+                while (!result)
+                {
+                    var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                    dialog.SelectedPath = Assembly.GetExecutingAssembly().Location;
+
+                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        result = true;
+                    }
+                }
+               
+            }
         }
 
         /// <summary>
@@ -44,17 +73,18 @@ namespace AridiaEditor
             if (!watch.IsRunning)
             {
                 GameApplication.Instance.SetGraphicsDevice(e.GraphicsDevice);
+                ServiceContainer.AddService<GraphicsDevice>(e.GraphicsDevice);
 
-                // Create our 3D cube object
-                propertyGrid.SelectedObject = this;
+                contentBuilder = new ContentBuilder();
+                ResourceManager.Instance.Content = new ContentManager(ServiceContainer, contentBuilder.OutputDirectory);
 
-                camera = new Camera("camera", new Vector3(0, 0, 3), Vector3.Zero);
+               /* camera = new Camera("camera", new Vector3(0, 0, 3), Vector3.Zero);
                 camera.LoadContent();
                 WorldManager.Instance.AddActor(camera);
 
                 axis = new Axis("axis", Vector3.Zero, 1f);
                 axis.LoadContent();
-                WorldManager.Instance.AddActor(axis);
+                WorldManager.Instance.AddActor(axis);*/
 
                 // Start the watch now that we're going to be starting our draw loop
                 watch.Start();
@@ -68,7 +98,9 @@ namespace AridiaEditor
         private void xnaControl_RenderXna(object sender, GraphicsDeviceEventArgs e)
         {
             GameApplication.Instance.Update(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
-            e.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            e.GraphicsDevice.Clear(Color.White);
+
             GameApplication.Instance.Render(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
         }
 
