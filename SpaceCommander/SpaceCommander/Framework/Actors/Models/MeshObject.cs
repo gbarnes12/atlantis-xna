@@ -84,6 +84,7 @@
             this.IsUpdateable = true;
             this.Scale = scale;
             this.Angle = angle;
+
         }
 
         public void LoadContent()

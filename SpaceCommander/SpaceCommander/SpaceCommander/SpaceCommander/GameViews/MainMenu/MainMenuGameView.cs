@@ -100,6 +100,8 @@
             planet.LoadContent();
             WorldManager.Instance.AddActor(planet);
 
+          
+
             SkySphere sky = new SkySphere("SkySphereSky", ID, Vector3.Zero, "space", 10000f);
             sky.LoadContent();
             WorldManager.Instance.AddActor(sky);

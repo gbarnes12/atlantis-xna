@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using GameApplicationTools.Actors.Cameras;
 using SpaceCommander.Actors;
 using Microsoft.Xna.Framework.Graphics;
+using GameApplicationTools.Actors.Primitives;
 
 namespace SpaceCommander.GameViews.Gameplay
 {
@@ -110,6 +111,11 @@ namespace SpaceCommander.GameViews.Gameplay
                 MeshObject asteroid01 = new MeshObject("asteroid" + i, "asteroid", random.Next(20,100), new Vector3(random.Next(-1000, 1000), random.Next(-500, 500), random.Next(-100, 0) - i * 300),random.Next(0,360));
                 asteroid01.LoadContent();
                 WorldManager.Instance.AddActor(asteroid01);
+
+                //test
+                Sphere sphere = new Sphere("testCollSphere"+i, ID, asteroid01.Position, asteroid01.Scale*1.5f);
+                sphere.LoadContent();
+                WorldManager.Instance.AddActor(sphere);
             }
 
             ChaseCamera camera = new ChaseCamera("GamePlayCamera", new Vector3(0,50,600), ship);
