@@ -53,7 +53,7 @@
         /// allows us to load some basic stuff in here.
         /// </summary>
         /// <param name="content"></param>
-        void LoadContent(ContentManager content);
+        void LoadContent();
 
         /// <summary>
         /// The Update method. Just write your 

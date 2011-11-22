@@ -138,7 +138,7 @@
         /// you need to load but currently it doesn't do anything.
         /// </summary>
         /// <param name="content">An instance of the ContentManager we can use</param>
-        public void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content) {}
+        public void LoadContent() {}
 
         /// <summary>
         /// Will update the TextElement, but due to the fact

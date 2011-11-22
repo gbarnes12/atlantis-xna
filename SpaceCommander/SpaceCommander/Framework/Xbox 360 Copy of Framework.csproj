@@ -48,7 +48,7 @@
     <Compile Include="Actors\Cameras\FPSCamera.cs" />
     <Compile Include="Actors\Cameras\ThirdPersonCamera.cs" />
     <Compile Include="Actors\Models\BaseModel.cs" />
-    <Compile Include="Actors\Models\CollisionObject.cs" />
+    <Compile Include="Actors\Models\MeshObject.cs" />
     <Compile Include="Actors\Models\SkySphere.cs" />
     <Compile Include="Actors\Primitives\Axis.cs" />
     <Compile Include="Actors\Primitives\Box.cs" />
@@ -73,8 +73,11 @@
     <Compile Include="Interfaces\IUpdateableActor.cs" />
     <Compile Include="MediaManager.cs" />
     <Compile Include="Misc\Logger.cs" />
+    <Compile Include="Misc\StreamLoader.cs" />
     <Compile Include="Misc\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceManager.cs" />
+    <Compile Include="Resources\Resource.cs" />
     <Compile Include="Resources\Shader\DefaultEffect.cs" />
     <Compile Include="Resources\Shader\TextureMappingEffect.cs" />
     <Compile Include="ScriptManager.cs" />

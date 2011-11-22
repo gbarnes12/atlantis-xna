@@ -124,13 +124,13 @@
         /// allows us to load some basic stuff in here.
         /// </summary>
         /// <param name="content"></param>
-        public void LoadContent(ContentManager content)
+        public void LoadContent()
         {
             if (GameApplication.Instance.GetGraphics() != null)
                 spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
 
             // load some basiseffect
-            effect = new DefaultEffect(content.Load<DefaultEffect>("DefaultEffect"));
+            effect = new DefaultEffect(ResourceManager.Instance.GetResource<Effect>("DefaultEffect").Clone());
 
 
             // set up our vertices

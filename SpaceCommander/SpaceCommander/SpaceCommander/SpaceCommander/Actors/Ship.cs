@@ -14,7 +14,7 @@ using GameApplicationTools.Input;
 
 namespace SpaceCommander.Actors
 {
-    public class Ship  : Actor,IDrawableActor
+    public class Ship  : Actor,IDrawableActor, ICollideable
     {
         public Vector3 Position
         {
@@ -80,9 +80,9 @@ namespace SpaceCommander.Actors
             this.Scale = 0.1f;
         }
 
-        public void LoadContent(ContentManager content)
+        public void LoadContent()
         {
-            model = content.Load<Model>(GameApplication.Instance.ModelPath+"p1_wedge");
+            model = ResourceManager.Instance.GetResource<Model>("p1_wedge");
         }
 
         public void Update(GameTime gameTime)
@@ -165,5 +165,8 @@ namespace SpaceCommander.Actors
                 }
             }
         }
+
+        public BoundingSphere Sphere { get; set; }
+        
     }
 }

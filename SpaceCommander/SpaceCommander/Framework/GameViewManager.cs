@@ -145,7 +145,7 @@ using Microsoft.Xna.Framework.Content;
         /// 
         /// </summary>
         /// <param name="content"></param>
-        public void LoadContent(ContentManager content)
+        public void LoadContent()
         {
             if (_gameViews.Count > 0)
             {
@@ -153,7 +153,7 @@ using Microsoft.Xna.Framework.Content;
                 {
                     if (!gameView.BlocksLoading)
                     {
-                        gameView.LoadContent(content);
+                        gameView.LoadContent();
                     }
                 }
             }

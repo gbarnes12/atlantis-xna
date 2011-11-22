@@ -55,10 +55,10 @@
         }
         
 
-        public void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
+        public void LoadContent()
         {
-            if(_fileName != "")
-                Model = content.Load<Model>(_fileName);
+            if (_fileName != "")
+                Model = ResourceManager.Instance.GetResource<Model>(_fileName);
         }
 
         public void Update(Microsoft.Xna.Framework.GameTime gameTime)

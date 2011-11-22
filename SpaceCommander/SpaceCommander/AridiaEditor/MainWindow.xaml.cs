@@ -12,13 +12,16 @@ using System.Diagnostics;
 using System.Windows;
 using Microsoft.Xna.Framework;
 using Primitives3D;
+using GameApplicationTools.Actors.Primitives;
+using GameApplicationTools;
+using GameApplicationTools.Actors.Cameras;
 
 namespace AridiaEditor
 {
     public partial class MainWindow : Window
     {
-        //private Axis axis;
-
+        private Axis axis;
+        private Camera camera;
         // We use a Stopwatch to track our total time for cube animation
         private Stopwatch watch = new Stopwatch();
 
@@ -40,8 +43,19 @@ namespace AridiaEditor
             // is running to avoid loading our content twice.
             if (!watch.IsRunning)
             {
+                GameApplication.Instance.SetGraphicsDevice(e.GraphicsDevice);
+
                 // Create our 3D cube object
                 propertyGrid.SelectedObject = this;
+
+                camera = new Camera("camera", new Vector3(0, 0, 3), Vector3.Zero);
+                camera.LoadContent();
+                WorldManager.Instance.AddActor(camera);
+
+                axis = new Axis("axis", Vector3.Zero, 1f);
+                axis.LoadContent();
+                WorldManager.Instance.AddActor(axis);
+
                 // Start the watch now that we're going to be starting our draw loop
                 watch.Start();
             }
@@ -53,8 +67,9 @@ namespace AridiaEditor
         /// </summary>
         private void xnaControl_RenderXna(object sender, GraphicsDeviceEventArgs e)
         {
+            GameApplication.Instance.Update(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
             e.GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            GameApplication.Instance.Render(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
         }
 
         // Invoked when the mouse moves over the second viewport

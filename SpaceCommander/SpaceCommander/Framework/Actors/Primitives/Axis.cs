@@ -114,13 +114,13 @@
         /// allows us to load some basic stuff in here.
         /// </summary>
         /// <param name="content"></param>
-        public void LoadContent(ContentManager content)
+        public void LoadContent()
         {
             if (GameApplication.Instance.GetGraphics() != null)
                 spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
 
             // load some basiseffect
-            effect = new DefaultEffect(content.Load<Effect>(GameApplication.Instance.EffectPath + "DefaultEffect"));
+            effect = new DefaultEffect(ResourceManager.Instance.GetResource<Effect>("DefaultEffect").Clone());
  
 
             // set up our vertices
@@ -144,6 +144,7 @@
             indexBuffer = new IndexBuffer(GameApplication.Instance.GetGraphics(), IndexElementSize.ThirtyTwoBits, 6, BufferUsage.WriteOnly);
             indexBuffer.SetData<uint>(indices);
         }
+
 
         /// <summary>
         /// The Update method. This will

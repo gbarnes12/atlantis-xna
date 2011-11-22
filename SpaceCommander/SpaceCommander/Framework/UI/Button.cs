@@ -133,7 +133,7 @@
                 spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
         }
 
-        public void LoadContent(ContentManager content)
+        public void LoadContent()
         {
         }
 

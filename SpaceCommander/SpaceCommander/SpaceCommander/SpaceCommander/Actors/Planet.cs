@@ -183,21 +183,21 @@
         /// allows us to load some basic stuff in here.
         /// </summary>
         /// <param name="content"></param>
-        public virtual void LoadContent(ContentManager content)
+        public virtual void LoadContent()
         {
             // load our model business in here
-            Model = content.Load<Model>(GameApplication.Instance.ModelPath + "planet");
-            Effect = new PlanetEffect(content.Load<Effect>(GameApplication.Instance.EffectPath +  "PlanetEarthEffect"));
+            Model = ResourceManager.Instance.GetResource<Model>("planet");
+            Effect = new PlanetEffect(ResourceManager.Instance.GetResource<Effect>("PlanetEarthEffect"));
 
             // load the corresponding textures
             // that are needed to create a planet!
-            ColorMap = content.Load<Texture2D>(GameApplication.Instance.TexturePath + "PlanetEarth\\Earth_Diffuse");
-            BumpMap = content.Load<Texture2D>(GameApplication.Instance.TexturePath + "PlanetEarth\\Earth_NormalMap");
-            GlowMap = content.Load<Texture2D>(GameApplication.Instance.TexturePath + "PlanetEarth\\Earth_Night");
-            ReflectionMap = content.Load<Texture2D>(GameApplication.Instance.TexturePath + "PlanetEarth\\Earth_ReflectionMask");
-            CloudMap = content.Load<Texture2D>(GameApplication.Instance.TexturePath + "PlanetEarth\\Earth_Cloud");
-            WaterMap = content.Load<Texture2D>(GameApplication.Instance.TexturePath + "PlanetEarth\\WaterRipples");
-            AtmosphereMap = content.Load<Texture2D>(GameApplication.Instance.TexturePath + "PlanetEarth\\Earth_Atmosx");
+            ColorMap = ResourceManager.Instance.GetResource<Texture2D>("Earth_Diffuse");
+            BumpMap = ResourceManager.Instance.GetResource<Texture2D>("Earth_NormalMap");
+            GlowMap = ResourceManager.Instance.GetResource<Texture2D>("Earth_Night");
+            ReflectionMap = ResourceManager.Instance.GetResource<Texture2D>("Earth_ReflectionMask");
+            CloudMap = ResourceManager.Instance.GetResource<Texture2D>("Earth_Cloud");
+            WaterMap = ResourceManager.Instance.GetResource<Texture2D>("WaterRipples");
+            AtmosphereMap = ResourceManager.Instance.GetResource<Texture2D>("Earth_Atmosx");
         }
 
         /// <summary>

@@ -114,7 +114,7 @@
         /// allows us to load some basic stuff in here.
         /// </summary>
         /// <param name="content"></param>
-        public void LoadContent(ContentManager content)
+        public void LoadContent()
         {
             FPSCamera cam = WorldManager.Instance.GetActor<FPSCamera>("camera");
 
@@ -150,8 +150,8 @@
 
             // now we need to load our texture mapping effect and of course our texture into cache
             // this may need to be redesigned once we use some sort of resource manager!
-            effect = new TextureMappingEffect(content.Load<Effect>(GameApplication.Instance.EffectPath + "TextureMappingEffect"));
-            effect.Texture = content.Load<Texture2D>(GameApplication.Instance.TexturePath + "Kachel2_bump");
+            effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMapping").Clone());
+            effect.Texture = ResourceManager.Instance.GetResource<Texture2D>("Kachel2_bump");
 
         }
 

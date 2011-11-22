@@ -22,6 +22,7 @@ namespace SpaceCommander
     using GameApplicationTools.UI;
     using GameViews.Gameplay;
     using GameApplicationTools.Interfaces;
+    using Scripts;
 
 
     /// <summary>
@@ -51,6 +52,7 @@ namespace SpaceCommander
             // set our necessary classes for the game
             GameApplication.Instance.SetGame(this);
             GameApplication.Instance.SetGraphicsDevice(GraphicsDevice);
+            ResourceManager.Instance.Content = Content;
 
             // the console breaks with our current structure but its still a Singleton
             // thus its not that bad. This needs to have some more workarounds but 
@@ -86,7 +88,11 @@ namespace SpaceCommander
         /// </summary>
         protected override void LoadContent()
         {
-            GameViewManager.Instance.LoadContent(Content);
+
+            // load the contents we need to the resource manager!
+            DefaultScript.LoadContents();
+
+            GameViewManager.Instance.LoadContent();
 
             IGameView gamplayView = GameViewManager.Instance.GetGameView("GamePlay") as IGameView;
             gamplayView.BlocksInput = true;
