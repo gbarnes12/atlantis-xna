@@ -1,18 +1,18 @@
 ﻿namespace GameApplicationTools.Actors.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GameApplicationTools.Interfaces;
-using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using GameApplicationTools.Misc;
-    using GameApplicationTools.Actors.Cameras;
 
+    using Misc;
+    using Actors.Cameras;
+    using Interfaces;
 
-    public class CollisionObject : Actor, IDrawableActor, ICollideable
+    public class MeshObject : Actor, IDrawableActor, ICollideable
     {
         public Microsoft.Xna.Framework.Vector3 Position
         {
@@ -66,7 +66,7 @@ using Microsoft.Xna.Framework;
 
         private Model model;
 
-        public CollisionObject(String ID, String modelFile, float scale, Vector3 position)
+        public MeshObject(String ID, String modelFile, float scale, Vector3 position)
             : base(ID, null)
         {
             IsVisible = true;
@@ -75,7 +75,7 @@ using Microsoft.Xna.Framework;
             this.IsUpdateable = true;
             this.Scale = scale;
         }
-        public CollisionObject(String ID, String modelFile, float scale, Vector3 position,float angle)
+        public MeshObject(String ID, String modelFile, float scale, Vector3 position,float angle)
             : base(ID, null)
         {
             IsVisible = true;
@@ -86,10 +86,10 @@ using Microsoft.Xna.Framework;
             this.Angle = angle;
         }
 
-        public void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
+        public void LoadContent()
         {
             if (_fileName != "")
-                model = content.Load<Model>(_fileName);
+                model = ResourceManager.Instance.GetResource<Model>(_fileName);
         }
 
         public void Update(Microsoft.Xna.Framework.GameTime gameTime)

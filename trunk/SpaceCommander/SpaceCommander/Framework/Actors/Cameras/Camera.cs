@@ -69,8 +69,7 @@
             CameraManager.Instance.AddCamera(this.ID);
         }
 
-
-        public virtual void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content){}
+        public virtual void LoadContent() { }
 
         public virtual void Update(GameTime gameTime) { }
     }

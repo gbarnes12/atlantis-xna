@@ -63,6 +63,8 @@ namespace GameApplicationTools
         public String ModelPath { get; set; }
 
         public String UIPath { get; set; }
+
+        public String EditorPath { get; set; }
         #endregion
 
         private GameApplication()
@@ -81,7 +83,7 @@ namespace GameApplicationTools
             FontPath = AssetPath + "Fonts\\";
             UIPath = AssetPath + "UI\\";
             ModelPath = AssetPath + "Models\\";
-
+            EditorPath = "C:\\Users\\Gavin\\Documents\\Programmierung\\Desktop\\C#\\Atlantis\\SpaceCommander\\SpaceCommander\\SpaceCommander\\SpaceCommander\\bin\\x86\\Debug\\Content\\";
             Logger.Instance.LogPath = "Log.txt";
 
             #if DEBUG

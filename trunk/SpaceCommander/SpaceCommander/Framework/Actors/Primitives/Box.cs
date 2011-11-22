@@ -99,7 +99,7 @@
         /// allows us to load some basic stuff in here.
         /// </summary>
         /// <param name="content"></param>
-        public void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
+        public void LoadContent()
         {
             Vector2 topLeft = new Vector2(0.0f, 0.0f);
             Vector2 topCenter = new Vector2(0.5f, 0.0f);
@@ -163,8 +163,8 @@
             boxData = null;
             boxIndices = null;
 
-            effect = new TextureMappingEffect(content.Load<Effect>(GameApplication.Instance.EffectPath + "TextureMappingEffect"));
-            effect.Texture = content.Load<Texture2D>(GameApplication.Instance.TexturePath + "crate");
+            effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone());
+            effect.Texture = ResourceManager.Instance.GetResource<Texture2D>("create");
 
             GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
             {

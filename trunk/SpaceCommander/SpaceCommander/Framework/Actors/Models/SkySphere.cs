@@ -106,20 +106,19 @@
         }
 
 
-        public void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
+        public void LoadContent()
         {
             //create a new effect
-            effect = new TextureMappingEffect(content.Load<Effect>(GameApplication.Instance.EffectPath + "TextureMappingEffect"));
+            effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone());
 
             //load the sphere; model stays the same for every kind of skysphere
-            model = content.Load<Model>(GameApplication.Instance.ModelPath + "sphere");
+            model = ResourceManager.Instance.GetResource<Model>("sphere");
 
             //load the model's texture 
-            texture = content.Load<Texture2D>(textureFile);
+            texture = ResourceManager.Instance.GetResource<Texture2D>(textureFile);
 
             //set texture to the effect
             effect.Texture = texture;
-           
 
             //set the effect to every part of every mesh of the model
             foreach (ModelMesh mesh in model.Meshes)
