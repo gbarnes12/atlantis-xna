@@ -27,6 +27,9 @@
                 <MenuItem Header="Save" />
                 <MenuItem Header="Exit"/>
             </MenuItem>
+            <MenuItem Header="Editor">
+                <MenuItem Name="SettingsMenuItem"  Header="Settings" Click="SettingsMenuItem_Click" />
+            </MenuItem>
             <MenuItem Header="World">
                 <MenuItem Header="Cameras">
                     <MenuItem Header="Camera" />
