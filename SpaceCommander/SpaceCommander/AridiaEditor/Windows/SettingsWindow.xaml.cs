@@ -36,5 +36,10 @@ namespace AridiaEditor.Windows
         {
             this.Close();
         }
+
+        private void browseButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

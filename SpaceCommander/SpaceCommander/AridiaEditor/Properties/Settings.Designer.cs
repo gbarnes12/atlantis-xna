@@ -34,5 +34,14 @@ namespace AridiaEditor.Properties {
                 this["ContentPath"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Layout.xml")]
+        public string LayoutFile {
+            get {
+                return ((string)(this["LayoutFile"]));
+            }
+        }
     }
 }
