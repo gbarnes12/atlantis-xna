@@ -69,7 +69,7 @@ namespace AridiaEditor
 
             graphicsDevice = new GraphicsDevice(
                 GraphicsAdapter.DefaultAdapter,
-                GraphicsProfile.Reach,
+                GraphicsProfile.HiDef,
                 parameters);
 
             if (DeviceCreated != null)

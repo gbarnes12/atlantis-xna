@@ -20,6 +20,9 @@ using AridiaEditor.ContentDevice;
 using Microsoft.Xna.Framework.Graphics;
 using AridiaEditor.Properties;
 using System.Reflection;
+using System.Windows.Controls;
+using AridiaEditor.Windows;
+using GameApplicationTools.Resources;
 
 namespace AridiaEditor
 {
@@ -45,6 +48,7 @@ namespace AridiaEditor
             {
                 InitializeComponent();
                 ServiceContainer = new ServiceContainer();
+                contentBuilder = new ContentBuilder();
             }
             else
             {
@@ -53,10 +57,13 @@ namespace AridiaEditor
                 {
                     var dialog = new System.Windows.Forms.FolderBrowserDialog();
                     dialog.SelectedPath = Assembly.GetExecutingAssembly().Location;
-
+                    dialog.Description = "Please select content directory for your specific files!";
+                    
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
                         result = true;
+                        Settings.Default.ContentPath = dialog.SelectedPath;
+                        Settings.Default.Save();
                     }
                 }
                
@@ -73,25 +80,47 @@ namespace AridiaEditor
             if (!watch.IsRunning)
             {
                 GameApplication.Instance.SetGraphicsDevice(e.GraphicsDevice);
-                ServiceContainer.AddService<GraphicsDevice>(e.GraphicsDevice);
-
-                contentBuilder = new ContentBuilder();
+                
+                ServiceContainer.AddService<IGraphicsDeviceService>(GraphicsDeviceService.AddRef(new IntPtr(), 100, 100));
                 ResourceManager.Instance.Content = new ContentManager(ServiceContainer, contentBuilder.OutputDirectory);
+                ResourceManager.Instance.Content.Unload();
 
-               /* camera = new Camera("camera", new Vector3(0, 0, 3), Vector3.Zero);
+                contentBuilder.Clear();
+                contentBuilder.Add(Settings.Default.ContentPath + "\\" + GameApplication.Instance.EffectPath + "DefaultEffect.fx",  "DefaultEffect", null, "EffectProcessor");
+
+                // Build this new model data.
+                string buildError = contentBuilder.Build();
+
+                if (string.IsNullOrEmpty(buildError))
+                {
+                    ResourceManager.Instance.AddResourceEditor(new Resource() {
+                            Name = "DefaultEffect",
+                            Path = GameApplication.Instance.EffectPath,
+                            Type = ResourceType.Effect
+                        });
+
+                }
+                else
+                {
+                    // If the build failed, display an error message.
+                    MessageBox.Show(buildError, "Error");
+                }
+
+                camera = new Camera("camera", new Vector3(0, 2, 3), Vector3.Zero);
                 camera.LoadContent();
                 WorldManager.Instance.AddActor(camera);
+                CameraManager.Instance.CurrentCamera = "camera";
 
                 axis = new Axis("axis", Vector3.Zero, 1f);
                 axis.LoadContent();
-                WorldManager.Instance.AddActor(axis);*/
+                WorldManager.Instance.AddActor(axis);
 
                 // Start the watch now that we're going to be starting our draw loop
                 watch.Start();
             }
         }
 
-
+        #region XNA Events
         /// <summary>
         /// Invoked when our second control is ready to render.
         /// </summary>
@@ -127,5 +156,15 @@ namespace AridiaEditor
         {
             xnaControl.ReleaseMouseCapture();
         }
+        #endregion
+
+        #region EditorEvents
+        private void SettingsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow settings = new SettingsWindow();
+            settings.Owner = this;
+            settings.Show();
+        }
+        #endregion
     }
 }

@@ -16,6 +16,7 @@ using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
+using System.Reflection;
 #endregion
 
 namespace AridiaEditor
@@ -86,7 +87,7 @@ namespace AridiaEditor
         /// </summary>
         public string OutputDirectory
         {
-            get { return Path.Combine(buildDirectory, "bin/Content"); }
+            get { return Path.Combine(buildDirectory, "bin\\content\\"); }
         }
 
 
@@ -261,8 +262,9 @@ namespace AridiaEditor
             // Start with a standard base name:
             //
             //  %temp%\WinFormsContentLoading.ContentBuilder
+            // Path.GetTempPath()
 
-            baseDirectory = Path.Combine(Path.GetTempPath(), GetType().FullName);
+            baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             // Include our process ID, in case there is more than
             // one copy of the program running at the same time:

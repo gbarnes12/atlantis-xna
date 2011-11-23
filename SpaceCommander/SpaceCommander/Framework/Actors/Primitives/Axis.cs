@@ -116,9 +116,7 @@
         /// <param name="content"></param>
         public void LoadContent()
         {
-            if (GameApplication.Instance.GetGraphics() != null)
-                spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
-
+           
             // load some basiseffect
             effect = new DefaultEffect(ResourceManager.Instance.GetResource<Effect>("DefaultEffect").Clone());
  
@@ -140,9 +138,16 @@
             vertexBuffer.SetData<VertexPositionColor>(vertices);
 
             //create indexbuffer
-            uint[] indices = new uint[] { 0, 1, 2, 3, 4, 5 };
-            indexBuffer = new IndexBuffer(GameApplication.Instance.GetGraphics(), IndexElementSize.ThirtyTwoBits, 6, BufferUsage.WriteOnly);
-            indexBuffer.SetData<uint>(indices);
+            try
+            {
+                uint[] indices = new uint[] { 0, 1, 2, 3, 4, 5 };
+                indexBuffer = new IndexBuffer(GameApplication.Instance.GetGraphics(), IndexElementSize.ThirtyTwoBits, 6, BufferUsage.WriteOnly);
+                indexBuffer.SetData<uint>(indices);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
 
