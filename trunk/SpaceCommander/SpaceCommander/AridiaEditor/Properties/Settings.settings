@@ -5,5 +5,8 @@
     <Setting Name="ContentPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="LayoutFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Layout.xml</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

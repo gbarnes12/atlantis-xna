@@ -23,16 +23,21 @@ using System.Reflection;
 using System.Windows.Controls;
 using AridiaEditor.Windows;
 using GameApplicationTools.Resources;
+using GameApplicationTools.Input;
+using System.ComponentModel;
+using System.Collections.Generic;
+using System.IO;
 
 namespace AridiaEditor
 {
     public partial class MainWindow : Window
     {
-        private Axis axis;
-        private Camera camera;
+        public static List<Error> errors;
+        public static TextBlock outputTextBlock;
         
-        private Stopwatch watch = new Stopwatch();
 
+
+        Stopwatch watch = new Stopwatch();
         ContentBuilder contentBuilder;
         ServiceContainer ServiceContainer;
 
@@ -47,8 +52,16 @@ namespace AridiaEditor
             if (!(Settings.Default.ContentPath == string.Empty))
             {
                 InitializeComponent();
+
                 ServiceContainer = new ServiceContainer();
                 contentBuilder = new ContentBuilder();
+                ResourceBuilder.Instance.ContentBuilder = contentBuilder;
+
+                errors = new List<Error>();
+                outputTextBlock = output;
+
+                errorDataGrid.ItemsSource = errors;
+                Output.AddToOutput("WELCOME TO ARIDIA WORLD EDITOR ------------");
             }
             else
             {
@@ -85,40 +98,93 @@ namespace AridiaEditor
                 ResourceManager.Instance.Content = new ContentManager(ServiceContainer, contentBuilder.OutputDirectory);
                 ResourceManager.Instance.Content.Unload();
 
-                contentBuilder.Clear();
-                contentBuilder.Add(Settings.Default.ContentPath + "\\" + GameApplication.Instance.EffectPath + "DefaultEffect.fx",  "DefaultEffect", null, "EffectProcessor");
+                if (File.Exists(Settings.Default.LayoutFile))
+                    dockManager.RestoreLayout(Settings.Default.LayoutFile);
 
-                // Build this new model data.
-                string buildError = contentBuilder.Build();
-
-                if (string.IsNullOrEmpty(buildError))
-                {
-                    ResourceManager.Instance.AddResourceEditor(new Resource() {
-                            Name = "DefaultEffect",
-                            Path = GameApplication.Instance.EffectPath,
-                            Type = ResourceType.Effect
-                        });
-
-                }
-                else
-                {
-                    // If the build failed, display an error message.
-                    MessageBox.Show(buildError, "Error");
-                }
-
-                camera = new Camera("camera", new Vector3(0, 2, 3), Vector3.Zero);
-                camera.LoadContent();
-                WorldManager.Instance.AddActor(camera);
-                CameraManager.Instance.CurrentCamera = "camera";
-
-                axis = new Axis("axis", Vector3.Zero, 1f);
-                axis.LoadContent();
-                WorldManager.Instance.AddActor(axis);
+                // after we initialized everything we need start loading the content
+                // in a new thread!
+                StartContentBuilding();
 
                 // Start the watch now that we're going to be starting our draw loop
                 watch.Start();
             }
         }
+
+        #region ContentBuildingThread
+        private void StartContentBuilding()
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
+
+            #region Events
+            worker.DoWork += delegate(object s, DoWorkEventArgs args)
+            {
+                progressStatusBarItem.Dispatcher.Invoke(
+                  System.Windows.Threading.DispatcherPriority.Normal,
+                  new Action(
+                    delegate()
+                    {
+                        progressStatusBarItem.Content = "Building content...";
+                    }
+                ));
+
+                #region Resource Builder Events
+                ResourceBuilder.Instance.OnPercentChanged += new EventHandler<OnPercentChangedEventArgs>(delegate(object o, OnPercentChangedEventArgs OnPercentChangedEventArgs)
+                {
+                    worker.ReportProgress(OnPercentChangedEventArgs.Percent);
+                });
+
+
+                ResourceBuilder.Instance.OnBuildFailed +=  new EventHandler<EventArgs>(delegate(object onBuildFailed, EventArgs onBuildFailedArgs)
+                {
+                    worker.CancelAsync();
+                });
+                #endregion
+
+                ResourceBuilder.Instance.BuildContent();
+            };
+
+            worker.ProgressChanged += delegate(object s, ProgressChangedEventArgs args)
+            {
+                int percentage = args.ProgressPercentage;
+
+                progressBar.Value = percentage;
+            };
+
+            worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs args)
+            {
+                progressStatusBarItem.Content = "Ready";
+                progressBar.Value = 0;
+                Output.AddToOutput("Building of content files completed...");
+
+                try
+                {
+                    Camera camera = new Camera("camera", new Vector3(0, 2, 3), Vector3.Zero);
+                    camera.LoadContent();
+                    WorldManager.Instance.AddActor(camera);
+                    CameraManager.Instance.CurrentCamera = "camera";
+
+                    Axis axis = new Axis("axis", Vector3.Zero, 1f);
+                    axis.LoadContent();
+                    WorldManager.Instance.AddActor(axis);
+                }
+                catch (System.Exception ex)
+                {
+                    Output.AddToError(new Error()
+                    {
+                        Name = "ACTOR_INITIALISING_FAILED",
+                        Description = ex.Message,
+                        Type = ErrorType.FATAL
+                    });
+                }
+                
+            };
+            #endregion
+
+            worker.RunWorkerAsync();
+        }
+        #endregion
 
         #region XNA Events
         /// <summary>
@@ -127,6 +193,11 @@ namespace AridiaEditor
         private void xnaControl_RenderXna(object sender, GraphicsDeviceEventArgs e)
         {
             GameApplication.Instance.Update(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
+           // KeyboardDevice.Instance.Update();
+            //MouseDevice.Instance.Update();
+
+            if (CameraManager.Instance.CurrentCamera != null)
+                CameraPosition.Content = "Camera: " + CameraManager.Instance.GetCurrentCamera().Position;
 
             e.GraphicsDevice.Clear(Color.White);
 
@@ -164,6 +235,22 @@ namespace AridiaEditor
             SettingsWindow settings = new SettingsWindow();
             settings.Owner = this;
             settings.Show();
+        }
+
+        private void SaveLayoutMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            dockManager.SaveLayout(Settings.Default.LayoutFile);
+        }
+
+        private void ExitAppMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            dockManager.SaveLayout(Settings.Default.LayoutFile);
+            Application.Current.Shutdown();
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            dockManager.SaveLayout(Settings.Default.LayoutFile);
         }
         #endregion
     }

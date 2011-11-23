@@ -1,7 +1,7 @@
 ﻿<!--
 // MainWindow.xaml
 //
-// Copyright 2011, Nick Gravelyn.
+// Copyright 2011, Gavin Barnes.
 // Licensed under the terms of the Ms-PL: http://www.microsoft.com/opensource/licenses.mspx#Ms-PL
 -->
 
@@ -12,7 +12,7 @@
         xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
         xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         xmlns:swf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
-        Title="MainWindow" Height="556" Width="882">
+        Title="Aridia - World Editor" Height="556" Width="882" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="24"/>
@@ -25,10 +25,11 @@
                 <MenuItem Header="Load" />
                 <MenuItem Header="Save as ..." />
                 <MenuItem Header="Save" />
-                <MenuItem Header="Exit"/>
+                <MenuItem Header="Exit" Name="ExitAppMenuItem" Click="ExitAppMenuItem_Click" />
             </MenuItem>
             <MenuItem Header="Editor">
                 <MenuItem Name="SettingsMenuItem"  Header="Settings" Click="SettingsMenuItem_Click" />
+                <MenuItem Name="SaveLayoutMenuItem" Header="Save layout..." Click="SaveLayoutMenuItem_Click" />
             </MenuItem>
             <MenuItem Header="World">
                 <MenuItem Header="Cameras">
@@ -55,18 +56,10 @@
             <ad:ResizingPanel Orientation="Vertical">
                 <ad:ResizingPanel Orientation="Horizontal">
                     <ad:DockablePane ad:ResizingPanel.ResizeWidth="150">
-                        <ad:DockableContent x:Name="classesContent" Title="Classes">
-                            <TreeView>
-                                <TreeViewItem Header="Class1"/>
-                                <TreeViewItem Header="Class2"/>
+                        <ad:DockableContent x:Name="resourceContent" Title="Resources">
+                            <TreeView Name="resourcesTree">
+                                <TreeViewItem Header="Resources" IsExpanded="True"></TreeViewItem>
                             </TreeView>
-                        </ad:DockableContent>
-                        <ad:DockableContent x:Name="toolsContent" Title="Tools">
-                            <ListBox>
-                                <ListBoxItem Content="Tool1"/>
-                                <ListBoxItem Content="Tool2"/>
-                                <ListBoxItem Content="Tool3"/>
-                            </ListBox>
                         </ad:DockableContent>
                     </ad:DockablePane>
                     <ad:DocumentPane>
@@ -80,12 +73,13 @@
                         </ad:DocumentContent>
                     </ad:DocumentPane>
                     <ad:DockablePane ad:ResizingPanel.ResizeWidth="150">
-                        <ad:DockableContent x:Name="solutionExplorer" Title="Solution">
+                        <ad:DockableContent x:Name="solutionExplorer" Title="Solution" FlowDirection="LeftToRight">
                             <TreeView>
                                 <TreeViewItem Header="World"/>
                             </TreeView>
+                            
                         </ad:DockableContent>
-                        <ad:DockableContent x:Name="propertyExplorer" Title="Properties">
+                        <ad:DockableContent x:Name="propertyExplorer" Title="Properties" DataContext="{Binding}">
                             <wfi:WindowsFormsHost>
                                 <swf:PropertyGrid x:Name="propertyGrid"/>
                             </wfi:WindowsFormsHost>
@@ -94,31 +88,23 @@
                 </ad:ResizingPanel>
                 <ad:DockablePane ad:ResizingPanel.ResizeHeight="100">
                     <ad:DockableContent Title="Errors" x:Name="errorsContent">
-                        <ListView>
-                            <ListView.View>
-                                <GridView>
-                                    <GridView.Columns>
-                                        <GridViewColumn Header="Error"/>
-                                        <GridViewColumn Header="Page"/>
-                                        <GridViewColumn Header="File"/>
-                                        <GridViewColumn Header="Row"/>
-                                    </GridView.Columns>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
+                            <DataGrid Name="errorDataGrid" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" />
                     </ad:DockableContent>
-                    <ad:DockableContent Title="Output" x:Name="output">
-
+                    <ad:DockableContent Title="Output" x:Name="outputDockable">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                            <TextBlock Name="output"  DataContext="{Binding}" />
+                        </ScrollViewer>
                     </ad:DockableContent>
                 </ad:DockablePane>
             </ad:ResizingPanel>
         </ad:DockingManager>
 
         <StatusBar Grid.Row="2" Margin="1,0,-1,0">
-            <StatusBarItem Content="Ready" Background="{x:Null}" Width="500" />
-            <StatusBarItem Content="Camera: {X: 0, Y: 0, Z: 0}" Background="{x:Null}" Width="250" />
+            <StatusBarItem Content="Ready" Background="{x:Null}" Width="500" Name="progressStatusBarItem" />
+            <StatusBarItem Content="Camera: {X: 0, Y: 0, Z: 0}" Name="CameraPosition"  Background="{x:Null}" Width="250" />
             <StatusBarItem Content="FPS: 60" Background="{x:Null}" />
         </StatusBar>
+        <ProgressBar Grid.Row="2" Height="18" HorizontalAlignment="Left" Margin="137,3,0,0" Name="progressBar" VerticalAlignment="Top" Width="344" SmallChange="1" />
     </Grid>
 
 </Window>
