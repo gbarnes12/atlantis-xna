@@ -93,11 +93,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\Actor.cs" />
-    <Compile Include="Actors\Cameras\Camera.cs" />
-    <Compile Include="Actors\Cameras\ChaseCamera.cs" />
-    <Compile Include="Actors\Cameras\FPSCamera.cs" />
-    <Compile Include="Actors\Cameras\ThirdPersonCamera.cs" />
-    <Compile Include="Actors\Models\BaseModel.cs" />
+    <Compile Include="Cameras\Camera.cs" />
+    <Compile Include="Cameras\ChaseCamera.cs" />
+    <Compile Include="Cameras\FPSCamera.cs" />
+    <Compile Include="Cameras\ThirdPersonCamera.cs" />
     <Compile Include="Actors\Models\MeshObject.cs" />
     <Compile Include="Actors\Models\SkySphere.cs" />
     <Compile Include="Actors\Primitives\Axis.cs" />
@@ -115,13 +114,13 @@
     <Compile Include="Input\KeyboardInputService.cs" />
     <Compile Include="Input\MouseDevice.cs" />
     <Compile Include="Input\Xbox360ControllerDevice.cs" />
+    <Compile Include="Interfaces\Collections\IActorNodeCollection.cs" />
+    <Compile Include="Interfaces\IActorNode.cs" />
     <Compile Include="Interfaces\ICollideable.cs" />
-    <Compile Include="Interfaces\IDrawableActor.cs" />
     <Compile Include="Interfaces\IGameView.cs" />
     <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IScript.cs" />
     <Compile Include="Interfaces\IUIActor.cs" />
-    <Compile Include="Interfaces\IUpdateableActor.cs" />
     <Compile Include="Misc\Logger.cs" />
     <Compile Include="MediaManager.cs" />
     <Compile Include="Misc\StreamLoader.cs" />
@@ -130,6 +129,7 @@
     <Compile Include="Resources\Resource.cs" />
     <Compile Include="Resources\Shader\DefaultEffect.cs" />
     <Compile Include="Resources\Shader\TextureMappingEffect.cs" />
+    <Compile Include="SceneGraphManager.cs" />
     <Compile Include="ScriptManager.cs" />
     <Compile Include="Structures\GameView.cs" />
     <Compile Include="UI\Button.cs" />

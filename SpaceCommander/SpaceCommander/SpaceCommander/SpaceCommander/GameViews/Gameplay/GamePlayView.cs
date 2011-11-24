@@ -19,44 +19,6 @@ namespace SpaceCommander.GameViews.Gameplay
 {
     public partial class GamePlayView : GameView, IGameView
     {
-        #region Private
-        bool _blocksRendering;
-        bool _blocksUpdating;
-        #endregion
-
-        #region Public
-        public bool BlocksRendering
-        {
-            get
-            {
-                return _blocksRendering;
-            }
-            set
-            {
-                this.SetActorsVisibility(Utils.ToggleBool(value));
-                this._blocksRendering = value;
-            }
-        }
-
-        public bool BlocksUpdating
-        {
-            get
-            {
-                return _blocksUpdating;
-            }
-            set
-            {
-                this.SetActorsUpdateable(Utils.ToggleBool(value));
-                this._blocksUpdating = value;
-            }
-        }
-
-        public bool BlocksInput { get; set; }
-
-        public bool BlocksLoading { get; set; }
-        #endregion
-
-
         public GamePlayView()
             : base("GamePlay")
         {
@@ -68,19 +30,16 @@ namespace SpaceCommander.GameViews.Gameplay
             ScriptManager.Instance.ExecuteScript(GamePlayScript.OnCreateEvent);
         }
 
-        public void LoadContent()
+        public override void LoadContent()
         {
             RegisterActors();
             RegisterEvents();
             ScriptManager.Instance.ExecuteScript(GamePlayScript.OnLoadEvent);
         }
 
-        public void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            WorldManager.Instance.GetActor<SkySphere>("SkySphereSkyGameView").Position = WorldManager.Instance.GetActor<ChaseCamera>("GamePlayCamera").Position;
-            
-
-        
+           // WorldManager.Instance.GetActor<SkySphere>("SkySphereSkyGameView").Position = WorldManager.Instance.GetActor<ChaseCamera>("GamePlayCamera").Position;
         }
 
         public void RegisterEvents()
@@ -91,7 +50,7 @@ namespace SpaceCommander.GameViews.Gameplay
         public void RegisterActors()
         {
             #region 3D Stuff
-
+            /*
             Ship ship = new Ship("SpaceShip", ID, Vector3.Zero);
             ship.LoadContent();
             WorldManager.Instance.AddActor(ship);
@@ -131,7 +90,7 @@ namespace SpaceCommander.GameViews.Gameplay
             TextElement headline = new TextElement("TextElementHeadline2", ID, new Vector2(400, 100), Color.Yellow, "GamePlayView", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
             headline.Scale = 1f;
             WorldManager.Instance.AddActor(headline);
-
+            */
 
             #endregion
         }

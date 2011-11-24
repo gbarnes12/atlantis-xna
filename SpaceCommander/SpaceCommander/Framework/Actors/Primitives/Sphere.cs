@@ -10,39 +10,9 @@ using GameApplicationTools.Actors.Cameras;
 
 namespace GameApplicationTools.Actors.Primitives
 {
-    public class Sphere : Actor, IDrawableActor
+    public class Sphere : Actor
     {
-
-        public Vector3 Position
-        {
-            get;
-            set;
-        }
-
-        public float Angle
-        {
-            get;
-            set;
-        }
-
-        public float Scale
-        {
-            get;
-            set;
-        }
-
-        public Matrix WorldMatrix
-        {
-            get;
-            set;
-        }
-
-        public Matrix RotationMatrix
-        {
-            get;
-            set;
-        }
-
+        #region Private
         DefaultEffect effect;
         VertexBuffer vertexBuffer;
         VertexBuffer vertexBuffer2;
@@ -51,51 +21,31 @@ namespace GameApplicationTools.Actors.Primitives
         VertexPositionColor[] vertices;
         VertexPositionColor[] vertices2;
         VertexPositionColor[] vertices3;
+        #endregion
 
-
-
-        public bool IsVisible
-        {
-            get;
-            set;
-        }
-
-        public bool IsUpdateable
-        {
-            get;
-            set;
-        }
-
-        public Sphere(String ID, Vector3 Position, float Scale)
+        public Sphere(String ID, float Scale)
             : base(ID, null)
         {
             this.Position = Position;
-            this.Scale = Scale;
-            this.IsVisible = true;
-            this.IsUpdateable = true;
-
-            this.WorldMatrix = Matrix.Identity;
+            this.Scale = new Vector3(Scale, Scale, Scale);
         }
 
-        public Sphere(String ID, String GameViewID, Vector3 Position, float Scale)
+        public Sphere(String ID, String GameViewID, float Scale)
             : base(ID, GameViewID)
         {
-            this.Position = Position;
-            this.Scale = Scale;
-            this.IsVisible = true;
-            this.IsUpdateable = true;
-
-            this.WorldMatrix = Matrix.Identity;
+            this.Scale = new Vector3(Scale, Scale, Scale);
         }
 
+        public override BoundingSphere GetBoundingSphere()
+        {
+            return new BoundingSphere(Vector3.Zero, Scale.X);
+        }
 
-        public void LoadContent()
+        public override void LoadContent()
         {
              // load some basiseffect
             effect = new DefaultEffect(ResourceManager.Instance.GetResource<Effect>("DefaultEffect").Clone());
  
-            
-
             // set up our vertices
             vertices = new VertexPositionColor[18];
             vertices2 = new VertexPositionColor[18];
@@ -103,15 +53,15 @@ namespace GameApplicationTools.Actors.Primitives
  
             //first 18 vertices for first ring
             for(int x=0;x<360;x+=20)
-                vertices[x / 20] = new VertexPositionColor(Vector3.Transform(new Vector3(0f, Scale, 0f), Matrix.Identity*Matrix.CreateRotationX(MathHelper.ToRadians(x))) + Position, Color.Blue);
+                vertices[x / 20] = new VertexPositionColor(Vector3.Transform(new Vector3(0f, 1f, 0f), Matrix.Identity*Matrix.CreateRotationX(MathHelper.ToRadians(x))) + Position, Color.Blue);
 
             //second 18 vertices for second ring
             for (int x = 0; x < 360; x += 20)
-                vertices2[x / 20] = new VertexPositionColor(Vector3.Transform(new Vector3(0f, Scale, 0f), Matrix.Identity * Matrix.CreateRotationZ(MathHelper.ToRadians(x))) + Position, Color.Red);
+                vertices2[x / 20] = new VertexPositionColor(Vector3.Transform(new Vector3(0f, 1f, 0f), Matrix.Identity * Matrix.CreateRotationZ(MathHelper.ToRadians(x))) + Position, Color.Red);
 
             //second 18 vertices for second ring
             for (int x = 0; x < 360; x += 20)
-                vertices3[x / 20] = new VertexPositionColor(Vector3.Transform(new Vector3(Scale, 0, 0f), Matrix.Identity * Matrix.CreateRotationY(MathHelper.ToRadians(x))) + Position, Color.Green);
+                vertices3[x / 20] = new VertexPositionColor(Vector3.Transform(new Vector3(1f, 0, 0f), Matrix.Identity * Matrix.CreateRotationY(MathHelper.ToRadians(x))) + Position, Color.Green);
 
 
             //create vertexbuffer
@@ -129,18 +79,14 @@ namespace GameApplicationTools.Actors.Primitives
             indexBuffer = new IndexBuffer(GameApplication.Instance.GetGraphics(), IndexElementSize.ThirtyTwoBits, indices.Length, BufferUsage.WriteOnly);
             indexBuffer.SetData<uint>(indices);
 
-        }
-
-        public void Update(GameTime gameTime)
-        {
-         //   WorldMatrix *= Matrix.CreateRotationY(MathHelper.ToRadians(2));
+            base.LoadContent();
         }
 
         public void Render(GameTime gameTime)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
 
-            effect.World = WorldMatrix;
+            effect.World = Matrix.CreateScale(Scale) * AbsoluteTransform;
             effect.View = camera.View;
             effect.Projection = camera.Projection;
             effect.CurrentTechnique.Passes[0].Apply();

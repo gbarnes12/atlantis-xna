@@ -20,45 +20,8 @@
     using Scripts.GamePlay;
     using Actors;
 
-    public class MainMenuGameView : GameView, IGameView
+    public class MainMenuGameView : GameView
     {
-        #region Private
-        bool _blocksRendering;
-        bool _blocksUpdating;
-        #endregion
-
-        #region Public
-        public bool BlocksRendering
-        {
-            get 
-            {
-                return _blocksRendering;
-            }
-            set
-            {
-                this.SetActorsVisibility(Utils.ToggleBool(value));
-                this._blocksRendering = value;
-            }
-        }
-
-        public bool BlocksUpdating 
-        {  
-            get 
-            {
-                return _blocksUpdating;
-            }
-            set
-            {
-                this.SetActorsUpdateable(Utils.ToggleBool(value));
-                this._blocksUpdating = value;
-            } 
-        }
-
-        public bool BlocksInput { get; set; }
-
-        public bool BlocksLoading { get; set; }
-        #endregion
-
         public MainMenuGameView()
             : base("MainMenu")
         {
@@ -70,19 +33,14 @@
             ScriptManager.Instance.ExecuteScript(MainMenuScript.OnCreateEvent);
         }
 
-        public void LoadContent()
+        public override void LoadContent()
         {
             RegisterActors();
             RegisterEvents();
             ScriptManager.Instance.ExecuteScript(MainMenuScript.OnLoadEvent);
         }
 
-        public void Update(GameTime gameTime)
-        {
-            
-        }
-
-         public void RegisterEvents()
+        public void RegisterEvents()
         {
             this.RegisterEvent(ID, EventType.ButtonEvent_OnClick, "onClickButtonEvent");
         }
@@ -91,24 +49,23 @@
         {
             #region 3D Stuff
             
-            Camera camera = new Camera("mainMenuCamera", ID, new Vector3(0, 0, 1000), Vector3.Zero);
+            Camera camera = new Camera("mainMenuCamera", new Vector3(0, 0, 5), Vector3.Zero);
             camera.LoadContent();
-            WorldManager.Instance.AddActor(camera);
             CameraManager.Instance.CurrentCamera = "mainMenuCamera";
 
-            Planet planet = new Planet("PlanetEarth", ID, new Vector3(-700, 0, 0), 400f);
-            planet.LoadContent();
-            WorldManager.Instance.AddActor(planet);
+            Box box = new Box("box", 1f);
+            box.Position = new Vector3(0, 0, 0);
+            //box.Offset = new Vector3(0, 0, 0);
+            box.LoadContent();
 
-          
+            Sphere sphere = new Sphere("sphereBox", 3f);
+            sphere.Offset = Vector3.Zero;
+            box.Children.Add(sphere);
 
-            SkySphere sky = new SkySphere("SkySphereSky", ID, Vector3.Zero, "space", 10000f);
-            sky.LoadContent();
-            WorldManager.Instance.AddActor(sky);
- 
+            SceneGraphManager.RootNode.Children.Add(box);
             #endregion
 
-            #region UI Stuff
+           /* #region UI Stuff
             TextElement headline = new TextElement("TextElementHeadline", ID, new Vector2(400, 100), Color.Yellow, "Space Commander", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
             headline.Scale = 1f;
             WorldManager.Instance.AddActor(headline);
@@ -119,7 +76,7 @@
             startNewGameButton.LoadContent();
             WorldManager.Instance.AddActor(startNewGameButton);
 
-            #endregion
+            #endregion*/
         }
 
         public bool onClickButtonEvent(Event Event)
@@ -144,5 +101,8 @@
 
             return true;
         }
+
+
+        
     }
 }

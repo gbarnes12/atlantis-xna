@@ -6,6 +6,9 @@
     using System.Text;
 
     using Events;
+    using Interfaces;
+    using GameApplicationTools.Interfaces.Collections;
+    using Microsoft.Xna.Framework;
 
     /// <summary>
     /// This is the basic actor class from
@@ -26,8 +29,12 @@
     /// Author: Gavin Barnes
     /// Version: 1.0
     /// </summary>
-    public class Actor : EventListener
+    public class Actor : EventListener, IActorNode
     {
+        #region Private
+        private ActorNodeCollection children;
+        #endregion
+
         #region Public
         /// <summary>
         /// Returns or sets the current ID 
@@ -44,6 +51,38 @@
         /// actor by its GV ID.
         /// </summary>
         public String GameViewID { get; set; }
+
+        public virtual ActorNodeCollection Children
+        {
+            get { return children; }
+        }
+
+        public virtual Actor Parent
+        {
+            get;
+            set;
+        }
+
+        public virtual Vector3 Position { get; set; }
+
+        public virtual Vector3 Offset { get; set; }
+
+        public virtual Quaternion Rotation { get; set; }
+
+        public virtual bool Visible { get; set; }
+
+        public virtual bool Updateable { get; set; }
+
+        public virtual BoundingSphere BoundingSphere
+        {
+            get { return GetBoundingSphere(); }
+        }
+
+        public virtual Matrix AbsoluteTransform { get; set; }
+
+        public virtual IController Controller { get; set; }
+
+        public virtual Vector3 Scale { get; set; }
         #endregion
 
         /// <summary>
@@ -57,8 +96,33 @@
             // generate the ID
             this.ID = ID;
             this.GameViewID = GameViewID;
+            this.Position = Vector3.Zero;
+            this.Offset = Vector3.Zero;
+            this.Rotation = Quaternion.Identity;
+            this.Visible = true;
+            this.Updateable = true;
+            this.AbsoluteTransform = Matrix.Identity;
+            this.Parent = null;
+            this.Scale = Vector3.Zero;
+            children = new ActorNodeCollection(this);
         }
 
+        public virtual BoundingSphere GetBoundingSphere()
+        {
+            return new BoundingSphere(Vector3.Zero, 0);
+        }
+
+        public virtual void LoadContent(){}
+
+        public virtual void Update(SceneGraphManager sceneGraph)
+        {
+            if (Controller != null)
+                Controller.UpdateSceneNode(this, sceneGraph.GameTime);
+        }
+
+        public virtual void PreRender() { }
+
+        public virtual void Render(SceneGraphManager sceneGraph) { }
     }
 
     /// <summary>

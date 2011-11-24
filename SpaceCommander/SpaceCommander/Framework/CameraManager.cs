@@ -34,12 +34,12 @@ namespace GameApplicationTools
 
         #region Private
         private static CameraManager instance;
-        private List<string> _cameras;
+        private Dictionary<string, Camera> _cameras;
         #endregion
 
         private CameraManager()
         {
-            _cameras = new List<string>();
+            _cameras = new Dictionary<string, Camera>();
         }
 
         /// <summary>
@@ -47,9 +47,9 @@ namespace GameApplicationTools
         /// list. 
         /// </summary>
         /// <param name="ID"></param>
-        public void AddCamera(String ID)
+        public void AddCamera(String ID, Camera obj)
         {
-            _cameras.Add(ID);
+            _cameras.Add(ID, obj);
         }
 
         /// <summary>
@@ -60,9 +60,9 @@ namespace GameApplicationTools
         /// <returns></returns>
         public Camera GetCamera(String ID)
         {
-            if (WorldManager.Instance.GetActors().ContainsKey(ID))
+            if (_cameras.ContainsKey(ID))
             {
-                return WorldManager.Instance.GetActor<Camera>(ID);
+                return _cameras[ID];
             }
             else
                 throw new Exception("There is no camera with the id: " + ID);
@@ -77,9 +77,9 @@ namespace GameApplicationTools
         {
             if (CurrentCamera != null || CurrentCamera == string.Empty)
             {
-                if (WorldManager.Instance.GetActors().ContainsKey(CurrentCamera))
+                if (_cameras.ContainsKey(CurrentCamera))
                 {
-                    return WorldManager.Instance.GetActor(CurrentCamera) as Camera;
+                    return _cameras[CurrentCamera];
                 }
                 else
                     throw new Exception("There is no camera with the id: " + CurrentCamera);

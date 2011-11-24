@@ -27,6 +27,10 @@ using GameApplicationTools.Input;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.IO;
+using GameApplicationTools.Actors;
+using GameApplicationTools.Interfaces;
+using GameApplicationTools.Misc;
+using Microsoft.Xna.Framework.Input;
 
 namespace AridiaEditor
 {
@@ -34,7 +38,9 @@ namespace AridiaEditor
     {
         public static List<Error> errors;
         public static TextBlock outputTextBlock;
-        
+
+        Vector3 rotation;
+        Vector3 translation;
 
 
         Stopwatch watch = new Stopwatch();
@@ -93,7 +99,7 @@ namespace AridiaEditor
             if (!watch.IsRunning)
             {
                 GameApplication.Instance.SetGraphicsDevice(e.GraphicsDevice);
-                
+                MouseDevice.Instance.ResetMouseAfterUpdate = false;
                 ServiceContainer.AddService<IGraphicsDeviceService>(GraphicsDeviceService.AddRef(new IntPtr(), 100, 100));
                 ResourceManager.Instance.Content = new ContentManager(ServiceContainer, contentBuilder.OutputDirectory);
                 ResourceManager.Instance.Content.Unload();
@@ -160,7 +166,7 @@ namespace AridiaEditor
 
                 try
                 {
-                    Camera camera = new Camera("camera", new Vector3(0, 2, 3), Vector3.Zero);
+                    Camera camera = new Camera("camera", new Vector3(0, 2, 10), Vector3.Zero);
                     camera.LoadContent();
                     WorldManager.Instance.AddActor(camera);
                     CameraManager.Instance.CurrentCamera = "camera";
@@ -168,6 +174,16 @@ namespace AridiaEditor
                     Axis axis = new Axis("axis", Vector3.Zero, 1f);
                     axis.LoadContent();
                     WorldManager.Instance.AddActor(axis);
+
+                    Box box = new Box("box", Vector3.Zero, 3f);
+                    box.LoadContent();
+                    WorldManager.Instance.AddActor(box);
+
+                    Sphere sphere = new Sphere("sphere", Vector3.Zero, 3);
+                    sphere.LoadContent();
+                    WorldManager.Instance.AddActor(sphere);
+
+                    propertyGrid.SelectedObject = box;
                 }
                 catch (System.Exception ex)
                 {
@@ -193,8 +209,19 @@ namespace AridiaEditor
         private void xnaControl_RenderXna(object sender, GraphicsDeviceEventArgs e)
         {
             GameApplication.Instance.Update(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
-           // KeyboardDevice.Instance.Update();
-            //MouseDevice.Instance.Update();
+
+            if (KeyboardDevice.Instance.WasKeyPressed(Keys.S))
+            {
+                Camera cam = CameraManager.Instance.GetCurrentCamera();
+                cam.Position = new Vector3(cam.Position.X, cam.Position.Y, cam.Position.Z + 2f * 3f);
+
+            }
+            KeyboardDevice.Instance.Update();
+            
+            
+            MouseDevice.Instance.Update();
+
+
 
             if (CameraManager.Instance.CurrentCamera != null)
                 CameraPosition.Content = "Camera: " + CameraManager.Instance.GetCurrentCamera().Position;
@@ -208,22 +235,52 @@ namespace AridiaEditor
         private void xnaControl_MouseMove(object sender, HwndMouseEventArgs e)
         {
             // If the left or right buttons are down, we adjust the yaw and pitch of the cube
-            /*if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed ||
-                e.RightButton == System.Windows.Input.MouseButtonState.Pressed)
+            if (MouseDevice.Instance.WasButtonPressed(MouseButtons.Left))
             {
-                yaw += (float)(e.Position.X - e.PreviousPosition.X) * .01f;
-                pitch += (float)(e.Position.Y - e.PreviousPosition.Y) * .01f;
-            }*/
+                
+            }
         }
 
         // We use the left mouse button to do exclusive capture of the mouse so we can drag and drag
         // to rotate the cube without ever leaving the control
         private void xnaControl_HwndLButtonDown(object sender, HwndMouseEventArgs e)
         {
-            xnaControl.CaptureMouse();
+            //xnaControl.CaptureMouse();
+            if (CameraManager.Instance.CurrentCamera != null)
+            {
+                foreach (Actor actor in WorldManager.Instance.GetActors().Values)
+                {
+                    if (actor is ICollideable)
+                    {
+                        Camera cam = CameraManager.Instance.GetCurrentCamera();
+                        float x = (float)e.Position.X;
+                        float y = (float)e.Position.X;
+
+                        if (cam.GetMouseRay(new Vector2(x, y)).Intersects(((ICollideable)actor).Sphere) != null)
+                        {
+                            Output.AddToOutput("Object : " + actor.ID + " has been picked!");
+                            propertyGrid.SelectedObject = actor;
+                        }
+                        else
+                        {
+                            Output.AddToOutput("ray didn't hit any object");
+                        }
+                    }
+                }
+            }
         }
 
         private void xnaControl_HwndLButtonUp(object sender, HwndMouseEventArgs e)
+        {
+           // xnaControl.ReleaseMouseCapture();
+        }
+
+        private void xnaControl_HwndRButtonDown(object sender, HwndMouseEventArgs e)
+        {
+            xnaControl.CaptureMouse();
+        }
+
+        private void xnaControl_HwndRButtonUp(object sender, HwndMouseEventArgs e)
         {
             xnaControl.ReleaseMouseCapture();
         }
@@ -253,5 +310,6 @@ namespace AridiaEditor
             dockManager.SaveLayout(Settings.Default.LayoutFile);
         }
         #endregion
+        
     }
 }

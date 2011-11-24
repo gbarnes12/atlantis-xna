@@ -31,7 +31,7 @@
     /// Author: Gavin Barnes
     /// Version: 1.0
     /// </summary>
-    public class Plane : Actor, IDrawableActor
+    public class Plane : Actor
     {
 
         #region Private
@@ -43,70 +43,18 @@
         TextureFilter textureFilter = TextureFilter.Linear;
         #endregion
 
-        #region Public
-        /// <summary>
-        /// The Position of this Actor 
-        /// in the World. 
-        /// </summary>
-        public Vector3 Position { get; set; }
-
-        /// <summary>
-        /// Sets the current angle of this 
-        /// Actor.
-        /// </summary>
-        public float Angle { get; set; }
-
-        /// <summary>
-        /// Sets the scale of our model
-        /// </summary>
-        public float Scale { get; set; }
-
-        /// <summary>
-        /// The world matrix of the inheriting actor
-        /// that we need to set the current scale, position
-        /// and rotation.
-        /// </summary>
-        public Matrix WorldMatrix { get; set; }
-
-        public Matrix RotationMatrix { get; set; }
-
-        /// <summary>
-        /// Determines whether the 
-        /// actor gets drawn or not
-        /// </summary>
-        public bool IsVisible { get; set; }
-
-        /// <summary>
-        /// Determines whether the 
-        /// actor gets updated or not
-        /// </summary>
-        public bool IsUpdateable { get; set; }
-        #endregion
-
         public Plane(String ID, Vector3 Position)
             : base(ID, null)
         {
             this.Position = Position;
-            this.Angle = 0f;
-            this.Scale = 1f;
-            this.IsVisible = true;
-            this.IsUpdateable = true;
-
-            WorldMatrix = Matrix.Identity;
-
+            this.Scale = Vector3.One;
         }
 
         public Plane(String ID, String GameViewID, Vector3 Position)
             : base(ID, GameViewID)
         {
             this.Position = Position;
-            this.Angle = 0f;
-            this.Scale = 1f;
-            this.IsVisible = true;
-            this.IsUpdateable = true;
-
-            WorldMatrix = Matrix.Identity;
-
+            this.Scale = Vector3.One;
         }
 
         /// <summary>
@@ -114,7 +62,7 @@
         /// allows us to load some basic stuff in here.
         /// </summary>
         /// <param name="content"></param>
-        public void LoadContent()
+        public override void LoadContent()
         {
             FPSCamera cam = WorldManager.Instance.GetActor<FPSCamera>("camera");
 
@@ -156,23 +104,12 @@
         }
 
         /// <summary>
-        /// The Update method. This will
-        /// take care of updating our world matrix
-        /// </summary>
-        /// <param name="gameTime"></param>
-        public void Update(GameTime gameTime)
-        {
-            WorldMatrix = Utils.CreateWorldMatrix(Position, Matrix.Identity, new Vector3(Scale, Scale, Scale));
-        }
-
-
-        /// <summary>
         /// The render method. Renders the 
         /// vertices with the help of a vertex and a index buffer
         /// onto the screen.
         /// </summary>
         /// <param name="gameTime"></param>
-        public void Render(GameTime gameTime)
+        public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
 
@@ -184,7 +121,7 @@
                 AddressW = TextureAddressMode.Wrap
             };
 
-            effect.World = WorldMatrix;
+            effect.World = AbsoluteTransform;
             effect.View = camera.View;
             effect.Projection = camera.Projection;
 

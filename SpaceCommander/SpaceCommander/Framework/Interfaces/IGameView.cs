@@ -38,6 +38,11 @@
         /// Can be used to block any loading processes.
         /// </summary>
         bool BlocksLoading { get; set; }
+
+        /// <summary>
+        /// The scene graph manager
+        /// </summary>
+        SceneGraphManager SceneGraphManager { get; set; }
         #endregion
 
         /// <summary>
@@ -54,6 +59,14 @@
         /// </summary>
         /// <param name="gameTime"></param>
         void Update(GameTime gameTime);
+
+        /// <summary>
+        /// The Render method. Just write your 
+        /// update stuff for the specific actor in
+        /// here. 
+        /// </summary>
+        /// <param name="gameTime"></param>
+        void Render();
 
     }
 }

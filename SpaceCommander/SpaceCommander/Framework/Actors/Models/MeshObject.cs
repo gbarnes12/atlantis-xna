@@ -12,118 +12,90 @@
     using Actors.Cameras;
     using Interfaces;
 
-    public class MeshObject : Actor, IDrawableActor, ICollideable
+    public class MeshObject : Actor
     {
-        public Microsoft.Xna.Framework.Vector3 Position
-        {
-            get;
-            set;
-        }
-
-        public float Angle
-        {
-            get;
-            set;
-        }
-
-        public float Scale
-        {
-            get;
-            set;
-        }
-
-        public Microsoft.Xna.Framework.Matrix WorldMatrix
-        {
-            get;
-            set;
-        }
-
-        public Microsoft.Xna.Framework.Matrix RotationMatrix
-        {
-            get;
-            set;
-        }
-
-        public bool IsVisible
-        {
-            get;
-            set;
-        }
-
-        public bool IsUpdateable
-        {
-            get;
-            set;
-        }
-
-        public BoundingSphere Sphere
-        {
-            get;
-            set;
-        }
-
+        #region Private
         private String _fileName;
-
         private Model model;
+        private BoundingSphere modelSphere;
+        #endregion
 
         public MeshObject(String ID, String modelFile, float scale, Vector3 position)
             : base(ID, null)
         {
-            IsVisible = true;
+            
             _fileName = modelFile;
-            this.Position = position;
-            this.IsUpdateable = true;
-            this.Scale = scale;
+            this.Scale = new Vector3(scale, scale, scale);
         }
         public MeshObject(String ID, String modelFile, float scale, Vector3 position,float angle)
             : base(ID, null)
         {
-            IsVisible = true;
             _fileName = modelFile;
-            this.Position = position;
-            this.IsUpdateable = true;
-            this.Scale = scale;
-            this.Angle = angle;
+            this.Scale = new Vector3(scale, scale, scale);
 
         }
 
-        public void LoadContent()
+        private void CalculateBoundingSphere()
+        {
+            //Calculate the bounding sphere for the entire model
+
+            modelSphere = new BoundingSphere();
+
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                modelSphere = Microsoft.Xna.Framework.BoundingSphere.CreateMerged(
+                                    modelSphere,
+                                    model.Meshes[0].BoundingSphere);
+            }
+        }
+
+        public override BoundingSphere GetBoundingSphere()
+        {
+            return modelSphere;
+        }
+
+        public override void LoadContent()
         {
             if (_fileName != "")
                 model = ResourceManager.Instance.GetResource<Model>(_fileName);
         }
 
-        public void Update(Microsoft.Xna.Framework.GameTime gameTime)
-        {
-            Angle += 1f;
-        }
 
-        public void Render(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Render(SceneGraphManager sceneGraph)
         {
-            if (model != null)
+            if (CameraManager.Instance.GetCurrentCamera() != null)
             {
-                Camera camera = CameraManager.Instance.GetCurrentCamera();
-
-                Matrix[] transforms = new Matrix[model.Bones.Count];
-                model.CopyAbsoluteBoneTransformsTo(transforms);
-
-                // Draw the model. A model can have multiple meshes, so loop.
-                foreach (ModelMesh mesh in model.Meshes)
+                if (model != null)
                 {
-                    // This is where the mesh orientation is set, as well 
-                    // as our camera and projection.
-                    foreach (BasicEffect effect in mesh.Effects)
-                    {
-                        WorldMatrix = transforms[mesh.ParentBone.Index] * Utils.CreateWorldMatrix(Position, Matrix.CreateRotationX(MathHelper.ToRadians(Angle)) * Matrix.CreateRotationY(MathHelper.ToRadians(Angle)), new Vector3(Scale));
-
-                        effect.EnableDefaultLighting();
-                        effect.World = WorldMatrix;
-                        effect.View = camera.View;
-                        effect.Projection = camera.Projection;
-                    }
-                    // Draw the mesh, using the effects set above.
-                    mesh.Draw();
-
+                    Camera camera = CameraManager.Instance.GetCurrentCamera();
+                    // Copy the model hierarchy transforms
+                       Matrix[] transforms = new Matrix[model.Bones.Count];
+                       model.CopyAbsoluteBoneTransformsTo(transforms);
+ 
+                       // Render each mesh in the model
+                       foreach (ModelMesh mesh in model.Meshes)
+                       {
+                           foreach (Effect effect in mesh.Effects)
+                           {
+                               BasicEffect basicEffect = effect as BasicEffect;
+ 
+                               if (basicEffect == null)
+                               {
+                                       throw new NotSupportedException("there is no basic effect");
+                               }
+ 
+                               //Set the matrices
+                               basicEffect.World = transforms[mesh.ParentBone.Index] *
+                                                       AbsoluteTransform;
+                               basicEffect.View = camera.View;
+                               basicEffect.Projection = camera.Projection;
+ 
+                               basicEffect.EnableDefaultLighting();
+                           }
+ 
+                           mesh.Draw();
+                       }
+                    
                 }
             }
         }

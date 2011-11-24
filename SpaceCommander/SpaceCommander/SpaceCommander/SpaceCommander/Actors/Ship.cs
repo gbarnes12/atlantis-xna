@@ -14,70 +14,25 @@ using GameApplicationTools.Input;
 
 namespace SpaceCommander.Actors
 {
-    public class Ship  : Actor,IDrawableActor, ICollideable
+    public class Ship  : Actor, ICollideable
     {
-        public Vector3 Position
-        {
-            get;
-            set;
-        }
-
-        public float Angle
-        {
-            get;
-            set;
-        }
-
-        public float Scale
-        {
-            get;
-            set;
-        }
-
-        public Matrix WorldMatrix
-        {
-            get;
-            set;
-        }
-
-        public Matrix RotationMatrix { get; set; }
-
-        public bool IsVisible
-        {
-            get;
-            set;
-        }
-
-        public bool IsUpdateable
-        {
-            get;
-            set;
-        }
-
-
         #region Private
-
         private Model model;
-
         private float yaw, pitch, roll;
-
         private float max_yaw = 30;
         private float max_roll = 30;
-
         private float rotation_speed = 3;
-
         private Vector3 velocity = Vector3.Zero;
         private float speed = 10;
-
+        private BoundingSphere modelSphere;
         #endregion
 
-        public Ship(String ID, String GameViewID, Vector3 position)
+        public Ship(String ID, String GameViewID)
             : base(ID, GameViewID)
         {
-            IsVisible = true;
+
             this.Position = Position;
-            IsUpdateable = true;
-            this.Scale = 0.1f;
+            this.Scale = new Vector3(0.1f, 0.1f, 0.1f);
         }
 
         public void LoadContent()
@@ -134,7 +89,26 @@ namespace SpaceCommander.Actors
                 Position += new Vector3(-speed_x,speed_y,-1f) * speed;
 
              //Matrix.CreateRotationX(MathHelper.ToRadians(roll)) * Matrix.CreateRotationY(MathHelper.ToRadians(yaw)) * Matrix.CreateRotationZ(0.0f);
-            RotationMatrix = Matrix.CreateFromYawPitchRoll(MathHelper.ToRadians(yaw), MathHelper.ToRadians(roll), MathHelper.ToRadians(pitch));
+            Rotation = Quaternion.CreateFromYawPitchRoll(MathHelper.ToRadians(yaw), MathHelper.ToRadians(roll), MathHelper.ToRadians(pitch));
+        }
+
+        private void CalculateBoundingSphere()
+        {
+            //Calculate the bounding sphere for the entire model
+
+            modelSphere = new BoundingSphere();
+
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                modelSphere = Microsoft.Xna.Framework.BoundingSphere.CreateMerged(
+                                    modelSphere,
+                                    model.Meshes[0].BoundingSphere);
+            }
+        }
+
+        public override BoundingSphere GetBoundingSphere()
+        {
+            return modelSphere;
         }
 
         public void Render(GameTime gameTime)
@@ -153,9 +127,9 @@ namespace SpaceCommander.Actors
                     // as our camera and projection.
                     foreach (BasicEffect effect in mesh.Effects)
                     {
-                        WorldMatrix = transforms[mesh.ParentBone.Index] * Utils.CreateWorldMatrix(Position, RotationMatrix, new Vector3(Scale));
                         effect.EnableDefaultLighting();
-                        effect.World = WorldMatrix;
+                        effect.World = transforms[mesh.ParentBone.Index] *
+                                                       AbsoluteTransform;
                         effect.View = camera.View;
                         effect.Projection = camera.Projection;
                     }

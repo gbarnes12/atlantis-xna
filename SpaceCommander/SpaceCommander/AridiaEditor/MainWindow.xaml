@@ -69,7 +69,7 @@
                             </Grid>
                         </ad:DocumentContent>
                         <ad:DocumentContent Title="World View" IsEnabled="True">
-                            <my:GraphicsDeviceControl x:Name="xnaControl" LoadContent="loadContent" RenderXna="xnaControl_RenderXna" HwndMouseMove="xnaControl_MouseMove" HwndLButtonDown="xnaControl_HwndLButtonDown" HwndLButtonUp="xnaControl_HwndLButtonUp" />
+                            <my:GraphicsDeviceControl  x:Name="xnaControl" LoadContent="loadContent" RenderXna="xnaControl_RenderXna" HwndMouseMove="xnaControl_MouseMove" HwndLButtonDown="xnaControl_HwndLButtonDown" HwndLButtonUp="xnaControl_HwndLButtonUp" HwndRButtonDown="xnaControl_HwndRButtonDown" HwndRButtonUp="xnaControl_HwndRButtonUp" />
                         </ad:DocumentContent>
                     </ad:DocumentPane>
                     <ad:DockablePane ad:ResizingPanel.ResizeWidth="150">
