@@ -20,52 +20,9 @@
     /// <summary>
     /// 
     /// </summary>
-    public class Planet : Actor, IDrawableActor
+    public class Planet : Actor
     {
         #region Public
-        /// <summary>
-        /// The Position of this Actor 
-        /// in the World. 
-        /// </summary>
-        public Vector3 Position { get; set; }
-
-        /// <summary>
-        /// Sets the current angle of this 
-        /// Actor.
-        /// </summary>
-        public float Angle { get; set; }
-
-        /// <summary>
-        /// Sets the scale of our model
-        /// </summary>
-        public float Scale { get; set; }
-
-        /// <summary>
-        /// The world matrix of the inheriting actor
-        /// that we need to set the current scale, position
-        /// and rotation.
-        /// </summary>
-        public Matrix WorldMatrix { get; set; }
-
-        public Matrix RotationMatrix { get; set; }
-
-        /// <summary>
-        /// Determines whether the 
-        /// actor gets drawn or not
-        /// </summary>
-        public bool IsVisible { get; set; }
-
-        /// <summary>
-        /// Determines whether the 
-        /// actor gets updated or not
-        /// </summary>
-        public bool IsUpdateable { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Quaternion Rotation { get; set; }
-
         /// <summary>
         /// 
         /// </summary>
@@ -144,7 +101,7 @@
         Texture2D AtmosphereMap { get; set; }
         #endregion
 
-        public Planet(String ID, Vector3 Position, float Scale)
+        public Planet(String ID, float Scale)
             : base(ID, null)
         {
             AmbientColor = Color.Black;
@@ -154,14 +111,11 @@
             CloudShadowIntensity = .2f;
 
             Rotation = new Quaternion(0, 0, 0, 1);
-            this.Position = Position;
-            this.Scale = Scale;
-            this.Angle = 0f;
+            this.Scale = new Vector3(Scale, Scale, Scale);
             this.LightPosition = new Vector3(60, 60, 60);
-            this.IsVisible = true;
         }
 
-        public Planet(String ID, String GameViewID ,Vector3 Position, float Scale)
+        public Planet(String ID, String GameViewID, float Scale)
             : base(ID, GameViewID)
         {
             AmbientColor = Color.Black;
@@ -171,11 +125,8 @@
             CloudShadowIntensity = .2f;
 
             Rotation = new Quaternion(0, 0, 0, 1);
-            this.Position = Position;
-            this.Scale = Scale;
-            this.Angle = 0f;
+            this.Scale = new Vector3(Scale, Scale, Scale);
             this.LightPosition = new Vector3(60, 60, 60);
-            this.IsVisible = true;
         }
 
         /// <summary>
@@ -200,29 +151,8 @@
             AtmosphereMap = ResourceManager.Instance.GetResource<Texture2D>("Earth_Atmosx");
         }
 
-        /// <summary>
-        /// The Update method. This will
-        /// take care of updating our world matrix
-        /// </summary>
-        /// <param name="gameTime"></param>
-        public virtual void Update(GameTime gameTime)
+        public override void PreRender()
         {
-            
-        }
-
-        /// <summary>
-        /// The render method. Renders the 
-        /// vertices with the help of a vertex and index buffer
-        /// onto the screen.
-        /// </summary>
-        /// <param name="gameTime"></param>
-        public virtual void Render(GameTime gameTime)
-        {
-            Camera camera = CameraManager.Instance.GetCurrentCamera();
-
-            WorldMatrix = Utils.CreateWorldMatrix(Position, Matrix.CreateFromQuaternion(Rotation), new Vector3(Scale));
-            Matrix wvp = WorldMatrix * camera.View * camera.Projection;
-
             GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
             {
                 Filter = TextureFilter.Linear,
@@ -232,10 +162,25 @@
                 AddressW = TextureAddressMode.Wrap
             };
 
-            Effect.World= WorldMatrix;
-            Effect.WVP = wvp;
+            base.PreRender();
+        }
 
-            Effect.Time = (float)gameTime.TotalGameTime.TotalSeconds * 3;
+        /// <summary>
+        /// The render method. Renders the 
+        /// vertices with the help of a vertex and index buffer
+        /// onto the screen.
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public override void Render(SceneGraphManager sceneGraph)
+        {
+            Camera camera = CameraManager.Instance.GetCurrentCamera();
+
+            Matrix world =  Utils.CreateWorldMatrix(Position, Matrix.CreateFromQuaternion(Rotation), Scale);
+           
+            Effect.World = world;
+            Effect.WVP = AbsoluteTransform;
+
+            Effect.Time = (float)sceneGraph.GameTime.TotalGameTime.TotalSeconds * 3;
 
             Effect.LightDirection = LightPosition - Position;
 

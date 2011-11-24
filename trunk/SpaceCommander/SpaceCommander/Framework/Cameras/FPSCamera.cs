@@ -48,12 +48,6 @@
             View = Matrix.CreateLookAt(Position, Target, Vector3.Up);
         }
 
-        public FPSCamera(String ID, String GameViewID, Vector3 Position, Vector3 Target)
-            : base(ID, GameViewID, Position, Target)
-        {
-            View = Matrix.CreateLookAt(Position, Target, Vector3.Up);
-        }
-
         // This adds to rotation and translation to change the camera view
         public void RotateTranslate(Vector3 Rotation, Vector3 Translation)
         {
@@ -117,9 +111,7 @@
             // Use the rotation matrix to find the new up
             Up = Rotation.Up;
 
-            // Recalculate View and Projection using the new Position, Target, and Up
-            View = Matrix.CreateLookAt(Position, Target, Up);
-            Projection = Utils.CreateProjectionMatrix();
+            base.Update(gameTime);
         }
 
     }

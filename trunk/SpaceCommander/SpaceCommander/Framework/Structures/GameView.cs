@@ -6,6 +6,8 @@
     using System.Text;
     using Actors;
     using GameApplicationTools.Interfaces;
+    using Microsoft.Xna.Framework;
+    using GameApplicationTools.Misc;
 
     /// <summary>
     /// A GameView is used to represent the game's 
@@ -23,16 +25,72 @@
     public class GameView : EventListener
     {
         #region Public
+
+        bool _blocksRendering;
+        bool _blocksUpdating;
+
         /// <summary>
         /// This is used to have an unique identifier
         /// for the specific GameView within the game.
         /// </summary>
         public String ID { get; set; }
+        public bool BlocksRendering
+        {
+            get
+            {
+                return _blocksRendering;
+            }
+            set
+            {
+                this._blocksRendering = value;
+            }
+        }
+
+        public bool BlocksUpdating
+        {
+            get
+            {
+                return _blocksUpdating;
+            }
+            set
+            {
+                this._blocksUpdating = value;
+            }
+        }
+
+        public bool BlocksInput { get; set; }
+
+        public bool BlocksLoading { get; set; }
+        public SceneGraphManager SceneGraphManager { get; set; }
         #endregion
 
         public GameView(string ID)
         {
             this.ID = ID;
+            SceneGraphManager = new SceneGraphManager();
+        }
+
+        public virtual void LoadContent() { }
+
+        /// <summary>
+        /// Updates the entire SceneGraphManager on this
+        /// game view!
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public virtual void Update(GameTime gameTime)
+        {
+            if (SceneGraphManager != null)
+                SceneGraphManager.Update(gameTime);
+        }
+
+        /// <summary>
+        /// Renders the entire SceneGraphManager
+        /// on this game view!
+        /// </summary>
+        public virtual void Render()
+        {
+            if (SceneGraphManager != null)
+                SceneGraphManager.Render();
         }
 
         /// <summary>
@@ -45,21 +103,9 @@
             Dictionary<String, Actor> actors = WorldManager.Instance.GetActors();
             foreach (Actor actor in actors.Values)
             {
-                if(actor is IDrawableActor)
+                if (actor.GameViewID == ID)
                 {
-                    IDrawableActor actorDrawable = (IDrawableActor)actor;
-                    if (actor.GameViewID == ID)
-                    {
-                        actorDrawable.IsVisible = value;
-                    }
-                }
-                else if (actor is IUIActor)
-                {
-                    IUIActor actorDrawable = (IUIActor)actor;
-                    if (actor.GameViewID == ID)
-                    {
-                        actorDrawable.IsVisible = value;
-                    }
+                    actor.Visible = value;
                 }
             }
         }
@@ -75,29 +121,9 @@
             Dictionary<String, Actor> actors = WorldManager.Instance.GetActors();
             foreach (Actor actor in actors.Values)
             {
-                if (actor is IDrawableActor)
+                if (actor.GameViewID == ID)
                 {
-                    IDrawableActor actorUpdatable = (IDrawableActor)actor;
-                    if (actor.GameViewID == ID)
-                    {
-                        actorUpdatable.IsUpdateable = value;
-                    }
-                }
-                else if (actor is IUIActor)
-                {
-                    IUIActor actorUpdatable = (IUIActor)actor;
-                    if (actor.GameViewID == ID)
-                    {
-                        actorUpdatable.IsUpdateable = value;
-                    }
-                }
-                else if (actor is IUpdateableActor)
-                {
-                    IUpdateableActor actorUpdatable = (IUpdateableActor)actor;
-                    if (actor.GameViewID == ID)
-                    {
-                        actorUpdatable.IsUpdateable = value;
-                    }
+                    actor.Updateable = value;
                 }
             }
         }

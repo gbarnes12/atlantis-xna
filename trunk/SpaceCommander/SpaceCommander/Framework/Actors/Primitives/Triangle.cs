@@ -28,7 +28,7 @@
     /// Author: Gavin Barnes
     /// Version: 1.0
     /// </summary>
-    public class Triangle : Actor, IDrawableActor
+    public class Triangle : Actor
     {
 
         #region Private
@@ -37,50 +37,8 @@
         DefaultEffect effect;
         VertexBuffer vertexBuffer;
         IndexBuffer indexBuffer;
-        SpriteBatch spriteBatch;
         VertexPositionColor[] vertices;
         #endregion
-
-        #region Public
-        /// <summary>
-        /// The Position of this Actor 
-        /// in the World. 
-        /// </summary>
-        public Vector3 Position { get; set; }
-
-        /// <summary>
-        /// Sets the current angle of this 
-        /// Actor.
-        /// </summary>
-        public float Angle { get; set; }
-
-        /// <summary>
-        /// Sets the scale of our model
-        /// </summary>
-        public float Scale { get; set; }
-
-        /// <summary>
-        /// The world matrix of the inheriting actor
-        /// that we need to set the current scale, position
-        /// and rotation.
-        /// </summary>
-        public Matrix WorldMatrix { get; set; }
-
-        public Matrix RotationMatrix { get; set; }
-
-        /// <summary>
-        /// Determines whether the 
-        /// actor gets drawn or not
-        /// </summary>
-        public bool IsVisible { get; set; }
-
-        /// <summary>
-        /// Determines whether the 
-        /// actor gets updated or not
-        /// </summary>
-        public bool IsUpdateable { get; set; }
-        #endregion
-
 
         /// <summary>
         /// Just pass over the ID of this
@@ -89,15 +47,9 @@
         /// </summary>
         /// <param name="ID"></param>
         /// <param name="Position"></param>
-        public Triangle(String ID, Vector3 Position)
+        public Triangle(String ID)
             : base(ID, null)
         {
-            this.Position = Position;
-            this.Angle = 0f;
-            this.IsVisible = true;
-            this.IsUpdateable = true;
-
-            WorldMatrix = Matrix.Identity;
         }
 
         /// <summary>
@@ -108,15 +60,9 @@
         /// <param name="ID"></param>
         /// <param name="GameViewID"></param>
         /// <param name="Position"></param>
-        public Triangle(String ID, String GameViewID, Vector3 Position)
+        public Triangle(String ID, String GameViewID)
             : base(ID, GameViewID) 
         {
-            this.Position = Position;
-            this.Angle = 0f;
-            this.IsVisible = true;
-            this.IsUpdateable = true;
-
-            WorldMatrix = Matrix.Identity;
         }
 
         /// <summary>
@@ -124,11 +70,8 @@
         /// allows us to load some basic stuff in here.
         /// </summary>
         /// <param name="content"></param>
-        public void LoadContent()
+        public override void LoadContent()
         {
-            if (GameApplication.Instance.GetGraphics() != null)
-                spriteBatch = new SpriteBatch(GameApplication.Instance.GetGraphics());
-
             // load some basiseffect
             effect = new DefaultEffect(ResourceManager.Instance.GetResource<Effect>("DefaultEffect").Clone());
 
@@ -148,21 +91,8 @@
             uint[] indices = new uint[] { 0, 1, 2 };
             indexBuffer = new IndexBuffer(GameApplication.Instance.GetGraphics(), IndexElementSize.ThirtyTwoBits, 3, BufferUsage.WriteOnly);
             indexBuffer.SetData<uint>(indices);
-        }
 
-
-        /// <summary>
-        /// The Update method. This will
-        /// take care of updating our world matrix
-        /// and let the triangle rotate. If you
-        /// want to create a none rotating triangle
-        /// just create a new class and copy this one.
-        /// </summary>
-        /// <param name="gameTime"></param>
-        public void Update(GameTime gameTime)
-        {
-            Angle += 0.005f;
-            WorldMatrix = Utils.CreateWorldMatrix(Vector3.Zero, Matrix.CreateRotationX(Angle));
+            base.LoadContent();
         }
 
         /// <summary>
@@ -171,11 +101,11 @@
         /// onto the screen.
         /// </summary>
         /// <param name="gameTime"></param>
-        public void Render(GameTime gameTime)
+        public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
 
-            effect.World = WorldMatrix;
+            effect.World = AbsoluteTransform;
             effect.View = camera.View;
             effect.Projection = camera.Projection;
 

@@ -16,7 +16,7 @@ namespace GameApplicationTools.Actors.Cameras
         Vector3 rotation;
         Vector3 translation;
 
-        private IDrawableActor actor;
+        private Actor actor;
         private Vector3 relativePosition; //relative position to target
 
 
@@ -43,7 +43,7 @@ namespace GameApplicationTools.Actors.Cameras
         }
 
 
-        public ChaseCamera(String ID, Vector3 relativePosition, IDrawableActor actor)
+        public ChaseCamera(String ID, Vector3 relativePosition, Actor actor)
             : base(ID, actor.Position + relativePosition, actor.Position)
         {
             this.actor = actor;
@@ -63,9 +63,6 @@ namespace GameApplicationTools.Actors.Cameras
             Target = new Vector3(0,0,actor.Position.Z);
 
             // Recalculate View and Projection using the new Position, Target, and Up
-            View = Matrix.CreateLookAt(Position, Target, Up);
-            Projection = Utils.CreateProjectionMatrix();
-
             base.Update(gameTime);
         }
 

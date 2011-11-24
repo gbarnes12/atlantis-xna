@@ -13,50 +13,8 @@
     using Resources;
     using Misc;
 
-    public class SkySphere : Actor, IDrawableActor
+    public class SkySphere : Actor
     {
-        #region Public 
-
-        public Microsoft.Xna.Framework.Vector3 Position
-        {
-            get;
-            set;
-        }
-
-        public float Angle
-        {
-            get;
-            set;
-        }
-
-        public float Scale
-        {
-            get;
-            set;
-        }
-
-        public Microsoft.Xna.Framework.Matrix WorldMatrix
-        {
-            get;
-            set;
-        }
-
-        public Microsoft.Xna.Framework.Matrix RotationMatrix { get; set; }
-
-        public bool IsVisible
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Determines whether the 
-        /// actor gets updated or not
-        /// </summary>
-        public bool IsUpdateable { get; set; }
-
-        #endregion
-
         #region Private
 
         private Model model;
@@ -69,7 +27,6 @@
 
         #endregion
 
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -77,15 +34,11 @@
         /// <param name="position">center of the skysphere</param>
         /// <param name="textureFile">texture for the skysphere</param>
         /// <param name="scale">scale of the skysphere</param>
-        public SkySphere(String ID, Vector3 position,String textureFile, float scale)
+        public SkySphere(String ID, String textureFile, float scale)
             : base(ID, null)
         {
-            IsVisible = true;
-            IsUpdateable = true;
-            this.Position = position;
-            this.Scale = scale;
+            this.Scale = new Vector3(scale, scale, scale);
             this.textureFile = textureFile;
-            this.Angle = 0;
         }
 
         /// <summary>
@@ -95,18 +48,15 @@
         /// <param name="position">center of the skysphere</param>
         /// <param name="textureFile">texture for the skysphere</param>
         /// <param name="scale">scale of the skysphere</param>
-        public SkySphere(String ID, String GameViewID, Vector3 position, String textureFile, float scale)
+        public SkySphere(String ID, String GameViewID, String textureFile, float scale)
             : base(ID, GameViewID)
         {
-            IsVisible = true;
-            IsUpdateable = true;
-            this.Position = position;
-            this.Scale = scale;
+            this.Scale = new Vector3(scale, scale, scale);
             this.textureFile = textureFile;
         }
 
 
-        public void LoadContent()
+        public override void LoadContent()
         {
             //create a new effect
             effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone());
@@ -163,7 +113,7 @@
                     foreach (TextureMappingEffect eff in mesh.Effects)
                     {
                         //WorldMatrix = transforms[mesh.ParentBone.Index] * Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(Angle), new Vector3(0.002f, 0.002f, 0.002f));
-                        eff.World = Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(0), new Vector3(Scale));
+                        eff.World = AbsoluteTransform;
                         eff.View = camera.View;
                         eff.Projection = camera.Projection;
                     }

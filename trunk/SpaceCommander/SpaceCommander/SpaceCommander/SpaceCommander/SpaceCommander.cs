@@ -32,7 +32,7 @@ namespace SpaceCommander
     {
         GraphicsDeviceManager graphics;
         KeyboardInputService keyboardInputService;
-        Color BackgroundColor = Color.Black;
+        Color BackgroundColor = Color.CornflowerBlue;
 
         public SpaceCommander()
         {
@@ -49,6 +49,10 @@ namespace SpaceCommander
         /// </summary>
         protected override void Initialize()
         {
+            // Draw as fast as possible :)
+            graphics.SynchronizeWithVerticalRetrace = false;
+            graphics.ApplyChanges();
+
             // set our necessary classes for the game
             GameApplication.Instance.SetGame(this);
             GameApplication.Instance.SetGraphicsDevice(GraphicsDevice);
@@ -133,7 +137,7 @@ namespace SpaceCommander
 
             ScriptManager.Instance.Update(gameTime);
             GameViewManager.Instance.Update(gameTime);
-            GameApplication.Instance.Update(gameTime);
+   
 
             KeyboardDevice.Instance.Update();
             MouseDevice.Instance.Update();
@@ -149,7 +153,7 @@ namespace SpaceCommander
         {
             GraphicsDevice.Clear(BackgroundColor);
 
-            GameApplication.Instance.Render(gameTime);
+            GameViewManager.Instance.Render();
 
             base.Draw(gameTime);
         }

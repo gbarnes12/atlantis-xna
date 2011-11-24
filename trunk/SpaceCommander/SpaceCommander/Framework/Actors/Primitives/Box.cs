@@ -25,7 +25,7 @@
     /// Author: Gavin Barnes
     /// Version: 1.0
     /// </summary>
-    public class Box : Actor, IDrawableActor
+    public class Box : Actor
     {
         #region Private
         // those classes are needed in order
@@ -36,62 +36,16 @@
         TextureMappingEffect effect;
         #endregion
 
-        #region Public
-        /// <summary>
-        /// The Position of this Actor 
-        /// in the World. 
-        /// </summary>
-        public Vector3 Position { get; set; }
-
-        /// <summary>
-        /// Sets the current angle of this 
-        /// Actor.
-        /// </summary>
-        public float Angle { get; set; }
-
-        /// <summary>
-        /// Sets the scale of our model
-        /// </summary>
-        public float Scale { get; set; }
-
-        /// <summary>
-        /// The world matrix of the inheriting actor
-        /// that we need to set the current scale, position
-        /// and rotation.
-        /// </summary>
-        public Matrix WorldMatrix { get; set; }
-
-        public Matrix RotationMatrix { get; set; }
-
-        /// <summary>
-        /// Determines whether the 
-        /// actor gets drawn or not
-        /// </summary>
-        public bool IsVisible { get; set; }
-
-        /// <summary>
-        /// Determines whether the 
-        /// actor gets updated or not
-        /// </summary>
-        public bool IsUpdateable { get; set; }
-        #endregion
-
-        public Box(String ID, Vector3 Position, float Scale) 
+        public Box(String ID, float Scale) 
             : base(ID, null)
         {
-            this.Position = Position;
-            this.IsVisible = true;
-            this.Scale = Scale;
-            this.IsUpdateable = true;
+            this.Scale = new Vector3(Scale, Scale, Scale);
         }
 
-        public Box(String ID, String GameViewID, Vector3 Position, float Scale)
+        public Box(String ID, String GameViewID, float Scale)
             : base(ID, GameViewID)
         {
-            this.Position = Position;
-            this.IsVisible = true;
-            this.Scale = Scale;
-            this.IsUpdateable = true;
+            this.Scale = new Vector3(Scale, Scale, Scale);
         }
 
         /// <summary>
@@ -99,7 +53,7 @@
         /// allows us to load some basic stuff in here.
         /// </summary>
         /// <param name="content"></param>
-        public void LoadContent()
+        public override void LoadContent()
         {
             Vector2 topLeft = new Vector2(0.0f, 0.0f);
             Vector2 topCenter = new Vector2(0.5f, 0.0f);
@@ -164,23 +118,38 @@
             boxIndices = null;
 
             effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone());
-            effect.Texture = ResourceManager.Instance.GetResource<Texture2D>("create");
-
-            GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
-            {
-                Filter = textureFilter
-            };
+            effect.Texture = ResourceManager.Instance.GetResource<Texture2D>("crate");
         }
 
-        /// <summary>
+        public override BoundingSphere GetBoundingSphere()
+        {
+            return new BoundingSphere(Vector3.Zero, 3f);
+        }
+
+        /*/// <summary>
         /// The Update method. This will
         /// take care of updating our world matrix
         /// </summary>
         /// <param name="gameTime"></param>
-        public void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-           WorldMatrix = Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(Angle), new Vector3(Scale, Scale, Scale));
+
+           //Sphere = Utils.TransformBoundingSphere(Sphere, Matrix.Identity);
+        }*/
+
+        /// <summary>
+        /// Sets the SampleStates Filter to a specific filter we have chosen!
+        /// </summary>
+        public override void PreRender()
+        {
+            GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
+            {
+                Filter = textureFilter
+            };
+
+            base.PreRender();
         }
+
 
         /// <summary>
         /// The render method. Renders the 
@@ -188,11 +157,11 @@
         /// onto the screen.
         /// </summary>
         /// <param name="gameTime"></param>
-        public void Render(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
 
-            effect.World = WorldMatrix;
+            effect.World = Matrix.CreateScale(Scale) * AbsoluteTransform;
             effect.View = camera.View;
             effect.Projection = camera.Projection;
 
@@ -201,6 +170,8 @@
             GameApplication.Instance.GetGraphics().SetVertexBuffer(VertextBuffer);
             GameApplication.Instance.GetGraphics().Indices = IndexBuffer;
             GameApplication.Instance.GetGraphics().DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 24, 0, 12);
+
+            base.Render(sceneGraph);
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Content;
     public class GameViewManager
     {
         #region Private
-        private Dictionary<String, IGameView> _gameViews;
+        private Dictionary<String, GameView> _gameViews;
         private static GameViewManager instance;
         #endregion
 
@@ -39,7 +39,7 @@ using Microsoft.Xna.Framework.Content;
 
         private GameViewManager()
         {
-            this._gameViews = new Dictionary<string, IGameView>();
+            this._gameViews = new Dictionary<string, GameView>();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ using Microsoft.Xna.Framework.Content;
         /// </summary>
         /// <param name="ID">The id of the game view you want to retrieve</param>
         /// <returns>Instance of the IGameView interface within our dictionary.</returns>
-        public IGameView GetGameView(String ID)
+        public GameView GetGameView(String ID)
         {
             if (_gameViews.ContainsKey(ID))
                 return _gameViews[ID];
@@ -89,7 +89,7 @@ using Microsoft.Xna.Framework.Content;
         /// useful and will come in handy. 
         /// </summary>
         /// <returns>The Dictionary<String, Actor></returns>
-        public Dictionary<String, IGameView> GetGameViews()
+        public Dictionary<String, GameView> GetGameViews()
         {
             return this._gameViews;
         }
@@ -104,22 +104,15 @@ using Microsoft.Xna.Framework.Content;
         {
             if (_gameViews != null)
             {
-                if (gameView is IGameView)
+                if (gameView.ID != null || gameView.ID != "" || gameView.ID != " ")
                 {
-                    if (gameView.ID != null || gameView.ID != "" || gameView.ID != " ")
-                    {
-                        if (!_gameViews.ContainsKey(gameView.ID))
-                            this._gameViews.Add(gameView.ID, (IGameView)gameView);
-                        else
-                            throw new Exception("There is already an actor with the id: " + gameView.ID);
-                    }
+                    if (!_gameViews.ContainsKey(gameView.ID))
+                        this._gameViews.Add(gameView.ID, gameView);
                     else
-                        throw new Exception("Your actor has no valid ID or even no ID assigned. Please assign some id to it!");
+                        throw new Exception("There is already an actor with the id: " + gameView.ID);
                 }
                 else
-                {
-                    throw new Exception("This GameView isn't of the type IGameView!");
-                }
+                    throw new Exception("Your actor has no valid ID or even no ID assigned. Please assign some id to it!");
             }
         }
 
@@ -131,11 +124,25 @@ using Microsoft.Xna.Framework.Content;
         {
             if (_gameViews.Count > 0)
             {
-                foreach (IGameView gameView in _gameViews.Values)
+                foreach (GameView gameView in _gameViews.Values)
                 {
                     if (!gameView.BlocksUpdating)
                     {
                         gameView.Update(gameTime);
+                    }
+                }
+            }
+        }
+
+        public void Render()
+        {
+            if (_gameViews.Count > 0)
+            {
+                foreach (GameView gameView in _gameViews.Values)
+                {
+                    if (!gameView.BlocksRendering)
+                    {
+                        gameView.Render();
                     }
                 }
             }
@@ -149,7 +156,7 @@ using Microsoft.Xna.Framework.Content;
         {
             if (_gameViews.Count > 0)
             {
-                foreach (IGameView gameView in _gameViews.Values)
+                foreach (GameView gameView in _gameViews.Values)
                 {
                     if (!gameView.BlocksLoading)
                     {

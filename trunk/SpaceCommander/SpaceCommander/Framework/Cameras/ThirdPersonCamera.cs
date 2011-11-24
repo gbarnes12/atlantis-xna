@@ -39,11 +39,11 @@ namespace GameApplicationTools.Actors.Cameras
         }
 
 
-        private IDrawableActor actor;
+        private Actor actor;
         private Vector3 relativePosition; //relative position to target
         private Matrix shipRotationMatrix = Matrix.Identity;
 
-        public ThirdPersonCamera(String ID,Vector3 relativePosition, IDrawableActor actor)
+        public ThirdPersonCamera(String ID,Vector3 relativePosition, Actor actor)
             :base(ID,actor.Position+relativePosition,actor.Position)
         {
             this.actor = actor;
@@ -55,7 +55,7 @@ namespace GameApplicationTools.Actors.Cameras
 
         public override void Update(GameTime gameTime)
         {
-            shipRotationMatrix = Matrix.Lerp(shipRotationMatrix, actor.RotationMatrix, 0.1f);
+            shipRotationMatrix = Matrix.Lerp(shipRotationMatrix, Matrix.CreateFromQuaternion(actor.Rotation), 0.1f);
 
             Position = Vector3.Transform(relativePosition,shipRotationMatrix)+actor.Position;
 

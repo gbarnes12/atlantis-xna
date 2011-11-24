@@ -81,6 +81,11 @@
                     Path = GameApplication.Instance.TexturePath,
                     Type = ResourceType.Texture2D
                 },
+                new Resource() {
+                    Name = "crate",
+                    Path = GameApplication.Instance.TexturePath,
+                    Type = ResourceType.Texture2D
+                },
                 // EARTH TEXTURES!
                 new Resource() {
                     Name = "Earth_Atmos",
