@@ -58,8 +58,8 @@
             //box.Offset = new Vector3(0, 0, 0);
             box.LoadContent();
 
-            Sphere sphere = new Sphere("sphereBox", 3f);
-            sphere.Offset = new Vector3(0, 0, 1);
+            Sphere sphere = new Sphere("sphereBox", 2f);
+            sphere.Offset = new Vector3(0, 0, 0);
             sphere.LoadContent();
             box.Children.Add(sphere);
 

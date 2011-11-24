@@ -82,7 +82,7 @@ namespace GameApplicationTools.Actors.Primitives
             base.LoadContent();
         }
 
-        public void Render(GameTime gameTime)
+        public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
 
