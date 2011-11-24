@@ -92,9 +92,9 @@
                 {
                     node.PreRender();
                     node.Render(this);
-                }
-                else
-                {
+               }
+               else
+               {
                     nodesCulled++;
                 }
             }
