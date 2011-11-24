@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // MainWindow.xaml.cs
 //
-// Copyright 2011, Nick Gravelyn.
+// Copyright 2011, Gavin Barnes.
 // Licensed under the terms of the Ms-PL: http://www.microsoft.com/opensource/licenses.mspx#Ms-PL
 //-----------------------------------------------------------------------------
 #endregion
@@ -38,6 +38,7 @@ namespace AridiaEditor
     {
         public static List<Error> errors;
         public static TextBlock outputTextBlock;
+        public static SceneGraphManager sceneGraph;
 
         Vector3 rotation;
         Vector3 translation;
@@ -46,6 +47,7 @@ namespace AridiaEditor
         Stopwatch watch = new Stopwatch();
         ContentBuilder contentBuilder;
         ServiceContainer ServiceContainer;
+        
 
         // The color applied to the cube in the second viewport
         Color cubeColor = Color.Red;
@@ -103,6 +105,7 @@ namespace AridiaEditor
                 ServiceContainer.AddService<IGraphicsDeviceService>(GraphicsDeviceService.AddRef(new IntPtr(), 100, 100));
                 ResourceManager.Instance.Content = new ContentManager(ServiceContainer, contentBuilder.OutputDirectory);
                 ResourceManager.Instance.Content.Unload();
+                sceneGraph = new SceneGraphManager();
 
                 if (File.Exists(Settings.Default.LayoutFile))
                     dockManager.RestoreLayout(Settings.Default.LayoutFile);
@@ -168,22 +171,23 @@ namespace AridiaEditor
                 {
                     Camera camera = new Camera("camera", new Vector3(0, 2, 10), Vector3.Zero);
                     camera.LoadContent();
-                    WorldManager.Instance.AddActor(camera);
                     CameraManager.Instance.CurrentCamera = "camera";
 
-                    Axis axis = new Axis("axis", Vector3.Zero, 1f);
+                    Axis axis = new Axis("axis", 1f);
                     axis.LoadContent();
-                    WorldManager.Instance.AddActor(axis);
+                    sceneGraph.RootNode.Children.Add(axis);
 
-                    Box box = new Box("box", Vector3.Zero, 3f);
+                    Box box = new Box("box", 1f);
+                    box.Position = new Vector3(0, 0, 0);
                     box.LoadContent();
-                    WorldManager.Instance.AddActor(box);
 
-                    Sphere sphere = new Sphere("sphere", Vector3.Zero, 3);
+                    Sphere sphere = new Sphere("sphere", 2f);
+                    sphere.Offset = Vector3.Zero;
                     sphere.LoadContent();
-                    WorldManager.Instance.AddActor(sphere);
 
-                    propertyGrid.SelectedObject = box;
+                    box.Children.Add(sphere);
+                    sceneGraph.RootNode.Children.Add(box);
+
                 }
                 catch (System.Exception ex)
                 {
@@ -208,7 +212,7 @@ namespace AridiaEditor
         /// </summary>
         private void xnaControl_RenderXna(object sender, GraphicsDeviceEventArgs e)
         {
-            GameApplication.Instance.Update(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
+            sceneGraph.Update(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
 
             if (KeyboardDevice.Instance.WasKeyPressed(Keys.S))
             {
@@ -216,19 +220,16 @@ namespace AridiaEditor
                 cam.Position = new Vector3(cam.Position.X, cam.Position.Y, cam.Position.Z + 2f * 3f);
 
             }
+
             KeyboardDevice.Instance.Update();
-            
-            
             MouseDevice.Instance.Update();
-
-
 
             if (CameraManager.Instance.CurrentCamera != null)
                 CameraPosition.Content = "Camera: " + CameraManager.Instance.GetCurrentCamera().Position;
 
             e.GraphicsDevice.Clear(Color.White);
 
-            GameApplication.Instance.Render(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
+            sceneGraph.Render();
         }
 
         // Invoked when the mouse moves over the second viewport
