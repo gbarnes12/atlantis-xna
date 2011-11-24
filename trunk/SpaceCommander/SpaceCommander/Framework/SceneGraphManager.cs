@@ -88,14 +88,17 @@
                                                              node.AbsoluteTransform);
                 transformedSphere.Radius = node.BoundingSphere.Radius;
 
-                if (CameraManager.Instance.GetCurrentCamera().Frustum.Intersects(transformedSphere))
+                if (CameraManager.Instance.CurrentCamera != null)
                 {
-                    node.PreRender();
-                    node.Render(this);
-               }
-               else
-               {
-                    nodesCulled++;
+                    if (CameraManager.Instance.GetCurrentCamera().Frustum.Intersects(transformedSphere))
+                    {
+                        node.PreRender();
+                        node.Render(this);
+                    }
+                    else
+                    {
+                        nodesCulled++;
+                    }
                 }
             }
 
@@ -114,7 +117,8 @@
         {
             gameTime = time;
 
-            CameraManager.Instance.GetCurrentCamera().Update(time);
+            if(CameraManager.Instance.CurrentCamera != null)
+                CameraManager.Instance.GetCurrentCamera().Update(time);
 
             UpdateRecursive(rootNode);
             CalculateTransformsRecursive(rootNode);
