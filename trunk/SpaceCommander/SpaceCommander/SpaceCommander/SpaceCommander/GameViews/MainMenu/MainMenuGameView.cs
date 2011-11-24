@@ -48,8 +48,8 @@
         public void RegisterActors()
         {
             #region 3D Stuff
-            
-            Camera camera = new Camera("mainMenuCamera", new Vector3(0, 0, 5), Vector3.Zero);
+
+            FPSCamera camera = new FPSCamera("mainMenuCamera", new Vector3(0, 0, 5), Vector3.Zero);
             camera.LoadContent();
             CameraManager.Instance.CurrentCamera = "mainMenuCamera";
 
@@ -59,7 +59,8 @@
             box.LoadContent();
 
             Sphere sphere = new Sphere("sphereBox", 3f);
-            sphere.Offset = Vector3.Zero;
+            sphere.Offset = new Vector3(0, 0, 1);
+            sphere.LoadContent();
             box.Children.Add(sphere);
 
             SceneGraphManager.RootNode.Children.Add(box);
