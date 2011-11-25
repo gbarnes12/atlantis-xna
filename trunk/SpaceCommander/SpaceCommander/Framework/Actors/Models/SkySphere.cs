@@ -13,6 +13,14 @@
     using Resources;
     using Misc;
 
+    /// <summary>
+    /// Represents a SkySphere which gets drawn by 
+    /// a basic sphere. This can be used to draw a 
+    /// beautiful sky or some sort of space. 
+    /// 
+    /// Author: Dominik Finkbeiner
+    /// Version: 1.0
+    /// </summary>
     public class SkySphere : Actor
     {
         #region Private
@@ -55,7 +63,10 @@
             this.textureFile = textureFile;
         }
 
-
+        /// <summary>
+        /// The method which loads our necessary content from
+        /// the resource manager.
+        /// </summary>
         public override void LoadContent()
         {
             //create a new effect
@@ -76,12 +87,37 @@
                     part.Effect = effect;
         }
 
-        public void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        /// <summary>
+        /// Set the necessary render states so we can 
+        /// make sure everything draws correctly!
+        /// </summary>
+        public override void PreRender()
         {
+            if (model != null)
+            {
+                //set cullMode to None
+                RasterizerState rs = new RasterizerState();
+                rs.CullMode = CullMode.CullClockwiseFace;
+                GameApplication.Instance.GetGraphics().RasterizerState = rs;
 
+                GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
+                {
+                    Filter = TextureFilter.Linear,
+
+                    AddressU = TextureAddressMode.Wrap,
+                    AddressV = TextureAddressMode.Wrap,
+                    AddressW = TextureAddressMode.Wrap
+                };
+            }
+            base.PreRender();
         }
 
-        public void Render(Microsoft.Xna.Framework.GameTime gameTime)
+        /// <summary>
+        /// Render the sky sphere with all its transformations and 
+        /// effects.
+        /// </summary>
+        /// <param name="sceneGraph">The scene graph responsible for this actor - <see cref="SceneGraphManager"/></param>
+        public override void Render(SceneGraphManager sceneGraph)
         {
             if (model != null)
             {
@@ -91,20 +127,6 @@
                 Matrix[] transforms = new Matrix[model.Bones.Count];
                 model.CopyAbsoluteBoneTransformsTo(transforms);
                 
-                //set cullMode to None
-                RasterizerState rs = new RasterizerState();
-                rs.CullMode = CullMode.CullClockwiseFace;
-                GameApplication.Instance.GetGraphics().RasterizerState = rs;
-
-                GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
-                {
-                    Filter = TextureFilter.Linear,
-                    
-                    AddressU = TextureAddressMode.Wrap,
-                    AddressV = TextureAddressMode.Wrap,
-                    AddressW = TextureAddressMode.Wrap
-                };
-
                 // Draw the model. A model can have multiple meshes, so loop.
                 foreach (ModelMesh mesh in model.Meshes)
                 {
@@ -113,7 +135,7 @@
                     foreach (TextureMappingEffect eff in mesh.Effects)
                     {
                         //WorldMatrix = transforms[mesh.ParentBone.Index] * Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(Angle), new Vector3(0.002f, 0.002f, 0.002f));
-                        eff.World = AbsoluteTransform;
+                        eff.World = Matrix.CreateScale(Scale) * AbsoluteTransform;
                         eff.View = camera.View;
                         eff.Projection = camera.Projection;
                     }
@@ -122,11 +144,14 @@
                 }
 
                 //reset cullMode
+                RasterizerState rs = new RasterizerState();
                 rs = null;
                 rs = new RasterizerState();
                 rs.CullMode = CullMode.CullCounterClockwiseFace;
                 GameApplication.Instance.GetGraphics().RasterizerState = rs;
             }
+
+            base.Render(sceneGraph);
         }
     }
 }

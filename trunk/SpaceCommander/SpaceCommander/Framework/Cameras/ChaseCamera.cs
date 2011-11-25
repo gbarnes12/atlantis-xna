@@ -1,15 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using GameApplicationTools.Interfaces;
-using GameApplicationTools.Misc;
-
-namespace GameApplicationTools.Actors.Cameras
+﻿namespace GameApplicationTools.Actors.Cameras
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using Microsoft.Xna.Framework;
+
+    using Interfaces;
+    using Misc;
+
+    /// <summary>
+    /// This camera class is used to chase a target but won't take 
+    /// any rotation parameters because it is just a static camera 
+    /// which follows it target. It is used in the game codenamed 
+    /// SpaceCommander and represents the implementation of the 
+    /// StarFox Camera. 
+    /// 
+    /// Author: Dominik Finkbeiner
+    /// Version: 1.0
+    /// </summary>
     public class ChaseCamera : Camera
     {
+        #region Private
         Vector3 _target;
         Vector3 _position;
 
@@ -18,30 +31,7 @@ namespace GameApplicationTools.Actors.Cameras
 
         private Actor actor;
         private Vector3 relativePosition; //relative position to target
-
-
-        public Matrix Rotation { get; set; }
-
-        public override Vector3 Target
-        {
-            get { return _target; }
-            set
-            {
-                _target = value;
-                View = Matrix.CreateLookAt(Position, _target, Vector3.Up);
-            }
-        }
-
-        public override Vector3 Position
-        {
-            get { return _position; }
-            set
-            {
-                _position = value;
-                View = Matrix.CreateLookAt(_position, Target, Vector3.Up);
-            }
-        }
-
+        #endregion
 
         public ChaseCamera(String ID, Vector3 relativePosition, Actor actor)
             : base(ID, actor.Position + relativePosition, actor.Position)
@@ -54,6 +44,12 @@ namespace GameApplicationTools.Actors.Cameras
 
         }
 
+        /// <summary>
+        /// The update method. Updates the position and the target of the camera
+        /// regarding the position of an actor. Won't rotate around the actor
+        /// or anything else. 
+        /// </summary>
+        /// <param name="gameTime">The elapsed game time - <see cref="GameTime"/></param>
         public override void Update(GameTime gameTime)
         {
             Position = new Vector3(0,0,actor.Position.Z) + relativePosition;

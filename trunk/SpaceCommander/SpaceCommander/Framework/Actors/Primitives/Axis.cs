@@ -62,7 +62,6 @@
         /// The body of a load content method which
         /// allows us to load some basic stuff in here.
         /// </summary>
-        /// <param name="content"></param>
         public override void LoadContent()
         {
            
@@ -105,12 +104,12 @@
         /// vertices with the help of a vertex and index buffer
         /// onto the screen.
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="SceneGraphManager">The scene graph responsible for this actor - <see cref="SceneGraphManager"/></param>
         public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
 
-            effect.World = AbsoluteTransform;
+            effect.World = Matrix.CreateScale(Scale) * AbsoluteTransform;
             effect.View = camera.View;
             effect.Projection = camera.Projection;
             effect.CurrentTechnique.Passes[0].Apply();

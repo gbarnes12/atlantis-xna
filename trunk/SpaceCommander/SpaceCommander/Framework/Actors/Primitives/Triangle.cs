@@ -69,7 +69,6 @@
         /// The body of a load content method which
         /// allows us to load some basic stuff in here.
         /// </summary>
-        /// <param name="content"></param>
         public override void LoadContent()
         {
             // load some basiseffect
@@ -96,11 +95,11 @@
         }
 
         /// <summary>
-        /// The render method. Render's the 
+        /// The render method. Render the 
         /// vertices with the help of a vertex and index buffer
         /// onto the screen.
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="sceneGraph">The scene graph responsible for this actor - <see cref="SceneGraphManager"/></param>
         public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
@@ -114,6 +113,8 @@
             GameApplication.Instance.GetGraphics().SetVertexBuffer(vertexBuffer);
             GameApplication.Instance.GetGraphics().Indices = indexBuffer;
             GameApplication.Instance.GetGraphics().DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 3, 0, 1);
+
+            base.Render(sceneGraph);
         }
 
     }

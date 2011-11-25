@@ -12,6 +12,16 @@
     using Actors.Cameras;
     using Interfaces;
 
+    /// <summary>
+    /// Represents a basic model in our world
+    /// can be used for furniture and other kind 
+    /// of object which don't need any special treatment. 
+    /// 
+    /// @todo: Implement normal mapping on this object!
+    /// 
+    /// Author: Dominik Finkbeiner
+    /// Version: 1.0
+    /// </summary>
     public class MeshObject : Actor
     {
         #region Private
@@ -20,14 +30,15 @@
         private BoundingSphere modelSphere;
         #endregion
 
-        public MeshObject(String ID, String modelFile, float scale, Vector3 position)
+        public MeshObject(String ID, String modelFile, float scale)
             : base(ID, null)
         {
             
             _fileName = modelFile;
             this.Scale = new Vector3(scale, scale, scale);
         }
-        public MeshObject(String ID, String modelFile, float scale, Vector3 position,float angle)
+
+        public MeshObject(String ID, String modelFile, float scale, float angle)
             : base(ID, null)
         {
             _fileName = modelFile;
@@ -35,6 +46,10 @@
 
         }
 
+        /// <summary>
+        /// Calculates the bounding sphere which we get from
+        /// our model meshes!
+        /// </summary>
         private void CalculateBoundingSphere()
         {
             //Calculate the bounding sphere for the entire model
@@ -49,18 +64,29 @@
             }
         }
 
+        /// <summary>
+        /// Returns an active bounding sphere for this object!
+        /// </summary>
+        /// <returns>BoundingSphere which gets computed after every update</returns>
         public override BoundingSphere GetBoundingSphere()
         {
             return modelSphere;
         }
 
+        /// <summary>
+        /// The method which loads our necessary content from
+        /// the resource manager.
+        /// </summary>
         public override void LoadContent()
         {
             if (_fileName != "")
                 model = ResourceManager.Instance.GetResource<Model>(_fileName);
         }
 
-
+        /// <summary>
+        /// Finally render the model to the screen with some basic effect
+        /// </summary>
+        /// <param name="sceneGraph">The scene graph responsible for this actor - <see cref="SceneGraphManager"/></param>
         public override void Render(SceneGraphManager sceneGraph)
         {
             if (CameraManager.Instance.GetCurrentCamera() != null)
@@ -85,7 +111,7 @@
                                }
  
                                //Set the matrices
-                               basicEffect.World = transforms[mesh.ParentBone.Index] *
+                               basicEffect.World = Matrix.CreateScale(Scale) * transforms[mesh.ParentBone.Index] *
                                                        AbsoluteTransform;
                                basicEffect.View = camera.View;
                                basicEffect.Projection = camera.Projection;

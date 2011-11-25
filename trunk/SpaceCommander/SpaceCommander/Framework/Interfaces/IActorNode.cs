@@ -10,6 +10,7 @@
     using Collections;
 
     using Microsoft.Xna.Framework;
+    using GameApplicationTools.Actors.Cameras;
 
     /// <summary>
     /// This interface is used together with the
@@ -50,13 +51,5 @@
         void Render(SceneGraphManager sceneGraph);
         #endregion
 
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IController
-    {
-        void UpdateSceneNode(IActorNode node, GameTime gameTime);
     }
 }

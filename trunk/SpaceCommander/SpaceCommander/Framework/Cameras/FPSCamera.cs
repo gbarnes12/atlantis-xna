@@ -4,43 +4,35 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
+
     using Events;
     using UI;
     using Input;
     using Misc;
 
+    /// <summary>
+    /// A basic first person camera which can used for flying around 
+    /// a scene or even as a ego shooter like camera.
+    /// 
+    /// Author: Gavin Barnes
+    /// Version: 1.0
+    /// </summary>
     public class FPSCamera : Camera
     {
+        #region Private
         Vector3 _target;
         Vector3 _position;
 
         Vector3 rotation;
         Vector3 translation;
+        #endregion
 
+        #region Public
         public Matrix Rotation { get; set; }
-
-        public override Vector3 Target
-        {
-            get { return _target; }
-            set {
-                _target = value;
-                View = Matrix.CreateLookAt(Position, _target, Vector3.Up);
-            }
-        }
-
-        public override Vector3 Position
-        {
-            get { return _position; }
-            set
-            {
-                _position = value;
-                View = Matrix.CreateLookAt(_position, Target, Vector3.Up);
-            }
-        }
-
-
+        #endregion
 
         public FPSCamera(String ID, Vector3 Position, Vector3 Target)
             : base(ID, Position, Target)
@@ -48,15 +40,24 @@
             View = Matrix.CreateLookAt(Position, Target, Vector3.Up);
         }
 
-        // This adds to rotation and translation to change the camera view
+
+        /// <summary>
+        /// Adds some rotation and translation to the camera thus we can 
+        /// change the camera view.
+        /// </summary>
+        /// <param name="Rotation"></param>
+        /// <param name="Translation"></param>
         public void RotateTranslate(Vector3 Rotation, Vector3 Translation)
         {
             translation += Translation;
             rotation += Rotation;
         }
 
-       
-
+        /// <summary>
+        /// The update method. It will update the camera's position and rotation regarding 
+        /// the input of the keyboard and the rotation delta of the mouse.
+        /// </summary>
+        /// <param name="gameTime">The elapsed game time - <see cref="GameTime"/></param>
         public override void Update(GameTime gameTime)
         {
             if (KeyboardDevice.Instance != null && MouseDevice.Instance != null)
