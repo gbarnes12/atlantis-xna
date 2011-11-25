@@ -67,6 +67,7 @@
     <Compile Include="Interfaces\Collections\IActorNodeCollection.cs" />
     <Compile Include="Interfaces\IActorNode.cs" />
     <Compile Include="Interfaces\ICollideable.cs" />
+    <Compile Include="Interfaces\IController.cs" />
     <Compile Include="Interfaces\IGameView.cs" />
     <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IScript.cs" />

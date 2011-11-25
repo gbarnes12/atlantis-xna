@@ -69,6 +69,22 @@
         }
 
         /// <summary>
+        /// Creates a Projection matrix you won't need
+        /// this function more often than once since we
+        /// save it within our camera class. 
+        /// 
+        /// The nearPlane is set to: .01f and the far plane
+        /// to: 5000. 
+        /// </summary>
+        /// <returns>Matrix</returns>
+        public static Matrix CreateProjectionMatrix(float FieldOfView, float AspectRatio, float NearPlane, float FarPlane)
+        {
+            return Matrix.CreatePerspectiveFieldOfView(FieldOfView,
+                            AspectRatio,
+                            NearPlane, FarPlane);
+        }
+
+        /// <summary>
         /// This helper function takes a BoundingSphere and a transform matrix, and
         /// returns a transformed version of that BoundingSphere.
         /// </summary>

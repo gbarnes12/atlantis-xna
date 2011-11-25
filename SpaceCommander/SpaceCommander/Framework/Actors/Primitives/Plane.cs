@@ -61,7 +61,6 @@
         /// The body of a load content method which
         /// allows us to load some basic stuff in here.
         /// </summary>
-        /// <param name="content"></param>
         public override void LoadContent()
         {
             FPSCamera cam = WorldManager.Instance.GetActor<FPSCamera>("camera");
@@ -104,11 +103,11 @@
         }
 
         /// <summary>
-        /// The render method. Renders the 
+        /// The render method. Render the 
         /// vertices with the help of a vertex and a index buffer
         /// onto the screen.
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="sceneGraph">The scene graph responsible for this actor - <see cref="SceneGraphManager"/></param>
         public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();

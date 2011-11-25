@@ -23,7 +23,7 @@
     /// interface.
     /// 
     /// Author: Gavin Barnes
-    /// Version: 1.0
+    /// Version: 1.2
     /// </summary>
     public class Box : Actor
     {
@@ -52,7 +52,6 @@
         /// The body of a load content method which
         /// allows us to load some basic stuff in here.
         /// </summary>
-        /// <param name="content"></param>
         public override void LoadContent()
         {
             Vector2 topLeft = new Vector2(0.0f, 0.0f);
@@ -121,21 +120,15 @@
             effect.Texture = ResourceManager.Instance.GetResource<Texture2D>("crate");
         }
 
+        /// <summary>
+        /// Get the BoundingSphere with the value of Vector3.Zero and 
+        /// a radius of Scale.
+        /// </summary>
+        /// <returns>Return a valid bounding sphere <see cref="BoundSphere" /></returns>
         public override BoundingSphere GetBoundingSphere()
         {
-            return new BoundingSphere(Vector3.Zero, 3f);
+            return new BoundingSphere(Vector3.Zero, Scale.Length());
         }
-
-        /*/// <summary>
-        /// The Update method. This will
-        /// take care of updating our world matrix
-        /// </summary>
-        /// <param name="gameTime"></param>
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
-        {
-
-           //Sphere = Utils.TransformBoundingSphere(Sphere, Matrix.Identity);
-        }*/
 
         /// <summary>
         /// Sets the SampleStates Filter to a specific filter we have chosen!
@@ -152,11 +145,11 @@
 
 
         /// <summary>
-        /// The render method. Renders the 
+        /// The render method. Render the 
         /// vertices with the help of a vertex and index buffer
         /// onto the screen.
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="sceneGraph">The scene graph responsible for this actor - <see cref="SceneGraphManager"/></param>
         public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();

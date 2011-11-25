@@ -4,7 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using GameApplicationTools.Actors;
+
+    using Actors;
 
     public class ActorNodeCollection : ICollection<Actor>
     {

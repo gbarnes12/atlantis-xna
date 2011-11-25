@@ -1,15 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GameApplicationTools.Interfaces;
-using Microsoft.Xna.Framework;
-using GameApplicationTools.Resources;
-using Microsoft.Xna.Framework.Graphics;
-using GameApplicationTools.Actors.Cameras;
-
-namespace GameApplicationTools.Actors.Primitives
+﻿namespace GameApplicationTools.Actors.Primitives
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
+    using Actors.Cameras;
+    using Interfaces;
+    using Resources;
+
+    /// <summary>
+    /// The class sphere is very useful to draw some debug 
+    /// information to the screen by adding this to a actor node
+    /// with the same scale information as the bounding sphere of
+    /// the parent actor.
+    /// 
+    /// Author: Dominik Finkbeiner
+    /// Version: 1.0
+    /// </summary>
     public class Sphere : Actor
     {
         #region Private
@@ -36,11 +47,20 @@ namespace GameApplicationTools.Actors.Primitives
             this.Scale = new Vector3(Scale, Scale, Scale);
         }
 
+        /// <summary>
+        /// Get the BoundingSphere with the value of Vector3.Zero and 
+        /// a radius of Scale.
+        /// </summary>
+        /// <returns>Return a valid bounding sphere <see cref="BoundSphere" /></returns>
         public override BoundingSphere GetBoundingSphere()
         {
-            return new BoundingSphere(Vector3.Zero, Scale.X);
+            return new BoundingSphere(Vector3.Zero, Scale.Length());
         }
 
+        /// <summary>
+        /// The body of a load content method which
+        /// allows us to load some basic stuff in here.
+        /// </summary>
         public override void LoadContent()
         {
              // load some basiseffect
@@ -82,6 +102,12 @@ namespace GameApplicationTools.Actors.Primitives
             base.LoadContent();
         }
 
+        /// <summary>
+        /// The render method. Render the 
+        /// vertices with the help of a vertex and index buffer
+        /// onto the screen.
+        /// </summary>
+        /// <param name="sceneGraph">The scene graph responsible for this actor - <see cref="SceneGraphManager"/></param>
         public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();

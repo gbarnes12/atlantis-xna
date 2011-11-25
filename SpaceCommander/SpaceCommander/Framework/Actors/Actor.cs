@@ -52,36 +52,79 @@
         /// </summary>
         public String GameViewID { get; set; }
 
+        /// <summary>
+        /// The collection of actors of this parent node. 
+        /// You can add some actors to the collection to
+        /// connect them to this actor. 
+        /// </summary>
         public virtual ActorNodeCollection Children
         {
             get { return children; }
         }
 
+        /// <summary>
+        /// The current parent node of the actor.
+        /// </summary>
         public virtual Actor Parent
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The position in the world (not relative to the parent node)
+        /// </summary>
         public virtual Vector3 Position { get; set; }
 
+        /// <summary>
+        /// The relative position to the parent node!
+        /// </summary>
         public virtual Vector3 Offset { get; set; }
 
+        /// <summary>
+        /// Rotation of this node represented as 
+        /// Quaternion.
+        /// </summary>
         public virtual Quaternion Rotation { get; set; }
 
+        /// <summary>
+        /// Determines if this actor is visible or not
+        /// </summary>
         public virtual bool Visible { get; set; }
 
+        /// <summary>
+        /// Determines if this actor gets updated or 
+        /// not.
+        /// </summary>
         public virtual bool Updateable { get; set; }
 
+        /// <summary>
+        /// Returns the bounding sphere which was calculated 
+        /// by the scene graph.
+        /// </summary>
         public virtual BoundingSphere BoundingSphere
         {
             get { return GetBoundingSphere(); }
         }
 
+        /// <summary>
+        /// This is the world matrix but is transformed
+        /// by the scene graph and the parent nodes. 
+        /// </summary>
         public virtual Matrix AbsoluteTransform { get; set; }
 
+        /// <summary>
+        /// You have the possibility to hook 
+        /// an controller to the actor if you want. 
+        /// 
+        /// This could be something like a path finding
+        /// or rotation controller. 
+        /// </summary>
         public virtual IController Controller { get; set; }
 
+        /// <summary>
+        /// The scale of the object.
+        /// </summary>
         public virtual Vector3 Scale { get; set; }
         #endregion
 
@@ -107,21 +150,40 @@
             children = new ActorNodeCollection(this);
         }
 
+        /// <summary>
+        /// Get the BoundingSphere with the value of Vector3.Zero and 
+        /// a radius of 0.
+        /// </summary>
+        /// <returns>Return a valid bounding sphere <see cref="BoundSphere" /></returns>
         public virtual BoundingSphere GetBoundingSphere()
         {
             return new BoundingSphere(Vector3.Zero, 0);
         }
 
+        /// <summary>
+        /// The load content method. This just does nothing!
+        /// </summary>
         public virtual void LoadContent(){}
 
+        /// <summary>
+        /// The update method. This just does nothing!
+        /// </summary>
+        /// <param name="sceneGraph">The scene graph responsible for this actor - <see cref="SceneGraphManager"/></param>
         public virtual void Update(SceneGraphManager sceneGraph)
         {
             if (Controller != null)
                 Controller.UpdateSceneNode(this, sceneGraph.GameTime);
         }
 
+        /// <summary>
+        /// The pre render method. This just does nothing!
+        /// </summary>
         public virtual void PreRender() { }
 
+        /// <summary>
+        /// The render method. This just does nothing!
+        /// </summary>
+        /// <param name="sceneGraph">The scene graph responsible for this actor - <see cref="SceneGraphManager"/></param>
         public virtual void Render(SceneGraphManager sceneGraph) { }
     }
 

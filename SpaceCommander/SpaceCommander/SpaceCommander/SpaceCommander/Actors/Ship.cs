@@ -14,7 +14,7 @@ using GameApplicationTools.Input;
 
 namespace SpaceCommander.Actors
 {
-    public class Ship  : Actor, ICollideable
+    public class Ship : Actor, ICollideable
     {
         #region Private
         private Model model;
@@ -25,13 +25,12 @@ namespace SpaceCommander.Actors
         private Vector3 velocity = Vector3.Zero;
         private float speed = 10;
         private BoundingSphere modelSphere;
+        public BoundingSphere Sphere { get; set; }
         #endregion
 
         public Ship(String ID, String GameViewID)
             : base(ID, GameViewID)
         {
-
-            this.Position = Position;
             this.Scale = new Vector3(0.1f, 0.1f, 0.1f);
         }
 
@@ -40,10 +39,8 @@ namespace SpaceCommander.Actors
             model = ResourceManager.Instance.GetResource<Model>("p1_wedge");
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(SceneGraphManager sceneGraph)
         {
-
-
             if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A))
             {
                 if (yaw < max_yaw)
@@ -55,8 +52,8 @@ namespace SpaceCommander.Actors
                 if (yaw > -max_yaw)
                     yaw -= rotation_speed;
             }
-            else if(yaw<0)
-                yaw +=rotation_speed;
+            else if (yaw < 0)
+                yaw += rotation_speed;
             else if (yaw > 0)
                 yaw -= rotation_speed;
 
@@ -76,21 +73,26 @@ namespace SpaceCommander.Actors
                 roll -= rotation_speed;
 
             //move the ship
-            float speed_x=0,speed_y=0;
+            float speed_x = 0, speed_y = 0;
 
-            if(roll< 0)
+            if (roll < 0)
                 speed_y = -1;
-            else if(roll > 0)
-                speed_y=1;
-               if(yaw <0)
-                   speed_x = -1;
-            else if(yaw > 0)
-                   speed_x = 1;
-                Position += new Vector3(-speed_x,speed_y,-1f) * speed;
+            else if (roll > 0)
+                speed_y = 1;
+            if (yaw < 0)
+                speed_x = -1;
+            else if (yaw > 0)
+                speed_x = 1;
+            Position += new Vector3(-speed_x, speed_y, -1f) * speed;
 
-             //Matrix.CreateRotationX(MathHelper.ToRadians(roll)) * Matrix.CreateRotationY(MathHelper.ToRadians(yaw)) * Matrix.CreateRotationZ(0.0f);
+            //Matrix.CreateRotationX(MathHelper.ToRadians(roll)) * Matrix.CreateRotationY(MathHelper.ToRadians(yaw)) * Matrix.CreateRotationZ(0.0f);
             Rotation = Quaternion.CreateFromYawPitchRoll(MathHelper.ToRadians(yaw), MathHelper.ToRadians(roll), MathHelper.ToRadians(pitch));
+
+
+            base.Update(sceneGraph);
         }
+
+
 
         private void CalculateBoundingSphere()
         {
@@ -111,7 +113,12 @@ namespace SpaceCommander.Actors
             return modelSphere;
         }
 
-        public void Render(GameTime gameTime)
+        public override void PreRender()
+        {
+            base.PreRender();
+        }
+
+        public override void Render(SceneGraphManager sceneGraph)
         {
             if (model != null)
             {
@@ -138,9 +145,10 @@ namespace SpaceCommander.Actors
 
                 }
             }
+            base.Render(sceneGraph);
         }
 
-        public BoundingSphere Sphere { get; set; }
-        
+       
+
     }
 }

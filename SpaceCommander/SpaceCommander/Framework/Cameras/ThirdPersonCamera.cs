@@ -1,47 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using GameApplicationTools.Interfaces;
-using GameApplicationTools.Misc;
-
-namespace GameApplicationTools.Actors.Cameras
+﻿namespace GameApplicationTools.Actors.Cameras
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using Microsoft.Xna.Framework;
+
+    using Interfaces;
+    using Misc;
+
+    /// <summary>
+    /// This follows a character not only based on its position 
+    /// but also on its rotation. It can be used to have some sort 
+    /// of full third person camera instead of the normal chase camera.
+    /// 
+    /// Author: Dominik Finkbeiner
+    /// Version: 1.0
+    /// </summary>
     public class ThirdPersonCamera : Camera
     {
+        #region Private
         Vector3 _target;
         Vector3 _position;
 
         Vector3 rotation;
         Vector3 translation;
 
-        public Matrix Rotation { get; set; }
-
-        public override Vector3 Target
-        {
-            get { return _target; }
-            set
-            {
-                _target = value;
-                View = Matrix.CreateLookAt(Position, _target, Vector3.Up);
-            }
-        }
-
-        public override Vector3 Position
-        {
-            get { return _position; }
-            set
-            {
-                _position = value;
-                View = Matrix.CreateLookAt(_position, Target, Vector3.Up);
-            }
-        }
-
-
         private Actor actor;
         private Vector3 relativePosition; //relative position to target
         private Matrix shipRotationMatrix = Matrix.Identity;
+        #endregion
 
         public ThirdPersonCamera(String ID,Vector3 relativePosition, Actor actor)
             :base(ID,actor.Position+relativePosition,actor.Position)
@@ -53,6 +42,11 @@ namespace GameApplicationTools.Actors.Cameras
             Projection = Utils.CreateProjectionMatrix();
         }
 
+        /// <summary>
+        /// The update method. It will update the camera's position and rotation regarding 
+        /// an actor's position and rotation.
+        /// </summary>
+        /// <param name="gameTime">The elapsed game time - <see cref="GameTime"/></param>
         public override void Update(GameTime gameTime)
         {
             shipRotationMatrix = Matrix.Lerp(shipRotationMatrix, Matrix.CreateFromQuaternion(actor.Rotation), 0.1f);
