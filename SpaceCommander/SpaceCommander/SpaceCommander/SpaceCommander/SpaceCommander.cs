@@ -23,6 +23,7 @@ namespace SpaceCommander
     using GameViews.Gameplay;
     using GameApplicationTools.Interfaces;
     using Scripts;
+    using GameApplicationTools.Structures;
 
 
     /// <summary>
@@ -98,7 +99,7 @@ namespace SpaceCommander
 
             GameViewManager.Instance.LoadContent();
 
-            IGameView gamplayView = GameViewManager.Instance.GetGameView("GamePlay") as IGameView;
+            GameView gamplayView = GameViewManager.Instance.GetGameView("GamePlay") as GameView;
             gamplayView.BlocksInput = true;
             gamplayView.BlocksLoading = false;
             gamplayView.BlocksRendering = true;

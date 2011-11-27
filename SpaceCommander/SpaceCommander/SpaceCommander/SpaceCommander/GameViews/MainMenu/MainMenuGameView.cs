@@ -95,7 +95,7 @@
             if (((Button)((ButtonEvent_OnClick)Event).Sender).ID == "ButtonStartNewGame")
             {
                 GameConsole.Instance.WriteLine("Button was clicked");
-                IGameView gamplayView = GameViewManager.Instance.GetGameView("GamePlay") as IGameView;
+                GameView gamplayView = GameViewManager.Instance.GetGameView("GamePlay") as GameView;
                 gamplayView.BlocksInput = false;
                 gamplayView.BlocksLoading = false;
                 gamplayView.BlocksRendering = false;
