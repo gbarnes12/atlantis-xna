@@ -133,6 +133,8 @@
             // create projection matrix
             Projection = Utils.CreateProjectionMatrix();
 
+            Frustum = new BoundingFrustum(Matrix.Multiply(View, Projection));
+
             // add the camera to the camera manager
             CameraManager.Instance.AddCamera(this.ID, this);
         }

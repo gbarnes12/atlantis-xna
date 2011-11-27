@@ -49,11 +49,21 @@
         {
             #region 3D Stuff
 
-            FPSCamera camera = new FPSCamera("mainMenuCamera", new Vector3(0, 0, 5), Vector3.Zero);
+            Camera camera = new Camera("mainMenuCamera", new Vector3(0, 50, 600), Vector3.Zero);
             camera.LoadContent();
             CameraManager.Instance.CurrentCamera = "mainMenuCamera";
 
-            Box box = new Box("box", 1f);
+            SkySphere sky = new SkySphere("SkySphereMainMenuView", "space", 10000f);
+            sky.Position = Vector3.Zero;
+            sky.LoadContent();
+            SceneGraphManager.RootNode.Children.Add(sky);
+
+            Planet planet = new Planet("GamePlanetEarth",700f);
+            planet.Position = new Vector3(-1200, 0, -600);
+            planet.LoadContent();
+            SceneGraphManager.RootNode.Children.Add(planet);
+
+           /* Box box = new Box("box", 1f);
             box.Position = new Vector3(0, 0, 0);
             //box.Offset = new Vector3(0, 0, 0);
             box.LoadContent();
@@ -61,23 +71,23 @@
             Sphere sphere = new Sphere("sphereBox", 2f);
             sphere.Offset = new Vector3(0, 0, 0);
             sphere.LoadContent();
-            box.Children.Add(sphere);
+            box.Children.Add(sphere);*/
 
-            SceneGraphManager.RootNode.Children.Add(box);
+            //SceneGraphManager.RootNode.Children.Add(box);
+
+            
+
             #endregion
 
-           /* #region UI Stuff
-            TextElement headline = new TextElement("TextElementHeadline", ID, new Vector2(400, 100), Color.Yellow, "Space Commander", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
+            #region UI Stuff
+            TextElement headline = new TextElement("TextElementHeadline", new Vector2(400, 100), Color.Yellow, "Space Commander", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
             headline.Scale = 1f;
-            WorldManager.Instance.AddActor(headline);
+            UIManager.Instance.AddActor(headline);
 
-            Button startNewGameButton = new Button("ButtonStartNewGame", ID, new Vector2(400, 150), ResourceManager.Instance.GetResource<Texture2D>("startnewgame_button"), 312, 83);
-            startNewGameButton.IsVisible = true;
-            startNewGameButton.IsUpdateable = true;
+            Button startNewGameButton = new Button("ButtonStartNewGame", new Vector2(400, 150), ResourceManager.Instance.GetResource<Texture2D>("startnewgame_button"), 312, 83);
             startNewGameButton.LoadContent();
-            WorldManager.Instance.AddActor(startNewGameButton);
-
-            #endregion*/
+            UIManager.Instance.AddActor(startNewGameButton);
+            #endregion
         }
 
         public bool onClickButtonEvent(Event Event)

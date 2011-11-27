@@ -50,6 +50,7 @@
     <Compile Include="Actors\Primitives\Plane.cs" />
     <Compile Include="Actors\Primitives\Sphere.cs" />
     <Compile Include="Actors\Primitives\Triangle.cs" />
+    <Compile Include="Actors\UIActor.cs" />
     <Compile Include="CameraManager.cs" />
     <Compile Include="Cameras\Camera.cs" />
     <Compile Include="Cameras\ChaseCamera.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="Interfaces\IGameView.cs" />
     <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IScript.cs" />
-    <Compile Include="Interfaces\IUIActor.cs" />
+    <Compile Include="Interfaces\IUIActorNode.cs" />
     <Compile Include="MediaManager.cs" />
     <Compile Include="Misc\Logger.cs" />
     <Compile Include="Misc\StreamLoader.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="SceneGraphManager.cs" />
     <Compile Include="ScriptManager.cs" />
     <Compile Include="Structures\GameView.cs" />
+    <Compile Include="UIManager.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Console.cs" />
     <Compile Include="UI\TextElement.cs" />

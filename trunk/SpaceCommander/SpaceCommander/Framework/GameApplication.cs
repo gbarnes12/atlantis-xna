@@ -80,7 +80,7 @@ namespace GameApplicationTools
             
             // set our near plane and far plane variables
             NearPlane = .01f;
-            FarPlane = 5000;
+            FarPlane = 100000f;
 
             // set up all path variables we need thus 
             // we don't create any errors

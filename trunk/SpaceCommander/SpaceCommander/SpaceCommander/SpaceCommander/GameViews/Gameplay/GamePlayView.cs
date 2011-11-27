@@ -39,7 +39,7 @@ namespace SpaceCommander.GameViews.Gameplay
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-           // WorldManager.Instance.GetActor<SkySphere>("SkySphereSkyGameView").Position = WorldManager.Instance.GetActor<ChaseCamera>("GamePlayCamera").Position;
+           WorldManager.Instance.GetActor<SkySphere>("SkySphereSkyGameView").Position = CameraManager.Instance.GetCurrentCamera().Position;
         }
 
         public void RegisterEvents()
@@ -50,48 +50,53 @@ namespace SpaceCommander.GameViews.Gameplay
         public void RegisterActors()
         {
             #region 3D Stuff
-            /*
-            Ship ship = new Ship("SpaceShip", ID, Vector3.Zero);
+            Ship ship = new Ship("SpaceShip", ID);
             ship.LoadContent();
-            WorldManager.Instance.AddActor(ship);
+            SceneGraphManager.RootNode.Children.Add(ship);
 
-            Planet planet = new Planet("GamePlanetEarth", ID, new Vector3(-1200, 0, -600), 700f);
+            ChaseCamera camera = new ChaseCamera("GamePlayCamera", new Vector3(0, 50, 600), ship);
+            camera.LoadContent();
+            CameraManager.Instance.CurrentCamera = "GamePlayCamera";
+
+            Planet planet = new Planet("GamePlanetEarth2", ID, 700f);
+            planet.Position = new Vector3(-1200, 0, -600);
             planet.LoadContent();
-            WorldManager.Instance.AddActor(planet);
+            SceneGraphManager.RootNode.Children.Add(planet);
 
-            Planet planet2 = new Planet("GamePlanetEarth2", ID, new Vector3(700, 0, -10300), 400f);
+            Planet planet2 = new Planet("GamePlanetEarth3", ID, 400f);
+            planet2.Position = new Vector3(700, 0, -10300);
             planet2.LoadContent();
-            WorldManager.Instance.AddActor(planet2);
+            SceneGraphManager.RootNode.Children.Add(planet2);
 
             Random random = new Random();
 
             for (int i = 0; i < 100; i++)
             {
-                MeshObject asteroid01 = new MeshObject("asteroid" + i, "asteroid", random.Next(20,100), new Vector3(random.Next(-1000, 1000), random.Next(-500, 500), random.Next(-100, 0) - i * 300),random.Next(0,360));
+                MeshObject asteroid01 = new MeshObject("asteroid" + i, "asteroid", random.Next(0,360));
+                asteroid01.Rotation = Quaternion.CreateFromYawPitchRoll(random.Next(20,100),random.Next(20,100),random.Next(20,100));
+                asteroid01.Position = new Vector3(random.Next(-1000, 1000), random.Next(-500, 500), random.Next(-100, 0) - i * 300);
                 asteroid01.LoadContent();
-                WorldManager.Instance.AddActor(asteroid01);
-
+                
                 //test
-                Sphere sphere = new Sphere("testCollSphere"+i, ID, asteroid01.Position, asteroid01.Scale*1.5f);
+                Sphere sphere = new Sphere("testCollSphere"+i, ID, 1f);
+                sphere.Scale = asteroid01.Scale * 1.5f;
+                sphere.Offset = Vector3.Zero;
                 sphere.LoadContent();
-                WorldManager.Instance.AddActor(sphere);
+                asteroid01.Children.Add(sphere);
+
+                SceneGraphManager.RootNode.Children.Add(asteroid01);
             }
 
-            ChaseCamera camera = new ChaseCamera("GamePlayCamera", new Vector3(0,50,600), ship);
-            camera.LoadContent();
-            WorldManager.Instance.AddActor(camera);
-
-            SkySphere sky = new SkySphere("SkySphereSkyGameView", ID, Vector3.Zero, "space", 10000f);
+            SkySphere sky = new SkySphere("SkySphereSkyGameView", "space", 10000f);
+            sky.Position = Vector3.Zero;
             sky.LoadContent();
-            WorldManager.Instance.AddActor(sky);
+            SceneGraphManager.RootNode.Children.Add(sky);
             #endregion
 
             #region UI Stuff
-            TextElement headline = new TextElement("TextElementHeadline2", ID, new Vector2(400, 100), Color.Yellow, "GamePlayView", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
+            TextElement headline = new TextElement("TextElementHeadline2", new Vector2(400, 100), Color.Yellow, "GamePlayView", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
             headline.Scale = 1f;
-            WorldManager.Instance.AddActor(headline);
-            */
-
+            UIManager.Instance.AddActor(headline);
             #endregion
         }
     }

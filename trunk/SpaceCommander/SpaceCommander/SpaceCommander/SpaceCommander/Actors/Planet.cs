@@ -106,7 +106,7 @@
         {
             AmbientColor = Color.Black;
             AmbientIntensity = .02f;
-            CloudSpeed = .0000025f;
+            CloudSpeed = .00025f;
             CloudHeight = .0001f;
             CloudShadowIntensity = .2f;
 
@@ -134,7 +134,7 @@
         /// allows us to load some basic stuff in here.
         /// </summary>
         /// <param name="content"></param>
-        public virtual void LoadContent()
+        public override void LoadContent()
         {
             // load our model business in here
             Model = ResourceManager.Instance.GetResource<Model>("planet");
@@ -175,10 +175,11 @@
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
 
-            Matrix world =  Utils.CreateWorldMatrix(Position, Matrix.CreateFromQuaternion(Rotation), Scale);
+           // Matrix world =  Utils.CreateWorldMatrix(Position, Matrix.CreateFromQuaternion(Rotation), Scale);
            
-            Effect.World = world;
-            Effect.WVP = AbsoluteTransform;
+
+            Effect.World = Matrix.CreateScale(Scale) * AbsoluteTransform;
+            Effect.WVP = Matrix.CreateScale(Scale) * AbsoluteTransform * camera.View * camera.Projection;
 
             Effect.Time = (float)sceneGraph.GameTime.TotalGameTime.TotalSeconds * 3;
 
@@ -220,6 +221,8 @@
             RasterizerState rs = new RasterizerState();
             rs.CullMode = CullMode.CullCounterClockwiseFace;
             GameApplication.Instance.GetGraphics().RasterizerState = rs;
+
+            base.Render(sceneGraph);
         }
     }
 }

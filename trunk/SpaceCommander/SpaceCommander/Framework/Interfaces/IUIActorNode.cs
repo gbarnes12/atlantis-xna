@@ -6,6 +6,7 @@
     using System.Text;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
 
 
     /// <summary>
@@ -17,8 +18,9 @@
     /// Author: Gavin Barnes
     /// Version: 1.0
     /// </summary>
-    public interface IUIActor
+    public interface IUIActorNode
     {
+        #region Public
         /// <summary>
         /// The Position of this Actor 
         /// in the World. 
@@ -35,7 +37,7 @@
         /// Determines whether the 
         /// actor gets drawn or not
         /// </summary>
-        bool IsVisible { get; set; }
+        bool Visible { get; set; }
 
         /// <summary>
         /// Sets the scale of our model
@@ -46,13 +48,32 @@
         /// Determines whether the 
         /// actor gets updated or not
         /// </summary>
-        bool IsUpdateable { get; set; }
+        bool Updateable { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        IController Controller { get; set; }
+
+        /// <summary>
+        /// The sprite batch which can be used
+        /// to draw some stuff
+        /// </summary>
+        SpriteBatch SpriteBatch { get; set; }
+
+        /// <summary>
+        /// A rectangle used to check collision with the mouse 
+        /// or something else. 
+        /// </summary>
+        Rectangle Rectangle { get; set; }
+
+        Color Color { get; set; }
+        #endregion
 
         /// <summary>
         /// The body of a load content method which
         /// allows us to load some basic stuff in here.
         /// </summary>
-        /// <param name="content"></param>
         void LoadContent();
 
         /// <summary>

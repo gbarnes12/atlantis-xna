@@ -25,14 +25,11 @@
     {
         #region Private
 
-        private Model model;
-        VertexBuffer VertextBuffer;
-        IndexBuffer IndexBuffer;
-        TextureFilter textureFilter = TextureFilter.Linear;
+        Model model;
         TextureMappingEffect effect;
         Texture2D texture;
         String textureFile;
-
+        BoundingSphere modelSphere;
         #endregion
 
         /// <summary>
@@ -61,6 +58,33 @@
         {
             this.Scale = new Vector3(scale, scale, scale);
             this.textureFile = textureFile;
+        }
+
+        /// <summary>
+        /// Calculates the bounding sphere which we get from
+        /// our model meshes!
+        /// </summary>
+        private void CalculateBoundingSphere()
+        {
+            //Calculate the bounding sphere for the entire model
+
+            modelSphere = new BoundingSphere();
+
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                modelSphere = Microsoft.Xna.Framework.BoundingSphere.CreateMerged(
+                                    modelSphere,
+                                    mesh.BoundingSphere);
+            }
+        }
+
+        /// <summary>
+        /// Returns an active bounding sphere for this object!
+        /// </summary>
+        /// <returns>BoundingSphere which gets computed after every update</returns>
+        public override BoundingSphere GetBoundingSphere()
+        {
+            return modelSphere;
         }
 
         /// <summary>
@@ -135,7 +159,8 @@
                     foreach (TextureMappingEffect eff in mesh.Effects)
                     {
                         //WorldMatrix = transforms[mesh.ParentBone.Index] * Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(Angle), new Vector3(0.002f, 0.002f, 0.002f));
-                        eff.World = Matrix.CreateScale(Scale) * AbsoluteTransform;
+                        eff.World = Matrix.CreateScale(Scale) * transforms[mesh.ParentBone.Index] * 
+                                         AbsoluteTransform;
                         eff.View = camera.View;
                         eff.Projection = camera.Projection;
                     }
