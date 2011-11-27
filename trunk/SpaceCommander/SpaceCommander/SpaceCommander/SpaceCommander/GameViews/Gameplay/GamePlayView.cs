@@ -17,7 +17,7 @@ using GameApplicationTools.Actors.Primitives;
 
 namespace SpaceCommander.GameViews.Gameplay
 {
-    public partial class GamePlayView : GameView, IGameView
+    public partial class GamePlayView : GameView
     {
         public GamePlayView()
             : base("GamePlay")
