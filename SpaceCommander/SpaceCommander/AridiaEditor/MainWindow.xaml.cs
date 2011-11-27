@@ -31,6 +31,7 @@ using GameApplicationTools.Actors;
 using GameApplicationTools.Interfaces;
 using GameApplicationTools.Misc;
 using Microsoft.Xna.Framework.Input;
+using AridiaEditor.Cameras;
 
 namespace AridiaEditor
 {
@@ -47,7 +48,8 @@ namespace AridiaEditor
         Stopwatch watch = new Stopwatch();
         ContentBuilder contentBuilder;
         ServiceContainer ServiceContainer;
-        
+
+        Actor SelectedActor = null;
 
         // The color applied to the cube in the second viewport
         Color cubeColor = Color.Red;
@@ -169,7 +171,7 @@ namespace AridiaEditor
 
                 try
                 {
-                    Camera camera = new Camera("camera", new Vector3(0, 2, 10), Vector3.Zero);
+                    EditorCamera camera = new EditorCamera("camera", new Vector3(0, 0, 4), Vector3.Zero);
                     camera.LoadContent();
                     CameraManager.Instance.CurrentCamera = "camera";
 
@@ -214,13 +216,6 @@ namespace AridiaEditor
         {
             sceneGraph.Update(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
 
-            if (KeyboardDevice.Instance.WasKeyPressed(Keys.S))
-            {
-                Camera cam = CameraManager.Instance.GetCurrentCamera();
-                cam.Position = new Vector3(cam.Position.X, cam.Position.Y, cam.Position.Z + 2f * 3f);
-
-            }
-
             KeyboardDevice.Instance.Update();
             MouseDevice.Instance.Update();
 
@@ -235,11 +230,6 @@ namespace AridiaEditor
         // Invoked when the mouse moves over the second viewport
         private void xnaControl_MouseMove(object sender, HwndMouseEventArgs e)
         {
-            // If the left or right buttons are down, we adjust the yaw and pitch of the cube
-            if (MouseDevice.Instance.WasButtonPressed(MouseButtons.Left))
-            {
-                
-            }
         }
 
         // We use the left mouse button to do exclusive capture of the mouse so we can drag and drag
@@ -249,24 +239,32 @@ namespace AridiaEditor
             //xnaControl.CaptureMouse();
             if (CameraManager.Instance.CurrentCamera != null)
             {
-                foreach (Actor actor in WorldManager.Instance.GetActors().Values)
+                if (SelectedActor == null)
                 {
-                    if (actor is ICollideable)
+                    foreach (Actor actor in WorldManager.Instance.GetActors().Values)
                     {
-                        Camera cam = CameraManager.Instance.GetCurrentCamera();
-                        float x = (float)e.Position.X;
-                        float y = (float)e.Position.X;
-
-                        if (cam.GetMouseRay(new Vector2(x, y)).Intersects(((ICollideable)actor).Sphere) != null)
+                        if (actor is IPickable)
                         {
-                            Output.AddToOutput("Object : " + actor.ID + " has been picked!");
-                            propertyGrid.SelectedObject = actor;
-                        }
-                        else
-                        {
-                            Output.AddToOutput("ray didn't hit any object");
+                            Camera cam = CameraManager.Instance.GetCurrentCamera();
+                            float x = (float)e.Position.X;
+                            float y = (float)e.Position.Y;
+                            //new Vector2(x, y)
+                            if (cam.GetMouseRay(new Vector2(x, y)).Intersects(Utils.TransformBoundingSphere(actor.BoundingSphere, actor.AbsoluteTransform)) != null)
+                            {
+                                Output.AddToOutput("Object : " + actor.ID + " has been picked!");
+                                propertyGrid.SelectedObject = actor;
+                                SelectedActor = actor;
+                            }
+                            else
+                            {
+                                Output.AddToOutput("ray didn't hit any object");
+                            }
                         }
                     }
+                }
+                else
+                {
+                    SelectedActor.Position = new Vector3(SelectedActor.Position.X, SelectedActor.Position.Y, SelectedActor.Position.Z + 0.2f * 2f);
                 }
             }
         }
@@ -278,12 +276,20 @@ namespace AridiaEditor
 
         private void xnaControl_HwndRButtonDown(object sender, HwndMouseEventArgs e)
         {
-            xnaControl.CaptureMouse();
+            propertyGrid.SelectedObject = null;
+            SelectedActor = null;
+            EditorCamera cam = CameraManager.Instance.GetCurrentCamera() as EditorCamera;
+            cam.Active = true;
+            MouseDevice.Instance.ResetMouseAfterUpdate = true;
+            NativeMethods.ShowCursor(false);
         }
 
         private void xnaControl_HwndRButtonUp(object sender, HwndMouseEventArgs e)
         {
-            xnaControl.ReleaseMouseCapture();
+            EditorCamera cam = CameraManager.Instance.GetCurrentCamera() as EditorCamera;
+            cam.Active = false;
+            MouseDevice.Instance.ResetMouseAfterUpdate = false;
+            NativeMethods.ShowCursor(true);
         }
         #endregion
 

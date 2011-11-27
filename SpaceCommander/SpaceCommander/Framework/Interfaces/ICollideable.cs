@@ -13,4 +13,6 @@ namespace GameApplicationTools.Interfaces
         /// </summary>
         BoundingSphere Sphere{get;set;}
     }
+
+    public interface IPickable { }
 }
