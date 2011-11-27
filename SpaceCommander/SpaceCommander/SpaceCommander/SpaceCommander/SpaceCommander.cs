@@ -135,12 +135,14 @@ namespace SpaceCommander
             else if (KeyboardDevice.Instance.WasKeyPressed(Keys.Escape))
                 GameApplication.Instance.ExitGame();
 
+            
             ScriptManager.Instance.Update(gameTime);
             GameViewManager.Instance.Update(gameTime);
-   
+            UIManager.Instance.Update(gameTime);
 
             KeyboardDevice.Instance.Update();
             MouseDevice.Instance.Update();
+            EventManager.Instance.Update();
 
             base.Update(gameTime);
         }
@@ -154,6 +156,7 @@ namespace SpaceCommander
             GraphicsDevice.Clear(BackgroundColor);
 
             GameViewManager.Instance.Render();
+            UIManager.Instance.Render(gameTime);
 
             base.Draw(gameTime);
         }

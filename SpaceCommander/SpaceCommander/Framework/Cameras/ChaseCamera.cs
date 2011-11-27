@@ -39,9 +39,6 @@
             this.actor = actor;
             this.relativePosition = relativePosition;
 
-            View = Matrix.CreateLookAt(Position, Target, Up);
-            Projection = Utils.CreateProjectionMatrix();
-
         }
 
         /// <summary>

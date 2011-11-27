@@ -182,6 +182,11 @@
                                                 if (!((GameView)GameViewManager.Instance.GetGameView(ListenerID)).ProcessEvents(EventType, Event) && Event.HookAgain)
                                                     this.HookEvent(EventType, Event); // if we failed for some reason we need to send it back to the queue
                                             }
+                                            else if (UIManager.Instance.GetActors().ContainsKey(ListenerID))
+                                            {
+                                                if (!UIManager.Instance.GetActor(ListenerID).ProcessEvents(EventType, Event) && Event.HookAgain)
+                                                    this.HookEvent(EventType, Event); // if we failed for some reason we need to send it back to the queue
+                                            }
                                         }
                                     }
                                 }
