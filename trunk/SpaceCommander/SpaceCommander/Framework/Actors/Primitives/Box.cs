@@ -25,7 +25,7 @@
     /// Author: Gavin Barnes
     /// Version: 1.2
     /// </summary>
-    public class Box : Actor
+    public class Box : Actor, IPickable
     {
         #region Private
         // those classes are needed in order
@@ -127,7 +127,7 @@
         /// <returns>Return a valid bounding sphere <see cref="BoundSphere" /></returns>
         public override BoundingSphere GetBoundingSphere()
         {
-            return new BoundingSphere(Vector3.Zero, Scale.Length());
+            return new BoundingSphere(Vector3.Zero, Scale.Y * 2);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@
         public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
-
+            Children[0].Scale = Scale * 2;
             effect.World = Matrix.CreateScale(Scale) * AbsoluteTransform;
             effect.View = camera.View;
             effect.Projection = camera.Projection;

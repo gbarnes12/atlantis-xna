@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="File">
-                <MenuItem Header="New" />
+                <MenuItem Header="New" Name="NewMenuItem" />
                 <MenuItem Header="Load" />
                 <MenuItem Header="Save as ..." />
                 <MenuItem Header="Save" />

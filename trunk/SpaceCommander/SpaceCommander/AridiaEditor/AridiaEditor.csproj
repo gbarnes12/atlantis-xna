@@ -82,6 +82,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Cameras\EditorCamera.cs" />
     <Compile Include="ContentDevice\ResourceBuilder.cs" />
     <Compile Include="ErrorStruct.cs" />
     <Compile Include="Windows\SettingsWindow.xaml.cs">

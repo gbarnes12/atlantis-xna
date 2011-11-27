@@ -154,7 +154,7 @@
             //GameApplication.Instance.NearPlane
             //GameApplication.Instance.FarPlane
             Vector3 nearSource = new Vector3(mousePosition, 0f);
-            Vector3 farSource = new Vector3(mousePosition, -1000f);
+            Vector3 farSource = new Vector3(mousePosition, 1f);
 
             Vector3 nearPoint = viewport.Unproject(nearSource,
                 Projection, View, Matrix.Identity);
