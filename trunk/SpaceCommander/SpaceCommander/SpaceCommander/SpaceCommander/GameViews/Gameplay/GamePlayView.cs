@@ -45,7 +45,10 @@ namespace SpaceCommander.GameViews.Gameplay
         {
             WorldManager.Instance.GetActor("skySphere").Position = new Vector3(0,0, WorldManager.Instance.GetActor("SpaceShip").Position.Z);
             ((TextElement)UIManager.Instance.GetActor("TextElementHeadline2")).Text = SceneGraphManager.NodesCulled.ToString();
-           
+
+            //enable shooting
+            if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.Space))
+                ((Laser)WorldManager.Instance.GetActor("testlaser")).fire(WorldManager.Instance.GetActor("SpaceShip").Position);
             
             base.Update(gameTime);
         }
@@ -64,6 +67,10 @@ namespace SpaceCommander.GameViews.Gameplay
             ship.LoadContent();
             ship.Updateable = true;
             SceneGraphManager.RootNode.Children.Add(ship);
+
+            Laser laser = new Laser("testlaser","laser", 5);
+            laser.LoadContent();
+            SceneGraphManager.RootNode.Children.Add(laser);
 
             //ceate a chase camera
             ChaseCamera camera = new ChaseCamera("GamePlayCamera", new Vector3(0, 50, 700), ship);

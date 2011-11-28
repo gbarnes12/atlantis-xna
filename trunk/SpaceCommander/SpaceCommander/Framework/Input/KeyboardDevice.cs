@@ -99,6 +99,18 @@
             return current.IsKeyUp(Key);
         }
 
+        // Whether the specified key was down
+        public bool WasKeyDown(Keys Key)
+        {
+            return last.IsKeyDown(Key);
+        }
+
+        // Whether the specified key was up
+        public bool WasKeyUp(Keys Key)
+        {
+            return last.IsKeyUp(Key);
+        }
+
         // Whether the specified key is down for the first time
         // this frame
         public bool WasKeyPressed(Keys Key)

@@ -75,6 +75,11 @@
                     Path = GameApplication.Instance.ModelPath,
                     Type = ResourceType.Model
                 },
+                 new Resource() {
+                    Name = "laser",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
                 // TEXTURES
                 new Resource() {
                     Name = "space",

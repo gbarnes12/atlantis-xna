@@ -89,12 +89,6 @@
                 model = ResourceManager.Instance.GetResource<Model>(_fileName);
         }
 
-        public override void Update(SceneGraphManager sceneGraph)
-        {
-            this.Rotation *= Quaternion.CreateFromYawPitchRoll(MathHelper.ToRadians(10), MathHelper.ToRadians(10), MathHelper.ToRadians(10));
-
-            base.Update(sceneGraph);
-        }
 
         /// <summary>
         /// Finally render the model to the screen with some basic effect
@@ -128,7 +122,7 @@
                                                        AbsoluteTransform;
                                basicEffect.View = camera.View;
                                basicEffect.Projection = camera.Projection;
- 
+                               
                                basicEffect.EnableDefaultLighting();
                            }
  
