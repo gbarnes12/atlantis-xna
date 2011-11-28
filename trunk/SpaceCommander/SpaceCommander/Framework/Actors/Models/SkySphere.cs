@@ -159,7 +159,7 @@
                     foreach (TextureMappingEffect eff in mesh.Effects)
                     {
                         //WorldMatrix = transforms[mesh.ParentBone.Index] * Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(Angle), new Vector3(0.002f, 0.002f, 0.002f));
-                        eff.World = Matrix.CreateScale(Scale) * transforms[mesh.ParentBone.Index] * 
+                        eff.World = transforms[mesh.ParentBone.Index] * 
                                          AbsoluteTransform;
                         eff.View = camera.View;
                         eff.Projection = camera.Projection;

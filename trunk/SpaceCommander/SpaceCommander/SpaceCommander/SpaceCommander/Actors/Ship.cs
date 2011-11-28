@@ -135,7 +135,7 @@ namespace SpaceCommander.Actors
                     foreach (BasicEffect effect in mesh.Effects)
                     {
                         effect.EnableDefaultLighting();
-                        effect.World = transforms[mesh.ParentBone.Index] *
+                        effect.World =  transforms[mesh.ParentBone.Index] *
                                                        AbsoluteTransform;
                         effect.View = camera.View;
                         effect.Projection = camera.Projection;

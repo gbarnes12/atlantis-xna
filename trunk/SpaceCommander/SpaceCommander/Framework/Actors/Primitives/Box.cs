@@ -154,7 +154,7 @@
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
             Children[0].Scale = Scale * 2;
-            effect.World = Matrix.CreateScale(Scale) * AbsoluteTransform;
+            effect.World = AbsoluteTransform;
             effect.View = camera.View;
             effect.Projection = camera.Projection;
 
