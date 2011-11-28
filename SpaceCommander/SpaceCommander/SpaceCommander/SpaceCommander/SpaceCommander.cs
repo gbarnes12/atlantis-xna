@@ -15,16 +15,15 @@ namespace SpaceCommander
     using GameApplicationTools.Actors.Primitives;
     using GameApplicationTools.Actors.Cameras;
     using GameApplicationTools.Events;
-
-    using Events;
-    using GameViews.MainMenu;
+    using GameApplicationTools.Interfaces;
     using GameApplicationTools.Input;
     using GameApplicationTools.UI;
-    using GameViews.Gameplay;
-    using GameApplicationTools.Interfaces;
-    using Scripts;
     using GameApplicationTools.Structures;
 
+    using Events;
+    using Scripts;
+    using GameViews.MainMenu;
+    using GameViews.Gameplay;
 
     /// <summary>
     /// This is the main type for your game
@@ -81,8 +80,9 @@ namespace SpaceCommander
 
             MainMenuGameView mainMenu = new MainMenuGameView();
 
-            GameViewManager.Instance.AddGameView(gamePlayView);
             GameViewManager.Instance.AddGameView(mainMenu);
+            GameViewManager.Instance.AddGameView(gamePlayView);
+
 
             base.Initialize();
         }

@@ -47,6 +47,11 @@
             rootNode = new Actor("rootNode", null);
         }
 
+        public void SetGameTime(GameTime gameTime)
+        {
+            this.gameTime = gameTime;
+        }
+
         // Methods
         void CalculateTransformsRecursive(Actor node)
         {

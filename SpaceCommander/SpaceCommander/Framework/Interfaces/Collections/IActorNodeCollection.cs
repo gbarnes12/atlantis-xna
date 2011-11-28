@@ -64,7 +64,10 @@
         public void Add(Actor item)
         {
             item.Parent = this.parent;
-            WorldManager.Instance.AddActor(item);
+
+            if (!WorldManager.Instance.GetActors().ContainsKey(item.ID))
+                WorldManager.Instance.AddActor(item);
+
             sceneNodes.Add(item);
         }
 
