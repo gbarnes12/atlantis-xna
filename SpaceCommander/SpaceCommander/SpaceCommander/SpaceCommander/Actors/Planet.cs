@@ -178,8 +178,8 @@
            // Matrix world =  Utils.CreateWorldMatrix(Position, Matrix.CreateFromQuaternion(Rotation), Scale);
            
 
-            Effect.World = Matrix.CreateScale(Scale) * AbsoluteTransform;
-            Effect.WVP = Matrix.CreateScale(Scale) * AbsoluteTransform * camera.View * camera.Projection;
+            Effect.World = AbsoluteTransform;
+            Effect.WVP = AbsoluteTransform * camera.View * camera.Projection;
 
             Effect.Time = (float)sceneGraph.GameTime.TotalGameTime.TotalSeconds * 3;
 

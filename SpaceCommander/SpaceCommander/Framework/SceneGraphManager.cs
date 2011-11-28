@@ -55,7 +55,7 @@
         // Methods
         void CalculateTransformsRecursive(Actor node)
         {
-            node.AbsoluteTransform = Matrix.CreateTranslation(node.Offset) *
+            node.AbsoluteTransform = Matrix.CreateScale(node.Scale)* Matrix.CreateTranslation(node.Offset) *
                 Matrix.CreateFromQuaternion(node.Rotation) *
                 node.AbsoluteTransform *
                 Matrix.CreateTranslation(node.Position);

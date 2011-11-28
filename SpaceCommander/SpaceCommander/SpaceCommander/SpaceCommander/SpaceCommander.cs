@@ -38,7 +38,6 @@ namespace SpaceCommander
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
         }
 
         /// <summary>
@@ -73,14 +72,9 @@ namespace SpaceCommander
             // set up our game views
             
             GamePlayView gamePlayView = new GamePlayView();
-            gamePlayView.BlocksInput = true;
-            gamePlayView.BlocksLoading = false;
-            gamePlayView.BlocksRendering = true;
-            gamePlayView.BlocksUpdating = true;
+         //   MainMenuGameView mainMenu = new MainMenuGameView();
 
-            MainMenuGameView mainMenu = new MainMenuGameView();
-
-            GameViewManager.Instance.AddGameView(mainMenu);
+        //    GameViewManager.Instance.AddGameView(mainMenu);
             GameViewManager.Instance.AddGameView(gamePlayView);
 
 
@@ -99,11 +93,17 @@ namespace SpaceCommander
 
             GameViewManager.Instance.LoadContent();
 
-            GameView gamplayView = GameViewManager.Instance.GetGameView("GamePlay") as GameView;
-            gamplayView.BlocksInput = true;
-            gamplayView.BlocksLoading = false;
-            gamplayView.BlocksRendering = true;
-            gamplayView.BlocksUpdating = true;
+            //GameView menueView = GameViewManager.Instance.GetGameView("MainMenu") as GameView;
+            //menueView.BlocksInput = true;
+            //menueView.BlocksLoading = false;
+            //menueView.BlocksRendering = true;
+            //menueView.BlocksUpdating = true;
+
+            //GameView gamplayView = GameViewManager.Instance.GetGameView("GamePlay") as GameView;
+            //gamplayView.BlocksInput = false;
+            //gamplayView.BlocksLoading = false;
+            //gamplayView.BlocksRendering = false;
+            //gamplayView.BlocksUpdating = false;
         }
 
         public void ChangeColor(Color color)

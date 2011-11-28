@@ -146,7 +146,7 @@
             this.Updateable = true;
             this.AbsoluteTransform = Matrix.Identity;
             this.Parent = null;
-            this.Scale = Vector3.Zero;
+            this.Scale = new Vector3(1);
             children = new ActorNodeCollection(this);
         }
 
