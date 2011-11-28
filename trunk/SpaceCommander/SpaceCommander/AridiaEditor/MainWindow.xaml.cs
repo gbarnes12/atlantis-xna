@@ -182,6 +182,7 @@ namespace AridiaEditor
 
                     Box box = new Box("box", 1f);
                     box.Position = new Vector3(0, 0, 0);
+                    box.Rotation *= Quaternion.CreateFromYawPitchRoll(0, 2f, 0);
                     box.LoadContent();
 
                     Sphere sphere = new Sphere("sphere", 2f);
