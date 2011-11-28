@@ -34,18 +34,23 @@
         IndexBuffer IndexBuffer;
         TextureFilter textureFilter = TextureFilter.Linear;
         TextureMappingEffect effect;
+        Sphere sphere;
         #endregion
 
         public Box(String ID, float Scale) 
             : base(ID, null)
         {
             this.Scale = new Vector3(Scale, Scale, Scale);
+            sphere = new Sphere(ID + "_sphere", Scale);
+            this.Children.Add(sphere);
         }
 
         public Box(String ID, String GameViewID, float Scale)
             : base(ID, GameViewID)
         {
             this.Scale = new Vector3(Scale, Scale, Scale);
+            sphere = new Sphere(ID + "_sphere", Scale);
+            this.Children.Add(sphere);
         }
 
         /// <summary>
@@ -54,6 +59,8 @@
         /// </summary>
         public override void LoadContent()
         {
+            sphere.LoadContent();
+
             Vector2 topLeft = new Vector2(0.0f, 0.0f);
             Vector2 topCenter = new Vector2(0.5f, 0.0f);
             Vector2 topRight = new Vector2(1.0f, 0.0f);

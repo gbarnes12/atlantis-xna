@@ -11,6 +11,7 @@ using GameApplicationTools.Actors.Cameras;
 using GameApplicationTools;
 using GameApplicationTools.Misc;
 using GameApplicationTools.Input;
+using GameApplicationTools.Actors.Primitives;
 
 namespace SpaceCommander.Actors
 {
@@ -26,17 +27,24 @@ namespace SpaceCommander.Actors
         private float speed = 10;
         private BoundingSphere modelSphere;
         public BoundingSphere Sphere { get; set; }
+
+        Sphere sphere;
         #endregion
 
         public Ship(String ID, String GameViewID)
             : base(ID, GameViewID)
         {
             this.Scale = new Vector3(0.1f, 0.1f, 0.1f);
+            sphere = new Sphere(ID + "_sphere", 0.1f);
+            this.Children.Add(sphere);
         }
 
-        public void LoadContent()
+        public override void LoadContent()
         {
             model = ResourceManager.Instance.GetResource<Model>("p1_wedge");
+            sphere.LoadContent();
+
+            base.LoadContent();
         }
 
         public override void Update(SceneGraphManager sceneGraph)

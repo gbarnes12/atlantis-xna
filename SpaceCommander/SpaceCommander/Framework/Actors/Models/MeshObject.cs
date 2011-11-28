@@ -11,6 +11,7 @@
     using Misc;
     using Actors.Cameras;
     using Interfaces;
+    using GameApplicationTools.Actors.Primitives;
 
     /// <summary>
     /// Represents a basic model in our world
@@ -28,14 +29,16 @@
         private String _fileName;
         private Model model;
         private BoundingSphere modelSphere;
+        private Sphere sphere;
         #endregion
 
         public MeshObject(String ID, String modelFile, float scale)
             : base(ID, null)
-        {
-            
+        {          
             _fileName = modelFile;
             this.Scale = new Vector3(scale, scale, scale);
+            sphere = new Sphere(ID + "_sphere",scale);
+            this.Children.Add(sphere);
         }
 
         public MeshObject(String ID, String modelFile, float scale, float angle)
@@ -43,7 +46,8 @@
         {
             _fileName = modelFile;
             this.Scale = new Vector3(scale, scale, scale);
-
+            sphere = new Sphere(ID + "_sphere", scale);
+            this.Children.Add(sphere);
         }
 
         /// <summary>
@@ -79,8 +83,17 @@
         /// </summary>
         public override void LoadContent()
         {
+            sphere.LoadContent();
+
             if (_fileName != "")
                 model = ResourceManager.Instance.GetResource<Model>(_fileName);
+        }
+
+        public override void Update(SceneGraphManager sceneGraph)
+        {
+            this.Rotation *= Quaternion.CreateFromYawPitchRoll(MathHelper.ToRadians(10), MathHelper.ToRadians(10), MathHelper.ToRadians(10));
+
+            base.Update(sceneGraph);
         }
 
         /// <summary>
