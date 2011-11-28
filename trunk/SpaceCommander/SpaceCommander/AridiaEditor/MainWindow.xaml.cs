@@ -33,6 +33,7 @@ using GameApplicationTools.Misc;
 using Microsoft.Xna.Framework.Input;
 using AridiaEditor.Cameras;
 
+
 namespace AridiaEditor
 {
     public partial class MainWindow : Window
@@ -230,6 +231,19 @@ namespace AridiaEditor
         // Invoked when the mouse moves over the second viewport
         private void xnaControl_MouseMove(object sender, HwndMouseEventArgs e)
         {
+            if (SelectedActor != null)
+            {
+                if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+                {
+                    Camera cam = CameraManager.Instance.GetCurrentCamera();
+                    float x = (float)e.Position.X;
+                    float y = (float)e.Position.Y;
+                    if (cam.GetMouseRay(new Vector2(x, y)).Intersects(Utils.TransformBoundingSphere(SelectedActor.BoundingSphere, SelectedActor.AbsoluteTransform)) != null)
+                    {
+                        SelectedActor.Position = new Vector3(SelectedActor.Position.X, SelectedActor.Position.Y, SelectedActor.Position.Z + 0.2f * 0.2f);
+                    }
+                }
+            }
         }
 
         // We use the left mouse button to do exclusive capture of the mouse so we can drag and drag
@@ -261,10 +275,6 @@ namespace AridiaEditor
                             }
                         }
                     }
-                }
-                else
-                {
-                    SelectedActor.Position = new Vector3(SelectedActor.Position.X, SelectedActor.Position.Y, SelectedActor.Position.Z + 0.2f * 2f);
                 }
             }
         }

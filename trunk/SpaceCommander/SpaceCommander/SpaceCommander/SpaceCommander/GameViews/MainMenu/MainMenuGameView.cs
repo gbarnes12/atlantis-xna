@@ -100,6 +100,7 @@
                 gamplayView.BlocksLoading = false;
                 gamplayView.BlocksRendering = false;
                 gamplayView.BlocksUpdating = false;
+                gamplayView.SceneGraphManager.SetGameTime(this.SceneGraphManager.GameTime);
 
                 BlocksInput = true;
                 BlocksLoading = true;

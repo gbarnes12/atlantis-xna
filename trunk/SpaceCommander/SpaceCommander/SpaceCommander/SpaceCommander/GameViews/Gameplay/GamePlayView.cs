@@ -39,7 +39,7 @@ namespace SpaceCommander.GameViews.Gameplay
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-           WorldManager.Instance.GetActor<SkySphere>("SkySphereSkyGameView").Position = CameraManager.Instance.GetCurrentCamera().Position;
+            WorldManager.Instance.GetActor<SkySphere>("SkySphereMainMenuView").Position = CameraManager.Instance.GetCurrentCamera().Position;
         }
 
         public void RegisterEvents()
@@ -58,17 +58,15 @@ namespace SpaceCommander.GameViews.Gameplay
             camera.LoadContent();
             CameraManager.Instance.CurrentCamera = "GamePlayCamera";
 
-            Planet planet = new Planet("GamePlanetEarth2", ID, 700f);
-            planet.Position = new Vector3(-1200, 0, -600);
-            planet.LoadContent();
-            SceneGraphManager.RootNode.Children.Add(planet);
+            SceneGraphManager.RootNode.Children.Add(WorldManager.Instance.GetActor("GamePlanetEarth"));
 
-            Planet planet2 = new Planet("GamePlanetEarth3", ID, 400f);
-            planet2.Position = new Vector3(700, 0, -10300);
-            planet2.LoadContent();
-            SceneGraphManager.RootNode.Children.Add(planet2);
+            //Planet planet2 = new Planet("GamePlanetEarth3", ID, 400f);
+            //planet2.Position = new Vector3(700, 0, -10300);
+            //planet2.LoadContent();
+            //SceneGraphManager.RootNode.Children.Add(planet2);
 
-            Random random = new Random();
+         
+            /*Random random = new Random();
 
             for (int i = 0; i < 100; i++)
             {
@@ -85,17 +83,15 @@ namespace SpaceCommander.GameViews.Gameplay
                 asteroid01.Children.Add(sphere);
 
                 SceneGraphManager.RootNode.Children.Add(asteroid01);
-            }
+            }*/
 
-            SkySphere sky = new SkySphere("SkySphereSkyGameView", "space", 10000f);
-            sky.Position = Vector3.Zero;
-            sky.LoadContent();
-            SceneGraphManager.RootNode.Children.Add(sky);
+            SceneGraphManager.RootNode.Children.Add(WorldManager.Instance.GetActor("SkySphereMainMenuView"));
             #endregion
 
             #region UI Stuff
             TextElement headline = new TextElement("TextElementHeadline2", new Vector2(400, 100), Color.Yellow, "GamePlayView", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
             headline.Scale = 1f;
+            headline.Visible = false;
             UIManager.Instance.AddActor(headline);
             #endregion
         }
