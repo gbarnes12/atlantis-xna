@@ -16,6 +16,7 @@
     using GameApplicationTools.Misc;
 
     using Resources.Shader;
+    using GameApplicationTools.Actors.Primitives;
 
     /// <summary>
     /// 
@@ -99,6 +100,9 @@
         /// 
         /// </summary>
         Texture2D AtmosphereMap { get; set; }
+
+        Sphere sphere;
+
         #endregion
 
         public Planet(String ID, float Scale)
@@ -113,6 +117,9 @@
             Rotation = new Quaternion(0, 0, 0, 1);
             this.Scale = new Vector3(Scale, Scale, Scale);
             this.LightPosition = new Vector3(60, 60, 60);
+
+            sphere = new Sphere(ID + "_sphere", Scale);
+            this.Children.Add(sphere);
         }
 
         public Planet(String ID, String GameViewID, float Scale)
@@ -127,6 +134,9 @@
             Rotation = new Quaternion(0, 0, 0, 1);
             this.Scale = new Vector3(Scale, Scale, Scale);
             this.LightPosition = new Vector3(60, 60, 60);
+
+            sphere = new Sphere(ID + "_sphere", Scale);
+            this.Children.Add(sphere);
         }
 
         /// <summary>
@@ -136,6 +146,8 @@
         /// <param name="content"></param>
         public override void LoadContent()
         {
+
+            sphere.LoadContent();
             // load our model business in here
             Model = ResourceManager.Instance.GetResource<Model>("planet");
             Effect = new PlanetEffect(ResourceManager.Instance.GetResource<Effect>("PlanetEarthEffect"));
