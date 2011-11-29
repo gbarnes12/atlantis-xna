@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="File">
-                <MenuItem Header="New" Name="NewMenuItem" />
+                <MenuItem Header="New" Name="NewMenuItem" Click="NewMenuItem_Click" />
                 <MenuItem Header="Load" />
                 <MenuItem Header="Save as ..." />
                 <MenuItem Header="Save" />
@@ -74,8 +74,11 @@
                     </ad:DocumentPane>
                     <ad:DockablePane ad:ResizingPanel.ResizeWidth="150">
                         <ad:DockableContent x:Name="solutionExplorer" Title="Solution" FlowDirection="LeftToRight">
-                            <TreeView>
-                                <TreeViewItem Header="World"/>
+                            <TreeView Name="WorldTreeView" SelectedItemChanged="WorldTreeView_SelectedItemChanged">
+                                <TreeViewItem Header="World" IsExpanded="True">
+                                    <TreeViewItem Header="Actors" />
+                                    <TreeViewItem Header="Cameras" />
+                                </TreeViewItem>
                             </TreeView>
                             
                         </ad:DockableContent>
@@ -100,11 +103,13 @@
         </ad:DockingManager>
 
         <StatusBar Grid.Row="2" Margin="1,0,-1,0">
-            <StatusBarItem Content="Ready" Background="{x:Null}" Width="500" Name="progressStatusBarItem" />
-            <StatusBarItem Content="Camera: {X: 0, Y: 0, Z: 0}" Name="CameraPosition"  Background="{x:Null}" Width="250" />
-            <StatusBarItem Content="FPS: 60" Background="{x:Null}" />
+            <StatusBarItem Content="Ready" Background="{x:Null}" Width="450" Name="progressStatusBarItem" />
+            <StatusBarItem Content="Camera: {X: 0, Y: 0, Z: 0}" Name="CameraPosition"  Background="{x:Null}" Width="150" />
+            <StatusBarItem Content="FPS: 60" Background="{x:Null}" Width="70"/>
+            <StatusBarItem Content="Build:" Background="{x:Null}" Name="AssemblyBuild"/>
         </StatusBar>
-        <ProgressBar Grid.Row="2" Height="18" HorizontalAlignment="Left" Margin="137,3,0,0" Name="progressBar" VerticalAlignment="Top" Width="344" SmallChange="1" />
+        <ProgressBar Grid.Row="2" Height="18" HorizontalAlignment="Left" Margin="50,3,0,0" Name="progressBar" VerticalAlignment="Top" Width="230" SmallChange="1" />
+        <Label Content="Level: no level loaded" Grid.Row="2" Height="24" HorizontalAlignment="Left" Margin="308,0,0,0" Name="LevelStatus" VerticalAlignment="Top" Width="138" />
     </Grid>
 
 </Window>

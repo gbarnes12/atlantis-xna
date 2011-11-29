@@ -53,6 +53,15 @@ namespace GameApplicationTools
         }
 
         /// <summary>
+        /// Returns the dictionary of cameras.
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, Camera> GetCameras()
+        {
+            return _cameras;
+        }
+
+        /// <summary>
         /// Returns a specific camera with 
         /// the ID you have passed over.
         /// </summary>

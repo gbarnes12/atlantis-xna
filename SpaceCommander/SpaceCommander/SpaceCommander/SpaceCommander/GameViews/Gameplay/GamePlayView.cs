@@ -43,6 +43,7 @@ namespace SpaceCommander.GameViews.Gameplay
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+
             WorldManager.Instance.GetActor("skySphere").Position = new Vector3(0,0, WorldManager.Instance.GetActor("SpaceShip").Position.Z);
             ((TextElement)UIManager.Instance.GetActor("TextElementHeadline2")).Text = SceneGraphManager.NodesCulled.ToString();
 

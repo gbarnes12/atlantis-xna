@@ -134,6 +134,7 @@
     <Compile Include="SceneGraphManager.cs" />
     <Compile Include="ScriptManager.cs" />
     <Compile Include="Structures\GameView.cs" />
+    <Compile Include="Structures\Level.cs" />
     <Compile Include="UIManager.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Console.cs" />
