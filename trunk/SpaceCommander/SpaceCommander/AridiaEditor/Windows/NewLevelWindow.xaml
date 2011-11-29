@@ -1,0 +1,35 @@
+﻿<Window x:Class="AridiaEditor.Windows.NewLevelWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="New Level" Height="336" Width="360" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Label Content="Please provide some information regarding your new level." Height="28" HorizontalAlignment="Left" Margin="8,12,0,0" Name="label1" VerticalAlignment="Top" />
+        <Button Content="Create" Height="23" HorizontalAlignment="Left" Margin="8,262,0,0" Name="createButton" VerticalAlignment="Top" Width="75" Click="createButton_Click" />
+        <Button Content="Cancel" Height="23" HorizontalAlignment="Left" Margin="89,262,0,0" Name="cancelButton" VerticalAlignment="Top" Width="75" Click="cancelButton_Click" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="93,58,0,0" Name="fileNameTextBox" VerticalAlignment="Top" Width="233" />
+        <Label Content="Filename:" Height="28" HorizontalAlignment="Left" Margin="17,56,0,0" Name="label2" VerticalAlignment="Top" />
+        <CheckBox Content="Create Camera" Height="16" HorizontalAlignment="Left" Margin="19,103,0,0" Name="createCameraCheckBox" IsChecked="True"  VerticalAlignment="Top"  Click="createCameraCheckBox_Click" />
+        
+        <Grid Name="optionsGrid"  Height="131" HorizontalAlignment="Left" Margin="204,125,0,0" VerticalAlignment="Top" Width="122" Visibility="Visible">
+            <CheckBox IsChecked="true" Content="Create Axis" Height="16" HorizontalAlignment="Left" Margin="6,7,0,0" Name="createAxisCheckBox" VerticalAlignment="Top" />
+            <CheckBox Content="Create Plane" Height="16" HorizontalAlignment="Left" Margin="6,29,0,0" Name="createPlaneCheckBox" VerticalAlignment="Top" />
+        </Grid>
+        <Grid Name="positionGrid"  Height="131" HorizontalAlignment="Left" Margin="19,125,0,0"  VerticalAlignment="Top" Visibility="Visible" Width="179">
+            <Label Content="Position:" Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" Name="positionLabel" VerticalAlignment="Top" />
+            <TextBox Text="0"  Height="23" HorizontalAlignment="Left" Margin="31,40,0,0" Name="positionX" VerticalAlignment="Top" Width="27" />
+            <TextBox Text="0" Height="23" HorizontalAlignment="Left" Margin="89,40,0,0" Name="positionY" VerticalAlignment="Top" Width="25" />
+            <TextBox Text="2" Height="23" HorizontalAlignment="Right" Margin="0,38,6,0" Name="positionZ" VerticalAlignment="Top" Width="30" />
+            <Label Content="X:" Height="28" HorizontalAlignment="Left" Margin="8,38,0,0" Name="xPositionLabel" VerticalAlignment="Top" />
+            <Label Content="Y:" Height="28" HorizontalAlignment="Left" Margin="64,38,0,0" Name="label3" VerticalAlignment="Top" />
+            <Label Content="Z:" HorizontalAlignment="Left" Margin="121,38,0,65" Name="label4" />
+            <TextBox Text="0" Height="23" HorizontalAlignment="Right" Margin="0,100,121,0" Name="targetX" VerticalAlignment="Top" Width="27" />
+            <TextBox Text="0" Height="23" HorizontalAlignment="Left" Margin="89,100,0,0" Name="targetY" VerticalAlignment="Top" Width="25" />
+            <TextBox Text="0" Height="23" HorizontalAlignment="Right" Margin="0,100,6,0" Name="targetZ" VerticalAlignment="Top" Width="30" />
+            <Label Content="X:" Height="28" HorizontalAlignment="Left" Margin="8,95,0,0" Name="label5" VerticalAlignment="Top" />
+            <Label Content="Y:" Height="28" HorizontalAlignment="Left" Margin="64,98,0,0" Name="label6" VerticalAlignment="Top" />
+            <Label Content="Z:" HorizontalAlignment="Left" Margin="121,75,0,56" Name="label7" />
+            <Label Content="Z:" HorizontalAlignment="Left" Margin="121,0,0,6" Name="label8" Height="24" VerticalAlignment="Bottom" />
+            <Label Content="Target:" Height="28" HorizontalAlignment="Left" Margin="9,68,0,0" Name="label9" VerticalAlignment="Top" />
+        </Grid>
+    </Grid>
+</Window>
