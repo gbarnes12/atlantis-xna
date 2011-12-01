@@ -8,9 +8,11 @@
 
     using Actors;
     using Collections;
+    using Actors.Cameras;
+    using Actors.Properties;
 
     using Microsoft.Xna.Framework;
-    using GameApplicationTools.Actors.Cameras;
+
 
     /// <summary>
     /// This interface is used together with the

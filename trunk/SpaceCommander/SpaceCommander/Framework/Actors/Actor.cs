@@ -9,6 +9,7 @@
     using Interfaces;
     using GameApplicationTools.Interfaces.Collections;
     using Microsoft.Xna.Framework;
+    using GameApplicationTools.Actors.Properties;
 
     /// <summary>
     /// This is the basic actor class from
@@ -126,6 +127,13 @@
         /// The scale of the object.
         /// </summary>
         public virtual Vector3 Scale { get; set; }
+        
+        /// <summary>
+        /// An actor can contain various of different properties 
+        /// thus we aren't limited anymore and we can use for example
+        /// the mesh object to represent every possible state.
+        /// </summary>
+        public Dictionary<ActorPropertyType, ActorProperty> Properties;
         #endregion
 
         /// <summary>
@@ -148,6 +156,7 @@
             this.Parent = null;
             this.Scale = new Vector3(1);
             children = new ActorNodeCollection(this);
+            Properties = new Dictionary<ActorPropertyType, ActorProperty>();
         }
 
         /// <summary>

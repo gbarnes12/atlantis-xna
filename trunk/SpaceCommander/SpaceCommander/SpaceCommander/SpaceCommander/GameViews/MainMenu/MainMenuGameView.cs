@@ -12,7 +12,7 @@
     using GameApplicationTools.Interfaces;
     using GameApplicationTools.Actors.Cameras;
     using GameApplicationTools.Actors.Primitives;
-    using GameApplicationTools.Actors.Models;
+    using GameApplicationTools.Actors.Advanced;
     using GameApplicationTools.Misc;
     using GameApplicationTools.UI;
     using Scripts.MainMenu;

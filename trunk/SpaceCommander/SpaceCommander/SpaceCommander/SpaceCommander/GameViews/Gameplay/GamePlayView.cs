@@ -7,7 +7,7 @@ using GameApplicationTools.Structures;
 using GameApplicationTools.Misc;
 using GameApplicationTools;
 using SpaceCommander.Scripts.GamePlay;
-using GameApplicationTools.Actors.Models;
+using GameApplicationTools.Actors.Advanced;
 using GameApplicationTools.UI;
 using Microsoft.Xna.Framework;
 using GameApplicationTools.Actors.Cameras;
@@ -15,6 +15,7 @@ using SpaceCommander.Actors;
 using Microsoft.Xna.Framework.Graphics;
 using GameApplicationTools.Actors.Primitives;
 using GameApplicationTools.Input;
+using GameApplicationTools.Actors.Properties;
 
 namespace SpaceCommander.GameViews.Gameplay
 {
@@ -49,8 +50,10 @@ namespace SpaceCommander.GameViews.Gameplay
 
             //enable shooting
             if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.Space))
+            {
+                ((Laser)WorldManager.Instance.GetActor("testlaser")).Visible = true;
                 ((Laser)WorldManager.Instance.GetActor("testlaser")).fire(WorldManager.Instance.GetActor("SpaceShip").Position);
-            
+            }
             base.Update(gameTime);
         }
 
@@ -70,6 +73,7 @@ namespace SpaceCommander.GameViews.Gameplay
             SceneGraphManager.RootNode.Children.Add(ship);
 
             Laser laser = new Laser("testlaser","laser", 5);
+            laser.Visible = false;
             laser.LoadContent();
             SceneGraphManager.RootNode.Children.Add(laser);
 
@@ -94,7 +98,12 @@ namespace SpaceCommander.GameViews.Gameplay
 
             for (int i = 0; i < 100; i++)
             {
-                MeshObject asteroid01 = new MeshObject("asteroid" + i, "asteroid", random.Next(0,12));
+               // EffectProperty effectProp = new EffectProperty();
+                //effectProp.Effect = ResourceManager.Instance.GetResource<Effect>("DefaultEffect");
+
+                MeshObject asteroid01 = new MeshObject("asteroid" + i, "asteroid", 1f);
+                //asteroid01.Properties.Add(ActorPropertyType.EFFECT, effectProp);
+                asteroid01.Scale = new Vector3(random.Next(10, 100), random.Next(10, 100), random.Next(10, 100));
                 asteroid01.Rotation = Quaternion.CreateFromYawPitchRoll(random.Next(20,100),random.Next(20,100),random.Next(20,100));
                 asteroid01.Position = new Vector3(random.Next(-1000, 1000), random.Next(-500, 500), random.Next(-100, 0) - i * 300);
                 asteroid01.LoadContent();

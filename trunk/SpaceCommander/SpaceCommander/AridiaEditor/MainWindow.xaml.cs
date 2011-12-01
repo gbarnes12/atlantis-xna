@@ -233,7 +233,7 @@ namespace AridiaEditor
             {
                 TreeViewItem itemx = new TreeViewItem();
                 itemx = LoadActorsRecursive(actorx, itemx);
-                itemx.Header = actor.ID;
+                itemx.Header = actorx.ID;
                 item.Items.Add(itemx);
             }
 
@@ -324,17 +324,23 @@ namespace AridiaEditor
             propertyGrid.SelectedObject = null;
             SelectedObject = null;
             EditorCamera cam = CameraManager.Instance.GetCurrentCamera() as EditorCamera;
-            cam.Active = true;
-            MouseDevice.Instance.ResetMouseAfterUpdate = true;
-            NativeMethods.ShowCursor(false);
+            if (cam != null)
+            {
+                cam.Active = true;
+                MouseDevice.Instance.ResetMouseAfterUpdate = true;
+                NativeMethods.ShowCursor(false);
+            }
         }
 
         private void xnaControl_HwndRButtonUp(object sender, HwndMouseEventArgs e)
         {
             EditorCamera cam = CameraManager.Instance.GetCurrentCamera() as EditorCamera;
-            cam.Active = false;
-            MouseDevice.Instance.ResetMouseAfterUpdate = false;
-            NativeMethods.ShowCursor(true);
+            if (cam != null)
+            {
+                cam.Active = false;
+                MouseDevice.Instance.ResetMouseAfterUpdate = false;
+                NativeMethods.ShowCursor(true);
+            }
         }
         #endregion
 
@@ -344,10 +350,22 @@ namespace AridiaEditor
             TreeViewItem item = e.NewValue as TreeViewItem;
             TreeViewItem parent = item.Parent as TreeViewItem;
 
-            if (parent.SelectedItem.Header.ToString() == "Actors")
-                propertyGrid.SelectedObject = SelectedObject as Actor;
-            else if (parent.Header.ToString() == "Cameras")
-                propertyGrid.SelectedObject = SelectedObject as Camera;
+            if (parent != null)
+            {
+                if (WorldManager.Instance.GetActors().ContainsKey(item.Header.ToString()))
+                {
+                    if (parent.Header.ToString() == "Actors" || parent.Header.ToString() == WorldManager.Instance.GetActor(item.Header.ToString()).Parent.ID)
+                    {
+                        SelectedObject = WorldManager.Instance.GetActor(item.Header.ToString());
+                        propertyGrid.SelectedObject = SelectedObject as Actor;
+                    }
+                }
+                else if (parent.Header.ToString() == "Cameras")
+                {
+                    SelectedObject = CameraManager.Instance.GetCamera(item.Header.ToString());
+                    propertyGrid.SelectedObject = SelectedObject as Camera;
+                }
+            }
         }
 
         private void NewMenuItem_Click(object sender, RoutedEventArgs e)
@@ -376,6 +394,10 @@ namespace AridiaEditor
                                 Axis axis = new Axis("default.Axis", 1f);
                                 axis.LoadContent();
                                 sceneGraph.RootNode.Children.Add(axis);
+
+                                Box box = new Box("test.Box", 1f);
+                                box.LoadContent();
+                                sceneGraph.RootNode.Children.Add(box);
                             }
 
                             if (newLevelWindow.CreatePlane)
@@ -417,6 +439,24 @@ namespace AridiaEditor
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             dockManager.SaveLayout(Settings.Default.LayoutFile);
+        }
+
+        private void CreateBoxMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (Level != null)
+            {
+                CreateBoxWindow createBoxWindow = new CreateBoxWindow();
+                createBoxWindow.Owner = this;
+
+                if (createBoxWindow.ShowDialog().Value)
+                {
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please create or load a level first before you add any actor");
+            }
         }
         #endregion  
     }
