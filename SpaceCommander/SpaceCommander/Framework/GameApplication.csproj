@@ -93,13 +93,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\Actor.cs" />
+    <Compile Include="Actors\Properties\ActorPropertyTypes.cs" />
+    <Compile Include="Actors\Properties\EffectProperty.cs" />
     <Compile Include="Actors\UIActor.cs" />
     <Compile Include="Cameras\Camera.cs" />
     <Compile Include="Cameras\ChaseCamera.cs" />
     <Compile Include="Cameras\FPSCamera.cs" />
     <Compile Include="Cameras\ThirdPersonCamera.cs" />
-    <Compile Include="Actors\Models\MeshObject.cs" />
-    <Compile Include="Actors\Models\SkySphere.cs" />
+    <Compile Include="Actors\Advanced\MeshObject.cs" />
+    <Compile Include="Actors\Advanced\SkySphere.cs" />
     <Compile Include="Actors\Primitives\Axis.cs" />
     <Compile Include="Actors\Primitives\Box.cs" />
     <Compile Include="Actors\Primitives\Plane.cs" />
@@ -144,6 +146,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actors\Properties\ActorProperty.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

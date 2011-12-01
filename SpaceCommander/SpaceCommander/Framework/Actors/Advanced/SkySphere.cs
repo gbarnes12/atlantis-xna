@@ -1,4 +1,4 @@
-﻿namespace GameApplicationTools.Actors.Models
+﻿namespace GameApplicationTools.Actors.Advanced
 {
     using System;
     using System.Collections.Generic;

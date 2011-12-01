@@ -1,4 +1,4 @@
-﻿namespace GameApplicationTools.Actors.Models
+﻿namespace GameApplicationTools.Actors.Advanced
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +12,7 @@
     using Actors.Cameras;
     using Interfaces;
     using GameApplicationTools.Actors.Primitives;
+    using GameApplicationTools.Actors.Properties;
 
     /// <summary>
     /// Represents a basic model in our world
@@ -25,28 +26,22 @@
     /// </summary>
     public class MeshObject : Actor
     {
+        #region Public
+        public Model Model { get; set; }
+        #endregion
+
         #region Private
-        private String _fileName;
-        private Model model;
+        private String _modelFileName;
         private BoundingSphere modelSphere;
         private Sphere sphere;
         #endregion
 
         public MeshObject(String ID, String modelFile, float scale)
             : base(ID, null)
-        {          
-            _fileName = modelFile;
+        {
+            _modelFileName = modelFile;
             this.Scale = new Vector3(scale, scale, scale);
             sphere = new Sphere(ID + "_sphere",scale);
-            this.Children.Add(sphere);
-        }
-
-        public MeshObject(String ID, String modelFile, float scale, float angle)
-            : base(ID, null)
-        {
-            _fileName = modelFile;
-            this.Scale = new Vector3(scale, scale, scale);
-            sphere = new Sphere(ID + "_sphere", scale);
             this.Children.Add(sphere);
         }
 
@@ -60,11 +55,11 @@
 
             modelSphere = new BoundingSphere();
 
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (ModelMesh mesh in Model.Meshes)
             {
                 modelSphere = Microsoft.Xna.Framework.BoundingSphere.CreateMerged(
                                     modelSphere,
-                                    model.Meshes[0].BoundingSphere);
+                                    Model.Meshes[0].BoundingSphere);
             }
         }
 
@@ -85,8 +80,19 @@
         {
             sphere.LoadContent();
 
-            if (_fileName != "")
-                model = ResourceManager.Instance.GetResource<Model>(_fileName);
+            if (_modelFileName != "")
+                Model = ResourceManager.Instance.GetResource<Model>(_modelFileName);
+
+            if (this.Properties.ContainsKey(ActorPropertyType.EFFECT))
+            {
+                Effect effect = ((EffectProperty)Properties[ActorPropertyType.EFFECT]).Effect;
+                if (effect != null)
+                {
+                    foreach (ModelMesh mesh in Model.Meshes)
+                        foreach (ModelMeshPart part in mesh.MeshParts)
+                            part.Effect = effect;
+                }
+            }
         }
 
 
@@ -98,32 +104,37 @@
         {
             if (CameraManager.Instance.GetCurrentCamera() != null)
             {
-                if (model != null)
+                if (Model != null)
                 {
                     Camera camera = CameraManager.Instance.GetCurrentCamera();
                     // Copy the model hierarchy transforms
-                       Matrix[] transforms = new Matrix[model.Bones.Count];
-                       model.CopyAbsoluteBoneTransformsTo(transforms);
+                       Matrix[] transforms = new Matrix[Model.Bones.Count];
+                       Model.CopyAbsoluteBoneTransformsTo(transforms);
  
                        // Render each mesh in the model
-                       foreach (ModelMesh mesh in model.Meshes)
+                       foreach (ModelMesh mesh in Model.Meshes)
                        {
                            foreach (Effect effect in mesh.Effects)
                            {
-                               BasicEffect basicEffect = effect as BasicEffect;
- 
-                               if (basicEffect == null)
+                               if (!this.Properties.ContainsKey(ActorPropertyType.EFFECT))
                                {
-                                       throw new NotSupportedException("there is no basic effect");
+                                   BasicEffect basicEffect = effect as BasicEffect;
+
+                                   //Set the matrices
+                                   basicEffect.World = transforms[mesh.ParentBone.Index] *
+                                                           AbsoluteTransform;
+                                   basicEffect.View = camera.View;
+                                   basicEffect.Projection = camera.Projection;
+
+                                   basicEffect.EnableDefaultLighting();
                                }
- 
-                               //Set the matrices
-                               basicEffect.World = Matrix.CreateScale(Scale) * transforms[mesh.ParentBone.Index] *
-                                                       AbsoluteTransform;
-                               basicEffect.View = camera.View;
-                               basicEffect.Projection = camera.Projection;
-                               
-                               basicEffect.EnableDefaultLighting();
+                               else
+                               {
+                                   effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] *
+                                                           AbsoluteTransform);
+                                   effect.Parameters["View"].SetValue(camera.View);
+                                   effect.Parameters["Projection"].SetValue(camera.Projection);
+                               }
                            }
  
                            mesh.Draw();

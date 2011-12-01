@@ -40,16 +40,18 @@
     <DefineConstants>TRACE;XBOX;XBOX360</DefineConstants>
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
-  <ItemGroup />
   <ItemGroup>
     <Compile Include="Actors\Actor.cs" />
-    <Compile Include="Actors\Models\MeshObject.cs" />
-    <Compile Include="Actors\Models\SkySphere.cs" />
+    <Compile Include="Actors\Advanced\MeshObject.cs" />
+    <Compile Include="Actors\Advanced\SkySphere.cs" />
     <Compile Include="Actors\Primitives\Axis.cs" />
     <Compile Include="Actors\Primitives\Box.cs" />
     <Compile Include="Actors\Primitives\Plane.cs" />
     <Compile Include="Actors\Primitives\Sphere.cs" />
     <Compile Include="Actors\Primitives\Triangle.cs" />
+    <None Include="Actors\Properties\ActorProperty.cs" />
+    <Compile Include="Actors\Properties\ActorPropertyTypes.cs" />
+    <Compile Include="Actors\Properties\EffectProperty.cs" />
     <Compile Include="Actors\UIActor.cs" />
     <Compile Include="CameraManager.cs" />
     <Compile Include="Cameras\Camera.cs" />

@@ -41,7 +41,7 @@
                 <MenuItem Header="Lights"/>
                 <MenuItem Header="Primitives">
                     <MenuItem Header="Plane" />
-                    <MenuItem Header="Box" />
+                    <MenuItem Header="Box" Name="CreateBoxMenuItem" Click="CreateBoxMenuItem_Click" />
                     <MenuItem Header="Triangle" />
                 </MenuItem>
             </MenuItem>
