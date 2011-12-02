@@ -195,5 +195,35 @@
                 return default(T);
             }
         }
+
+        /// <summary>
+        /// Returns a dictionary of resources of the given type
+        /// you want to have!
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public Dictionary<string, T> GetResourcesOfType<T>()
+        {
+            Dictionary<string, T> dictionary = new Dictionary<string, T>();
+
+            foreach (KeyValuePair<string, object> Obj in _resources)
+            {
+                if (Obj.Value is T)
+                    dictionary.Add(Obj.Key, (T)Convert.ChangeType(Obj.Value, typeof(T), null));
+            }
+
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Returns the whole dictionary of resources
+        /// that are loaded.
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, object> GetResources()
+        {
+            return _resources;
+        }
+
     }
 }

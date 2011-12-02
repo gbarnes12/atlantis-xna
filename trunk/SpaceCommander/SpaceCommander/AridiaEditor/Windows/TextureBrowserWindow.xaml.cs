@@ -10,15 +10,18 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Xna.Framework.Graphics;
+using System.IO;
+using AridiaEditor.Properties;
 
 namespace AridiaEditor.Windows
 {
     /// <summary>
-    /// Interaktionslogik für CreateBoxWindow.xaml
+    /// Interaktionslogik für TextureBrowserWindow.xaml
     /// </summary>
-    public partial class CreateBoxWindow : Window
+    public partial class TextureBrowserWindow : Window
     {
-        public CreateBoxWindow()
+        public TextureBrowserWindow()
         {
             InitializeComponent();
         }

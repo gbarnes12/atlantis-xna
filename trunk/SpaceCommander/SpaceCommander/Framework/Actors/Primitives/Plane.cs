@@ -41,19 +41,20 @@
         VertexBuffer VertexBuffer;
         IndexBuffer IndexBuffer;
         TextureFilter textureFilter = TextureFilter.Linear;
+        String _textureFile;
         #endregion
 
-        public Plane(String ID, Vector3 Position)
+        public Plane(String ID, String textureFile)
             : base(ID, null)
         {
-            this.Position = Position;
+            _textureFile = textureFile;
             this.Scale = Vector3.One;
         }
 
-        public Plane(String ID, String GameViewID, Vector3 Position)
+        public Plane(String ID, String GameViewID, String textureFile)
             : base(ID, GameViewID)
         {
-            this.Position = Position;
+            _textureFile = textureFile;
             this.Scale = Vector3.One;
         }
 
@@ -63,8 +64,6 @@
         /// </summary>
         public override void LoadContent()
         {
-            FPSCamera cam = WorldManager.Instance.GetActor<FPSCamera>("camera");
-
             // Fill in texture coordinates to display full texture
             // on quad
             Vector2 topLeft = new Vector2(0.0f, 0.0f);
@@ -97,8 +96,8 @@
 
             // now we need to load our texture mapping effect and of course our texture into cache
             // this may need to be redesigned once we use some sort of resource manager!
-            effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMapping").Clone());
-            effect.Texture = ResourceManager.Instance.GetResource<Texture2D>("Kachel2_bump");
+            effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone());
+            effect.Texture = ResourceManager.Instance.GetResource<Texture2D>(_textureFile);
 
         }
 
