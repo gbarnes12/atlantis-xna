@@ -31,6 +31,9 @@
                 <MenuItem Name="SettingsMenuItem"  Header="Settings" Click="SettingsMenuItem_Click" />
                 <MenuItem Name="SaveLayoutMenuItem" Header="Save layout..." Click="SaveLayoutMenuItem_Click" />
             </MenuItem>
+            <MenuItem Header="Resources">
+                <MenuItem Name="TextureBrowserItem"  Header="Textures" Click="TextureBrowserItem_Click" />
+            </MenuItem>
             <MenuItem Header="World">
                 <MenuItem Header="Cameras">
                     <MenuItem Header="Camera" />
@@ -40,9 +43,18 @@
                 </MenuItem>
                 <MenuItem Header="Lights"/>
                 <MenuItem Header="Primitives">
-                    <MenuItem Header="Plane" />
+                    <MenuItem Header="Plane" Name="CreatePlaneMenuItem" Click="CreatePlaneMenuItem_Click" />
                     <MenuItem Header="Box" Name="CreateBoxMenuItem" Click="CreateBoxMenuItem_Click" />
-                    <MenuItem Header="Triangle" />
+                    <MenuItem Header="Triangle" Name="CreateTriangleMenuItem" Click="CreateTriangleMenuItem_Click" />
+                    <MenuItem Header="Bounding Box" />
+                </MenuItem>
+                <MenuItem Header="Advanced">
+                    <MenuItem Header="Water" />
+                    <MenuItem Header="MeshObject" />
+                </MenuItem>
+                <MenuItem Header="Prefabs">
+                    <MenuItem Header="Trigger Volume" />
+                    <MenuItem Header="Spawnpoint" />
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Terrain">
@@ -55,13 +67,13 @@
         <ad:DockingManager x:Name="dockManager" Grid.Row="1">
             <ad:ResizingPanel Orientation="Vertical">
                 <ad:ResizingPanel Orientation="Horizontal">
-                    <ad:DockablePane ad:ResizingPanel.ResizeWidth="150">
+                    <!--<ad:DockablePane ad:ResizingPanel.ResizeWidth="150">
                         <ad:DockableContent x:Name="resourceContent" Title="Resources">
                             <TreeView Name="resourcesTree">
                                 <TreeViewItem Header="Resources" IsExpanded="True"></TreeViewItem>
                             </TreeView>
                         </ad:DockableContent>
-                    </ad:DockablePane>
+                    </ad:DockablePane>//-->
                     <ad:DocumentPane>
                         <ad:DocumentContent Title="Welcome to Aridia Editor">
                             <Grid Background="White">

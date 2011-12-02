@@ -35,19 +35,22 @@
         TextureFilter textureFilter = TextureFilter.Linear;
         TextureMappingEffect effect;
         Sphere sphere;
+        String _textureName;
         #endregion
 
-        public Box(String ID, float Scale) 
+        public Box(String ID, String textureName, float Scale) 
             : base(ID, null)
         {
+            _textureName = textureName;
             this.Scale = new Vector3(Scale, Scale, Scale);
             sphere = new Sphere(ID + "_sphere", Scale);
             this.Children.Add(sphere);
         }
 
-        public Box(String ID, String GameViewID, float Scale)
+        public Box(String ID, String textureName, String GameViewID, float Scale)
             : base(ID, GameViewID)
         {
+            _textureName = textureName;
             this.Scale = new Vector3(Scale, Scale, Scale);
             sphere = new Sphere(ID + "_sphere", Scale);
             this.Children.Add(sphere);
@@ -124,7 +127,7 @@
             boxIndices = null;
 
             effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone());
-            effect.Texture = ResourceManager.Instance.GetResource<Texture2D>("crate");
+            effect.Texture = ResourceManager.Instance.GetResource<Texture2D>(_textureName);
         }
 
         /// <summary>

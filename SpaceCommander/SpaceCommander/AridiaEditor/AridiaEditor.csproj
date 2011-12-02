@@ -63,6 +63,7 @@
     <Reference Include="Microsoft.Xna.Framework.Xact, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -86,14 +87,24 @@
     <Compile Include="ContentDevice\ResourceBuilder.cs" />
     <Compile Include="ErrorStruct.cs" />
     <Compile Include="Utils\TextFile.cs" />
-    <Compile Include="Windows\CreateBoxWindow.xaml.cs">
+    <Compile Include="Windows\CreateWindows\CreateBoxWindow.xaml.cs">
       <DependentUpon>CreateBoxWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\CreateWindows\CreatePlaneWindow.xaml.cs">
+      <DependentUpon>CreatePlaneWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CreateWindows\CreateTriangleWindow.xaml.cs">
+      <DependentUpon>CreateTriangleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Helper\TextureLoader.cs" />
     <Compile Include="Windows\NewLevelWindow.xaml.cs">
       <DependentUpon>NewLevelWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TextureBrowserWindow.xaml.cs">
+      <DependentUpon>TextureBrowserWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -116,7 +127,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\CreateBoxWindow.xaml">
+    <Page Include="Windows\CreateWindows\CreateBoxWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\CreateWindows\CreatePlaneWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\CreateWindows\CreateTriangleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -125,6 +144,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TextureBrowserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,6 +197,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

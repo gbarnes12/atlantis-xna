@@ -345,6 +345,16 @@ namespace AridiaEditor
         #endregion
 
         #region EditorEvents
+        private void TextureBrowserItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (EditorStatus == EditorStatus.IDLE)
+            {
+                TextureBrowserWindow textureBrowser = new TextureBrowserWindow();
+                textureBrowser.Owner = this;
+                textureBrowser.Show();
+            }
+        }
+
         private void WorldTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             TreeViewItem item = e.NewValue as TreeViewItem;
@@ -394,15 +404,11 @@ namespace AridiaEditor
                                 Axis axis = new Axis("default.Axis", 1f);
                                 axis.LoadContent();
                                 sceneGraph.RootNode.Children.Add(axis);
-
-                                Box box = new Box("test.Box", 1f);
-                                box.LoadContent();
-                                sceneGraph.RootNode.Children.Add(box);
                             }
 
                             if (newLevelWindow.CreatePlane)
                             {
-                                GameApplicationTools.Actors.Primitives.Plane plane = new GameApplicationTools.Actors.Primitives.Plane("defaultPlane", Vector3.Zero);
+                                GameApplicationTools.Actors.Primitives.Plane plane = new GameApplicationTools.Actors.Primitives.Plane("defaultPlane", "kachel2_bump");
                                 plane.LoadContent();
                                 sceneGraph.RootNode.Children.Add(plane);
                             }
@@ -450,7 +456,58 @@ namespace AridiaEditor
 
                 if (createBoxWindow.ShowDialog().Value)
                 {
+                    Box box = new Box(createBoxWindow.ID, createBoxWindow.Texture, 1f);
+                    box.Position = createBoxWindow.Position;
+                    box.Scale = createBoxWindow.Scale;
+                    box.LoadContent();
+                    sceneGraph.RootNode.Children.Add(box);
+                    LoadWorldView();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please create or load a level first before you add any actor");
+            }
+        }
 
+        private void CreatePlaneMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (Level != null)
+            {
+                CreatePlaneWindow createPlaneWindow = new CreatePlaneWindow();
+                createPlaneWindow.Owner = this;
+
+                if (createPlaneWindow.ShowDialog().Value)
+                {
+                    GameApplicationTools.Actors.Primitives.Plane plane = new GameApplicationTools.Actors.Primitives.Plane(createPlaneWindow.ID, createPlaneWindow.Texture);
+                    plane.Position = createPlaneWindow.Position;
+                    plane.Scale = createPlaneWindow.Scale;
+                    plane.LoadContent();
+                    sceneGraph.RootNode.Children.Add(plane);
+                    LoadWorldView();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please create or load a level first before you add any actor");
+            }
+        }
+
+        private void CreateTriangleMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (Level != null)
+            {
+                CreateTriangleWindow createTriangleWindow = new CreateTriangleWindow();
+                createTriangleWindow.Owner = this;
+
+                if (createTriangleWindow.ShowDialog().Value)
+                {
+                    Triangle triangle = new Triangle(createTriangleWindow.ID);
+                    triangle.Position = createTriangleWindow.Position;
+                    triangle.Scale = createTriangleWindow.Scale;
+                    triangle.LoadContent();
+                    sceneGraph.RootNode.Children.Add(triangle);
+                    LoadWorldView();
                 }
             }
             else
@@ -459,6 +516,7 @@ namespace AridiaEditor
             }
         }
         #endregion  
+
     }
 
     public enum EditorStatus
