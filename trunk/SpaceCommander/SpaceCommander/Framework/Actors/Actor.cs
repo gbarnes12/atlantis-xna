@@ -10,6 +10,7 @@
     using GameApplicationTools.Interfaces.Collections;
     using Microsoft.Xna.Framework;
     using GameApplicationTools.Actors.Properties;
+using System.ComponentModel;
 
     /// <summary>
     /// This is the basic actor class from
@@ -43,6 +44,9 @@
         /// otherwise the WorldManager will prompt
         /// some error. 
         /// </summary>
+        #if !XBOX360
+        [CategoryAttribute("General"),DescriptionAttribute("The ID of this Actor!")]
+        #endif
         public String ID { get; set; }
 
         /// <summary>

@@ -12,9 +12,10 @@
         xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
         xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         xmlns:swf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
-        Title="Aridia - World Editor" Height="556" Width="882" Closing="Window_Closing">
+        Title="Aridia - World Editor" Height="556" Width="882" Closing="Window_Closing" Icon="/AridiaEditor;component/Images/icon.png" KeyDown="Window_KeyDown">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
             <RowDefinition Height="24"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="24"/>
@@ -64,7 +65,9 @@
                 <MenuItem Header="About"/>
             </MenuItem>
         </Menu>
-        <ad:DockingManager x:Name="dockManager" Grid.Row="1">
+        <ToolBar Grid.Row="1" Name="toolbar">
+        </ToolBar>
+        <ad:DockingManager x:Name="dockManager" Grid.Row="2">
             <ad:ResizingPanel Orientation="Vertical">
                 <ad:ResizingPanel Orientation="Horizontal">
                     <!--<ad:DockablePane ad:ResizingPanel.ResizeWidth="150">
@@ -114,14 +117,28 @@
             </ad:ResizingPanel>
         </ad:DockingManager>
 
-        <StatusBar Grid.Row="2" Margin="1,0,-1,0">
+        <StatusBar Grid.Row="3" Margin="1,0,-1,0">
             <StatusBarItem Content="Ready" Background="{x:Null}" Width="450" Name="progressStatusBarItem" />
             <StatusBarItem Content="Camera: {X: 0, Y: 0, Z: 0}" Name="CameraPosition"  Background="{x:Null}" Width="150" />
             <StatusBarItem Content="FPS: 60" Background="{x:Null}" Width="70"/>
             <StatusBarItem Content="Build:" Background="{x:Null}" Name="AssemblyBuild"/>
         </StatusBar>
-        <ProgressBar Grid.Row="2" Height="18" HorizontalAlignment="Left" Margin="50,3,0,0" Name="progressBar" VerticalAlignment="Top" Width="230" SmallChange="1" />
-        <Label Content="Level: no level loaded" Grid.Row="2" Height="24" HorizontalAlignment="Left" Margin="308,0,0,0" Name="LevelStatus" VerticalAlignment="Top" Width="138" />
+        <ProgressBar Grid.Row="3" Height="18" HorizontalAlignment="Left" Margin="50,3,0,0" Name="progressBar" VerticalAlignment="Top" Width="230" SmallChange="1" />
+        <Label Content="Level: no level loaded" Grid.Row="3" Height="24" HorizontalAlignment="Left" Margin="308,0,0,0" Name="LevelStatus" VerticalAlignment="Top" Width="138" />
+        <Button Content="" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="172,0,0,0" Name="EditModeMoveButton" VerticalAlignment="Top" Width="25" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="EditModeMoveButton_Click" ClickMode="Press">
+            <Button.Background>
+                <ImageBrush ImageSource="/AridiaEditor;component/Images/move_icon.png" />
+            </Button.Background>
+        </Button>
+        <Button BorderBrush="{x:Null}" Content="" Foreground="{x:Null}" Height="23" HorizontalAlignment="Left" Margin="203,0,0,0" Name="EditModeRotateButton" VerticalAlignment="Top" Width="25" Grid.Row="1" Click="EditModeRotateButton_Click" ClickMode="Press">
+            <Button.Background>
+                <ImageBrush ImageSource="/AridiaEditor;component/Images/redo.png" Stretch="UniformToFill" TileMode="None" />
+            </Button.Background>
+        </Button>
+        <Button BorderBrush="{x:Null}" Content="" Foreground="{x:Null}" Height="23" HorizontalAlignment="Left" Margin="234,1,0,0" Name="EditModeScaleButton" VerticalAlignment="Top" Width="25" Grid.Row="1" Click="EditModeScaleButton_Click" ClickMode="Press">
+            <Button.Background>
+                <ImageBrush ImageSource="/AridiaEditor;component/Images/ImageScaleIconMono32.gif" />
+            </Button.Background>
+        </Button>
     </Grid>
-
 </Window>
