@@ -174,6 +174,11 @@
                 AddressW = TextureAddressMode.Wrap
             };
 
+            RasterizerState r1 = new RasterizerState();
+            r1.DepthBias = 0f;
+
+            GameApplication.Instance.GetGraphics().RasterizerState = r1;
+
             base.PreRender();
         }
 
@@ -233,6 +238,8 @@
             RasterizerState rs = new RasterizerState();
             rs.CullMode = CullMode.CullCounterClockwiseFace;
             GameApplication.Instance.GetGraphics().RasterizerState = rs;
+
+
 
             base.Render(sceneGraph);
         }

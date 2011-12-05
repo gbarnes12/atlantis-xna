@@ -38,6 +38,7 @@ namespace AridiaEditor
     using GameApplicationTools.Misc;
     using GameApplicationTools.Resources;
     using GameApplicationTools.Input;
+    using GameApplicationTools.Actors.Properties;
 
     public partial class MainWindow : Window
     {
@@ -45,6 +46,7 @@ namespace AridiaEditor
         public static TextBlock outputTextBlock;
         public static SceneGraphManager sceneGraph;
         public static EditorStatus EditorStatus { get; set; }
+        public static EditMode EditMode { get; set; }
         public static Level Level { get; set; }
 
         Stopwatch watch = new Stopwatch();
@@ -91,7 +93,7 @@ namespace AridiaEditor
                 }
             }
 
-            
+            EditMode = EditMode.ROTATE;
         }
 
         /// <summary>
@@ -207,9 +209,21 @@ namespace AridiaEditor
 
             foreach(Camera camera in cameras.Values)
             {
-                TreeViewItem cameraItem = new TreeViewItem();
-                cameraItem.Header = camera.ID;
-                cameraNode.Items.Add(cameraItem);
+                if (camera.ID != "editor.Camera")
+                {
+                    TreeViewItem cameraItem = new TreeViewItem();
+                    cameraItem.Header = camera.ID;
+
+                    #region CreateMenu
+                    ContextMenu menu = new ContextMenu();
+                    MenuItem setToCurrentCamera = new MenuItem();
+                    setToCurrentCamera.Name = "SetToCurrentCameraMenuItem";
+                    setToCurrentCamera.Header = "Set as current camera";
+                    menu.Items.Add(setToCurrentCamera);
+                    #endregion
+                    cameraItem.ContextMenu = menu;
+                    cameraNode.Items.Add(cameraItem);
+                }
             }
 
             if (sceneGraph != null)
@@ -242,6 +256,44 @@ namespace AridiaEditor
         #endregion
 
         #region XNA Events
+        private void ControlEditMode()
+        {
+            if(SelectedObject != null)
+            {
+                if(SelectedObject is Actor)
+                {
+                    Actor obj = SelectedObject as Actor;
+                    if (EditMode == EditMode.MOVE)
+                    {
+                
+                        Vector3 inputModifier = new Vector3(
+                        (KeyboardDevice.Instance.IsKeyDown(Keys.Left) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Right) ? 1 : 0),
+                        (KeyboardDevice.Instance.IsKeyDown(Keys.Down) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Up) ? 1 : 0),
+                        (KeyboardDevice.Instance.IsKeyDown(Keys.PageDown) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.PageUp) ? 1 : 0));
+
+                        obj.Position += inputModifier * 0.05f;
+                    }
+                    else if (EditMode == EditMode.SCALE)
+                    {
+                        Vector3 inputModifier = new Vector3(
+                        (KeyboardDevice.Instance.IsKeyDown(Keys.Left) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Right) ? 1 : 0),
+                        (KeyboardDevice.Instance.IsKeyDown(Keys.Down) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Up) ? 1 : 0),
+                        (KeyboardDevice.Instance.IsKeyDown(Keys.PageDown) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.PageUp) ? 1 : 0));
+
+                        obj.Scale += inputModifier * 0.05f;
+                    }
+                    else if (EditMode == EditMode.ROTATE)
+                    {
+                        float yaw = (KeyboardDevice.Instance.IsKeyDown(Keys.Left) ? -1f : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Right) ? 1f : 0);
+                        float pitch = (KeyboardDevice.Instance.IsKeyDown(Keys.Down) ? -1f : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Up) ? 1f : 0);
+                        float roll = (KeyboardDevice.Instance.IsKeyDown(Keys.PageDown) ? -1f : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.PageUp) ? 1f : 0);
+
+                        obj.Rotation *= Quaternion.CreateFromYawPitchRoll(yaw * 0.05f,  pitch * 0.05f, roll * 0.05f);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Invoked when our second control is ready to render.
         /// </summary>
@@ -250,6 +302,9 @@ namespace AridiaEditor
             if (watch != null)
             {
                 sceneGraph.Update(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
+
+                // Control the modes for the object rotation, scaling and moving
+                ControlEditMode();
 
                 KeyboardDevice.Instance.Update();
                 MouseDevice.Instance.Update();
@@ -266,19 +321,7 @@ namespace AridiaEditor
         // Invoked when the mouse moves over the second viewport
         private void xnaControl_MouseMove(object sender, HwndMouseEventArgs e)
         {
-            if (SelectedObject != null && SelectedObject is Actor)
-            {
-                if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
-                {
-                    Camera cam = CameraManager.Instance.GetCurrentCamera();
-                    float x = (float)e.Position.X;
-                    float y = (float)e.Position.Y;
-                    if (cam.GetMouseRay(new Vector2(x, y)).Intersects(Utils.TransformBoundingSphere(((Actor)SelectedObject).BoundingSphere, ((Actor)SelectedObject).AbsoluteTransform)) != null)
-                    {
-                        ((Actor)SelectedObject).Position = new Vector3(((Actor)SelectedObject).Position.X, ((Actor)SelectedObject).Position.Y, ((Actor)SelectedObject).Position.Z + 0.2f * 0.2f);
-                    }
-                }
-            }
+            
         }
 
         // We use the left mouse button to do exclusive capture of the mouse so we can drag and drag
@@ -292,7 +335,7 @@ namespace AridiaEditor
                 {
                     foreach (Actor actor in WorldManager.Instance.GetActors().Values)
                     {
-                        if (actor is IPickable)
+                        if (actor.Properties.ContainsKey(ActorPropertyType.PICKABLE))
                         {
                             Camera cam = CameraManager.Instance.GetCurrentCamera();
                             float x = (float)e.Position.X;
@@ -303,6 +346,8 @@ namespace AridiaEditor
                                 Output.AddToOutput("Object : " + actor.ID + " has been picked!");
                                 propertyGrid.SelectedObject = actor;
                                 SelectedObject = actor;
+
+                                ((PickableProperty)actor.Properties[ActorPropertyType.PICKABLE]).IsPicked = true;
                             }
                             else
                             {
@@ -321,8 +366,19 @@ namespace AridiaEditor
 
         private void xnaControl_HwndRButtonDown(object sender, HwndMouseEventArgs e)
         {
-            propertyGrid.SelectedObject = null;
-            SelectedObject = null;
+            if (SelectedObject != null)
+            {
+                // set actor to isn't picked.
+                if (SelectedObject is Actor)
+                {
+                    if (((Actor)SelectedObject).Properties.ContainsKey(ActorPropertyType.PICKABLE))
+                        ((PickableProperty)((Actor)SelectedObject).Properties[ActorPropertyType.PICKABLE]).IsPicked = true;
+                }
+
+                propertyGrid.SelectedObject = null;
+                SelectedObject = null;
+            }
+
             EditorCamera cam = CameraManager.Instance.GetCurrentCamera() as EditorCamera;
             if (cam != null)
             {
@@ -345,6 +401,21 @@ namespace AridiaEditor
         #endregion
 
         #region EditorEvents
+        private void EditModeMoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            EditMode = EditMode.MOVE;
+        }
+
+        private void EditModeRotateButton_Click(object sender, RoutedEventArgs e)
+        {
+            EditMode = EditMode.ROTATE;
+        }
+
+        private void EditModeScaleButton_Click(object sender, RoutedEventArgs e)
+        {
+            EditMode = EditMode.SCALE;
+        }
+
         private void TextureBrowserItem_Click(object sender, RoutedEventArgs e)
         {
             if (EditorStatus == EditorStatus.IDLE)
@@ -397,7 +468,10 @@ namespace AridiaEditor
                         {
                             Camera camera = new Camera("default.Camera", newLevelWindow.CameraPosition, newLevelWindow.CameraTarget);
                             camera.LoadContent();
-                            CameraManager.Instance.CurrentCamera = "default.Camera";
+
+                            EditorCamera editorCamera = new EditorCamera("editor.Camera", newLevelWindow.CameraPosition, newLevelWindow.CameraTarget);
+                            editorCamera.LoadContent();
+                            CameraManager.Instance.CurrentCamera = "editor.Camera";
 
                             if (newLevelWindow.CreateAxis)
                             {
@@ -517,6 +591,14 @@ namespace AridiaEditor
         }
         #endregion  
 
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Up || e.Key == System.Windows.Input.Key.Down
+                || e.Key == System.Windows.Input.Key.Left || e.Key == System.Windows.Input.Key.Right)
+            {
+                e.Handled = true;
+            }
+        }
     }
 
     public enum EditorStatus
@@ -524,6 +606,13 @@ namespace AridiaEditor
         LOADING,
         IDLE,
         STARTING
+    }
+
+    public enum EditMode
+    {
+        MOVE,
+        ROTATE,
+        SCALE
     }
 
     /*

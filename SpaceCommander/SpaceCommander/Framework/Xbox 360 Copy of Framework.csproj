@@ -52,6 +52,7 @@
     <None Include="Actors\Properties\ActorProperty.cs" />
     <Compile Include="Actors\Properties\ActorPropertyTypes.cs" />
     <Compile Include="Actors\Properties\EffectProperty.cs" />
+    <Compile Include="Actors\Properties\PickableProperty.cs" />
     <Compile Include="Actors\UIActor.cs" />
     <Compile Include="CameraManager.cs" />
     <Compile Include="Cameras\Camera.cs" />

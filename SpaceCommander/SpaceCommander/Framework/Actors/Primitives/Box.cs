@@ -11,6 +11,7 @@
     using Resources;
     using Cameras;
     using Misc;
+    using GameApplicationTools.Actors.Properties;
 
     /// <summary>
     /// Some basic box which loads a crate texture
@@ -25,7 +26,7 @@
     /// Author: Gavin Barnes
     /// Version: 1.2
     /// </summary>
-    public class Box : Actor, IPickable
+    public class Box : Actor
     {
         #region Private
         // those classes are needed in order
@@ -45,6 +46,10 @@
             this.Scale = new Vector3(Scale, Scale, Scale);
             sphere = new Sphere(ID + "_sphere", Scale);
             this.Children.Add(sphere);
+
+            // create properties
+            PickableProperty pickableProperty = new PickableProperty();
+            Properties.Add(ActorPropertyType.PICKABLE, pickableProperty);
         }
 
         public Box(String ID, String textureName, String GameViewID, float Scale)
@@ -54,6 +59,10 @@
             this.Scale = new Vector3(Scale, Scale, Scale);
             sphere = new Sphere(ID + "_sphere", Scale);
             this.Children.Add(sphere);
+
+            // create properties
+            PickableProperty pickableProperty = new PickableProperty();
+            Properties.Add(ActorPropertyType.PICKABLE, pickableProperty);
         }
 
         /// <summary>
@@ -137,7 +146,11 @@
         /// <returns>Return a valid bounding sphere <see cref="BoundSphere" /></returns>
         public override BoundingSphere GetBoundingSphere()
         {
-            return new BoundingSphere(Vector3.Zero, Scale.Y * 2);
+            float radius = Scale.Y * 2;
+            if(radius == 0)
+                radius = 1f;
+
+            return new BoundingSphere(Vector3.Zero, radius);
         }
 
         /// <summary>
@@ -163,7 +176,6 @@
         public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
-            Children[0].Scale = Scale * 2;
             effect.World = AbsoluteTransform;
             effect.View = camera.View;
             effect.Projection = camera.Projection;
