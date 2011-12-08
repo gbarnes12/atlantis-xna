@@ -15,7 +15,9 @@ using SpaceCommander.Actors;
 using Microsoft.Xna.Framework.Graphics;
 using GameApplicationTools.Actors.Primitives;
 using GameApplicationTools.Input;
+using GameApplicationTools.Actors;
 using GameApplicationTools.Actors.Properties;
+
 
 namespace SpaceCommander.GameViews.Gameplay
 {
@@ -53,7 +55,45 @@ namespace SpaceCommander.GameViews.Gameplay
             {
                 ((Laser)WorldManager.Instance.GetActor("testlaser")).Visible = true;
                 ((Laser)WorldManager.Instance.GetActor("testlaser")).fire(WorldManager.Instance.GetActor("SpaceShip").Position);
+
+            //check collision
+            foreach (Actor actor in WorldManager.Instance.GetActors().Values)
+            {
+                if (actor.Properties.ContainsKey(ActorPropertyType.COLLIDEABLE))
+                {
+                    if (actor == WorldManager.Instance.GetActor("testlaser"))
+                        continue;
+
+                    if (actor == WorldManager.Instance.GetActor("SpaceShip"))
+                        continue;
+
+                    BoundingSphere transformedActorSphere = new BoundingSphere();
+
+                    transformedActorSphere.Center = Vector3.Transform(actor.BoundingSphere.Center, actor.AbsoluteTransform);
+                    transformedActorSphere.Radius = actor.BoundingSphere.Radius;
+
+
+
+                    BoundingSphere transformedLaserSphere = new BoundingSphere();
+
+                    transformedLaserSphere.Center = Vector3.Transform(WorldManager.Instance.GetActor("testlaser").BoundingSphere.Center, WorldManager.Instance.GetActor("testlaser").AbsoluteTransform);
+                    transformedLaserSphere.Radius = WorldManager.Instance.GetActor("testlaser").BoundingSphere.Radius;
+
+
+                    if (transformedLaserSphere.Intersects(transformedActorSphere))
+                    {
+                        // WorldManager.Instance.GetActor("testlaser").Visible = false;
+                        //  WorldManager.Instance.GetActor("testlaser").Updateable = false;
+
+                        actor.Visible = false;
+                        actor.Updateable = false;
+
+                        break;
+                    }
+                }
             }
+            }
+
             base.Update(gameTime);
         }
 

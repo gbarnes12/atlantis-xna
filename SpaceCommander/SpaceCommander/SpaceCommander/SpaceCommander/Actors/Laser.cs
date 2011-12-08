@@ -55,6 +55,11 @@ namespace SpaceCommander.Actors
             base.Update(sceneGraph);
         }
 
+        public BoundingSphere getBoundingSphere()
+        {
+            return this.modelSphere;
+        }
+
 
 
         /// <summary>
