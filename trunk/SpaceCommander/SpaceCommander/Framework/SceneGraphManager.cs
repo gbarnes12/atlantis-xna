@@ -39,12 +39,19 @@
         {
             get { return nodesCulled; }
         }
+
+        public bool CullingActive
+        {
+            get;
+            set;
+        }
         #endregion
 
         // Constructor
         public SceneGraphManager()
         {
             rootNode = new Actor("rootNode", null);
+            CullingActive = true;
         }
 
         public void SetGameTime(GameTime gameTime)
@@ -87,22 +94,30 @@
             //Draw
             if (node.Visible)
             {
-                BoundingSphere transformedSphere = new BoundingSphere();
-
-                transformedSphere.Center = Vector3.Transform(node.BoundingSphere.Center,
-                                                             node.AbsoluteTransform);
-                transformedSphere.Radius = node.BoundingSphere.Radius;
-
                 if (CameraManager.Instance.CurrentCamera != null)
                 {
-                    if (CameraManager.Instance.GetCurrentCamera().Frustum.Intersects(transformedSphere))
+                    BoundingSphere transformedSphere = new BoundingSphere();
+
+                    transformedSphere.Center = Vector3.Transform(node.BoundingSphere.Center,
+                                                                 node.AbsoluteTransform);
+                    transformedSphere.Radius = node.BoundingSphere.Radius;
+
+                    if (CullingActive)
                     {
-                        node.PreRender();
-                        node.Render(this);
+                        if (CameraManager.Instance.GetCurrentCamera().Frustum.Intersects(transformedSphere))
+                        {
+                            node.PreRender();
+                            node.Render(this);
+                        }
+                        else
+                        {
+                            nodesCulled++;
+                        }
                     }
                     else
                     {
-                        nodesCulled++;
+                        node.PreRender();
+                        node.Render(this);
                     }
                 }
             }

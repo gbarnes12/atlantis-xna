@@ -67,9 +67,9 @@
             // Fill in texture coordinates to display full texture
             // on quad
             Vector2 topLeft = new Vector2(0.0f, 0.0f);
-            Vector2 topRight = new Vector2(100f, 0.0f);
-            Vector2 bottomLeft = new Vector2(0.0f, 100f);
-            Vector2 bottomRight = new Vector2(100f, 100f);
+            Vector2 topRight = new Vector2(1200f, 0.0f);
+            Vector2 bottomLeft = new Vector2(0.0f, 1200f);
+            Vector2 bottomRight = new Vector2(1200f, 1200f);
 
             // since we use an index buffer we just need to declare
             // four vertices thus we can create a quad only streches to the z-Axis
