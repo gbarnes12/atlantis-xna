@@ -51,6 +51,7 @@
     <Compile Include="Actors\Primitives\Triangle.cs" />
     <None Include="Actors\Properties\ActorProperty.cs" />
     <Compile Include="Actors\Properties\ActorPropertyTypes.cs" />
+    <Compile Include="Actors\Properties\CollideableProperty.cs" />
     <Compile Include="Actors\Properties\EffectProperty.cs" />
     <Compile Include="Actors\Properties\PickableProperty.cs" />
     <Compile Include="Actors\UIActor.cs" />
@@ -80,8 +81,11 @@
     <Compile Include="Misc\Logger.cs" />
     <Compile Include="Misc\StreamLoader.cs" />
     <Compile Include="Misc\Utils.cs" />
+    <Compile Include="PostProcessorManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManager.cs" />
+    <Compile Include="Resources\PostProcessors\BloomProcessor.cs" />
+    <Compile Include="Resources\PostProcessors\PostProcessor.cs" />
     <Compile Include="Resources\Resource.cs" />
     <Compile Include="Resources\Shader\DefaultEffect.cs" />
     <Compile Include="Resources\Shader\TextureMappingEffect.cs" />

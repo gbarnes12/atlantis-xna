@@ -43,6 +43,7 @@ namespace SpaceCommander.Actors
         {
             model = ResourceManager.Instance.GetResource<Model>("p1_wedge");
             sphere.LoadContent();
+            CalculateBoundingSphere();
 
             base.LoadContent();
         }
@@ -106,13 +107,15 @@ namespace SpaceCommander.Actors
         {
             //Calculate the bounding sphere for the entire model
 
-            modelSphere = new BoundingSphere();
+            modelSphere = new BoundingSphere(Vector3.Zero, 0);
+            Matrix[] modelTransforms = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(modelTransforms);
 
             foreach (ModelMesh mesh in model.Meshes)
             {
-                modelSphere = Microsoft.Xna.Framework.BoundingSphere.CreateMerged(
-                                    modelSphere,
-                                    model.Meshes[0].BoundingSphere);
+                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
+
+                modelSphere = BoundingSphere.CreateMerged(modelSphere, transformed);
             }
         }
 

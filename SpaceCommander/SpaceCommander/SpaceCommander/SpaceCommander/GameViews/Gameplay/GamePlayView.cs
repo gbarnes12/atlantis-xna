@@ -55,44 +55,42 @@ namespace SpaceCommander.GameViews.Gameplay
             {
                 ((Laser)WorldManager.Instance.GetActor("testlaser")).Visible = true;
                 ((Laser)WorldManager.Instance.GetActor("testlaser")).fire(WorldManager.Instance.GetActor("SpaceShip").Position);
+            }
 
             //check collision
             foreach (Actor actor in WorldManager.Instance.GetActors().Values)
             {
                 if (actor.Properties.ContainsKey(ActorPropertyType.COLLIDEABLE))
                 {
-                    if (actor == WorldManager.Instance.GetActor("testlaser"))
+                    if (actor.ID.Equals("testlaser"))
                         continue;
 
-                    if (actor == WorldManager.Instance.GetActor("SpaceShip"))
+                    if (actor.ID.Equals("SpaceShip"))
                         continue;
 
-                    BoundingSphere transformedActorSphere = new BoundingSphere();
-
-                    transformedActorSphere.Center = Vector3.Transform(actor.BoundingSphere.Center, actor.AbsoluteTransform);
-                    transformedActorSphere.Radius = actor.BoundingSphere.Radius;
-
-
+                    BoundingSphere transformedSphere = new BoundingSphere();
+                    transformedSphere.Center = Vector3.Transform(actor.BoundingSphere.Center,
+                                                                 actor.AbsoluteTransform);
+                    transformedSphere.Radius = actor.BoundingSphere.Radius;
 
                     BoundingSphere transformedLaserSphere = new BoundingSphere();
-
-                    transformedLaserSphere.Center = Vector3.Transform(WorldManager.Instance.GetActor("testlaser").BoundingSphere.Center, WorldManager.Instance.GetActor("testlaser").AbsoluteTransform);
+                    transformedLaserSphere.Center = Vector3.Transform(WorldManager.Instance.GetActor("testlaser").BoundingSphere.Center,
+                                                                 WorldManager.Instance.GetActor("testlaser").AbsoluteTransform);
                     transformedLaserSphere.Radius = WorldManager.Instance.GetActor("testlaser").BoundingSphere.Radius;
 
-
-                    if (transformedLaserSphere.Intersects(transformedActorSphere))
+                    if (transformedSphere.Intersects(transformedLaserSphere))
                     {
                         // WorldManager.Instance.GetActor("testlaser").Visible = false;
                         //  WorldManager.Instance.GetActor("testlaser").Updateable = false;
+                        GameConsole.Instance.WriteLine("Asteroid!");
 
-                        actor.Visible = false;
-                        actor.Updateable = false;
-
-                        break;
+                       actor.Visible = false;
+                       actor.Updateable = false;
                     }
+                    
                 }
             }
-            }
+            
 
             base.Update(gameTime);
         }
@@ -143,6 +141,10 @@ namespace SpaceCommander.GameViews.Gameplay
 
                 MeshObject asteroid01 = new MeshObject("asteroid" + i, "asteroid", 1f);
                 //asteroid01.Properties.Add(ActorPropertyType.EFFECT, effectProp);
+
+                CollideableProperty collidable = new CollideableProperty();
+                asteroid01.Properties.Add(ActorPropertyType.COLLIDEABLE, collidable);
+
                 asteroid01.Scale = new Vector3(random.Next(10, 100), random.Next(10, 100), random.Next(10, 100));
                 asteroid01.Rotation = Quaternion.CreateFromYawPitchRoll(random.Next(20,100),random.Next(20,100),random.Next(20,100));
                 asteroid01.Position = new Vector3(random.Next(-1000, 1000), random.Next(-500, 500), random.Next(-100, 0) - i * 300);

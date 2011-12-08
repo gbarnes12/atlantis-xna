@@ -379,23 +379,32 @@ namespace AridiaEditor
                 SelectedObject = null;
             }
 
-            EditorCamera cam = CameraManager.Instance.GetCurrentCamera() as EditorCamera;
-            if (cam != null)
+            if (CameraManager.Instance.CurrentCamera != null)
             {
-                cam.Active = true;
-                MouseDevice.Instance.ResetMouseAfterUpdate = true;
-                NativeMethods.ShowCursor(false);
+                EditorCamera cam = CameraManager.Instance.GetCurrentCamera() as EditorCamera;
+                if (cam != null)
+                {
+                    cam.Active = true;
+                    MouseDevice.Instance.ResetMouseAfterUpdate = true;
+                    NativeMethods.ShowCursor(false);
+                    
+                }
             }
+
+            
         }
 
         private void xnaControl_HwndRButtonUp(object sender, HwndMouseEventArgs e)
         {
-            EditorCamera cam = CameraManager.Instance.GetCurrentCamera() as EditorCamera;
-            if (cam != null)
+            if (CameraManager.Instance.CurrentCamera != null)
             {
-                cam.Active = false;
-                MouseDevice.Instance.ResetMouseAfterUpdate = false;
-                NativeMethods.ShowCursor(true);
+                EditorCamera cam = CameraManager.Instance.GetCurrentCamera() as EditorCamera;
+                if (cam != null)
+                {
+                    cam.Active = false;
+                    MouseDevice.Instance.ResetMouseAfterUpdate = false;
+                    NativeMethods.ShowCursor(true);
+                }
             }
         }
         #endregion

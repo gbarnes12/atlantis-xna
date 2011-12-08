@@ -59,7 +59,7 @@
             {
                 modelSphere = Microsoft.Xna.Framework.BoundingSphere.CreateMerged(
                                     modelSphere,
-                                    Model.Meshes[0].BoundingSphere);
+                                    mesh.BoundingSphere);
             }
         }
 
@@ -93,6 +93,9 @@
                             part.Effect = effect;
                 }
             }
+
+            if(Model != null)
+            CalculateBoundingSphere();
         }
 
 

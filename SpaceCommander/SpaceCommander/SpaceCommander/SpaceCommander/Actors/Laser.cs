@@ -39,6 +39,9 @@ namespace SpaceCommander.Actors
 
             if (_fileName != "")
                 model = ResourceManager.Instance.GetResource<Model>(_fileName);
+
+            if (model != null)
+                CalculateBoundingSphere();
         }
 
         public void fire(Vector3 shipPosition)
@@ -60,6 +63,19 @@ namespace SpaceCommander.Actors
             return this.modelSphere;
         }
 
+        private void CalculateBoundingSphere()
+        {
+            //Calculate the bounding sphere for the entire model
+
+            modelSphere = new BoundingSphere();
+
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                modelSphere = Microsoft.Xna.Framework.BoundingSphere.CreateMerged(
+                                    modelSphere,
+                                    mesh.BoundingSphere);
+            }
+        }
 
 
         /// <summary>
