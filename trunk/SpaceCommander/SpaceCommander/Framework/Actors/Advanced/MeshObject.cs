@@ -53,13 +53,17 @@
         {
             //Calculate the bounding sphere for the entire model
 
-            modelSphere = new BoundingSphere();
+            //Calculate the bounding sphere for the entire model
+            Matrix[] modelTransforms = new Matrix[Model.Bones.Count];
+            Model.CopyAbsoluteBoneTransformsTo(modelTransforms);
+
+            modelSphere = new BoundingSphere(Vector3.Zero, 0);
 
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                modelSphere = Microsoft.Xna.Framework.BoundingSphere.CreateMerged(
-                                    modelSphere,
-                                    mesh.BoundingSphere);
+                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
+
+                modelSphere = BoundingSphere.CreateMerged(modelSphere, transformed);
             }
         }
 
@@ -95,7 +99,7 @@
             }
 
             if(Model != null)
-            CalculateBoundingSphere();
+                CalculateBoundingSphere();
         }
 
 

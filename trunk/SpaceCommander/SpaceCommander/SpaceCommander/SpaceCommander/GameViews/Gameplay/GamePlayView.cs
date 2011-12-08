@@ -57,42 +57,33 @@ namespace SpaceCommander.GameViews.Gameplay
                 ((Laser)WorldManager.Instance.GetActor("testlaser")).fire(WorldManager.Instance.GetActor("SpaceShip").Position);
             }
 
+            base.Update(gameTime);
+
+
             //check collision
-            foreach (Actor actor in WorldManager.Instance.GetActors().Values)
+            foreach (Actor actor in SceneGraphManager.RootNode.Children)
             {
                 if (actor.Properties.ContainsKey(ActorPropertyType.COLLIDEABLE))
                 {
-                    if (actor.ID.Equals("testlaser"))
-                        continue;
+ 
+                    BoundingSphere transformedSphere = actor.BoundingSphere.Transform(actor.AbsoluteTransform);
+                    BoundingSphere transformedLaserSphere = WorldManager.Instance.GetActor("testlaser").BoundingSphere.Transform(WorldManager.Instance.GetActor("testlaser").AbsoluteTransform);
 
-                    if (actor.ID.Equals("SpaceShip"))
-                        continue;
 
-                    BoundingSphere transformedSphere = new BoundingSphere();
-                    transformedSphere.Center = Vector3.Transform(actor.BoundingSphere.Center,
-                                                                 actor.AbsoluteTransform);
-                    transformedSphere.Radius = actor.BoundingSphere.Radius;
-
-                    BoundingSphere transformedLaserSphere = new BoundingSphere();
-                    transformedLaserSphere.Center = Vector3.Transform(WorldManager.Instance.GetActor("testlaser").BoundingSphere.Center,
-                                                                 WorldManager.Instance.GetActor("testlaser").AbsoluteTransform);
-                    transformedLaserSphere.Radius = WorldManager.Instance.GetActor("testlaser").BoundingSphere.Radius;
-
-                    if (transformedSphere.Intersects(transformedLaserSphere))
+                    if (WorldManager.Instance.GetActor("testlaser").Visible)
                     {
-                        // WorldManager.Instance.GetActor("testlaser").Visible = false;
-                        //  WorldManager.Instance.GetActor("testlaser").Updateable = false;
-                        GameConsole.Instance.WriteLine("Asteroid!");
+                        if (transformedSphere.Intersects(transformedLaserSphere))
+                        {
+                            WorldManager.Instance.GetActor("testlaser").Visible = false;
+                            GameConsole.Instance.WriteLine("Collision!");
 
-                       actor.Visible = false;
-                       actor.Updateable = false;
+                            actor.Visible = false;
+                            actor.Updateable = false;
+                        }
                     }
                     
                 }
             }
-            
-
-            base.Update(gameTime);
         }
 
         public void RegisterEvents()
@@ -108,12 +99,14 @@ namespace SpaceCommander.GameViews.Gameplay
             Ship ship = new Ship("SpaceShip", ID);
             ship.LoadContent();
             ship.Updateable = true;
-            SceneGraphManager.RootNode.Children.Add(ship);
+            
 
             Laser laser = new Laser("testlaser","laser", 5);
             laser.Visible = false;
             laser.LoadContent();
             SceneGraphManager.RootNode.Children.Add(laser);
+
+            SceneGraphManager.RootNode.Children.Add(ship);
 
             //ceate a chase camera
             ChaseCamera camera = new ChaseCamera("GamePlayCamera", new Vector3(0, 50, 700), ship);
@@ -121,13 +114,13 @@ namespace SpaceCommander.GameViews.Gameplay
             CameraManager.Instance.CurrentCamera = "GamePlayCamera";
 
             //create a planet
-            Planet planet2 = new Planet("GamePlanetEarth3", ID, 400f);
-            planet2.Position = new Vector3(700, 0, -10300);
+            Planet planet2 = new Planet("GamePlanetEarth3", ID, 10000f);
+            planet2.Position = new Vector3(10000, 0, -10300);
             planet2.LoadContent();
             SceneGraphManager.RootNode.Children.Add(planet2);
 
             //create a skySphere
-            SkySphere skySphere = new SkySphere("skySphere", "space", 100000);
+            SkySphere skySphere = new SkySphere("skySphere", "space", 50000);
             skySphere.LoadContent();
             SceneGraphManager.RootNode.Children.Add(skySphere);
          
@@ -145,7 +138,7 @@ namespace SpaceCommander.GameViews.Gameplay
                 CollideableProperty collidable = new CollideableProperty();
                 asteroid01.Properties.Add(ActorPropertyType.COLLIDEABLE, collidable);
 
-                asteroid01.Scale = new Vector3(random.Next(10, 100), random.Next(10, 100), random.Next(10, 100));
+                asteroid01.Scale = new Vector3(random.Next(15, 100), random.Next(15, 100), random.Next(15, 100));
                 asteroid01.Rotation = Quaternion.CreateFromYawPitchRoll(random.Next(20,100),random.Next(20,100),random.Next(20,100));
                 asteroid01.Position = new Vector3(random.Next(-1000, 1000), random.Next(-500, 500), random.Next(-100, 0) - i * 300);
                 asteroid01.LoadContent();

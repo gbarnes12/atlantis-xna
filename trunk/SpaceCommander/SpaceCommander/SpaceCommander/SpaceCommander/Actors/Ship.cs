@@ -35,7 +35,7 @@ namespace SpaceCommander.Actors
             : base(ID, GameViewID)
         {
             this.Scale = new Vector3(0.1f, 0.1f, 0.1f);
-            sphere = new Sphere(ID + "_sphere", 0.1f);
+            sphere = new Sphere(ID + "_sphere", 1f);
             this.Children.Add(sphere);
         }
 
@@ -92,7 +92,7 @@ namespace SpaceCommander.Actors
                 speed_x = -1;
             else if (yaw > 0)
                 speed_x = 1;
-            Position += new Vector3(-speed_x, speed_y, -1f) * speed;
+             Position += new Vector3(-speed_x, speed_y, -1f) * speed;
 
             //Matrix.CreateRotationX(MathHelper.ToRadians(roll)) * Matrix.CreateRotationY(MathHelper.ToRadians(yaw)) * Matrix.CreateRotationZ(0.0f);
             Rotation = Quaternion.CreateFromYawPitchRoll(MathHelper.ToRadians(yaw), MathHelper.ToRadians(roll), MathHelper.ToRadians(pitch));
@@ -106,10 +106,10 @@ namespace SpaceCommander.Actors
         private void CalculateBoundingSphere()
         {
             //Calculate the bounding sphere for the entire model
-
-            modelSphere = new BoundingSphere(Vector3.Zero, 0);
             Matrix[] modelTransforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(modelTransforms);
+
+            modelSphere = new BoundingSphere(Vector3.Zero, 0);
 
             foreach (ModelMesh mesh in model.Meshes)
             {
