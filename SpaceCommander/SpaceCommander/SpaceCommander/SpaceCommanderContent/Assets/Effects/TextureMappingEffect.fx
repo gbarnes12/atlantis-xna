@@ -25,6 +25,14 @@ struct VertexPositionTexture
 //=============================================================================
 // 	[FUNCTIONS]
 //=============================================================================
+sampler DiffuseTextureSampler = sampler_state {
+	texture = <DiffuseTexture>;
+	MinFilter = Anisotropic; // Minification Filter
+	MagFilter = Anisotropic; // Magnification Filter
+	MipFilter = Linear; // Mip-mapping
+	AddressU = Wrap; // Address Mode for U Coordinates
+	AddressV = Wrap; // Address Mode for V Coordinates
+};
 
 //-----------------------------------------------------------------------------
 // Textured Vertex Shader

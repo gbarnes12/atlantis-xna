@@ -57,6 +57,9 @@ using System.ComponentModel;
         /// an unique ID and can be used to retrieve this
         /// actor by its GV ID.
         /// </summary>
+         #if !XBOX360
+        [CategoryAttribute("General"), DescriptionAttribute("The ID of the Game View")]
+        #endif
         public String GameViewID { get; set; }
 
         /// <summary>
@@ -64,6 +67,9 @@ using System.ComponentModel;
         /// You can add some actors to the collection to
         /// connect them to this actor. 
         /// </summary>
+#if !XBOX360
+        [CategoryAttribute("General"), DescriptionAttribute("Collection of Children.")]
+#endif
         public virtual ActorNodeCollection Children
         {
             get { return children; }
@@ -72,6 +78,9 @@ using System.ComponentModel;
         /// <summary>
         /// The current parent node of the actor.
         /// </summary>
+#if !XBOX360
+        [CategoryAttribute("General"), DescriptionAttribute("The parent actor of this node.")]
+#endif
         public virtual Actor Parent
         {
             get;
@@ -81,22 +90,34 @@ using System.ComponentModel;
         /// <summary>
         /// The position in the world (not relative to the parent node)
         /// </summary>
+#if !XBOX360
+        [CategoryAttribute("World"), DescriptionAttribute("The absolute position within the world.")]
+#endif
         public virtual Vector3 Position { get; set; }
 
         /// <summary>
         /// The relative position to the parent node!
         /// </summary>
+#if !XBOX360
+        [CategoryAttribute("World"), DescriptionAttribute("The relative position to the actor's parent.")]
+#endif
         public virtual Vector3 Offset { get; set; }
 
         /// <summary>
         /// Rotation of this node represented as 
         /// Quaternion.
         /// </summary>
+#if !XBOX360
+        [CategoryAttribute("World"), DescriptionAttribute("The Rotation of this Actor. Shouldn't be modified by hand!")]
+#endif
         public virtual Quaternion Rotation { get; set; }
 
         /// <summary>
         /// Determines if this actor is visible or not
         /// </summary>
+#if !XBOX360
+        [CategoryAttribute("General"), DescriptionAttribute("Is this actor visible?")]
+#endif
         public bool Visible 
         {
             get
@@ -113,6 +134,9 @@ using System.ComponentModel;
         /// Determines if this actor gets updated or 
         /// not.
         /// </summary>
+#if !XBOX360
+        [CategoryAttribute("General"), DescriptionAttribute("Does this actor get updated?")]
+#endif
         public bool Updateable
         {
             get
@@ -128,6 +152,9 @@ using System.ComponentModel;
         /// Returns the bounding sphere which was calculated 
         /// by the scene graph.
         /// </summary>
+#if !XBOX360
+        [CategoryAttribute("World"), DescriptionAttribute("The bounding sphere which is used for collision")]
+#endif
         public virtual BoundingSphere BoundingSphere
         {
             get { return GetBoundingSphere(); }
@@ -137,6 +164,9 @@ using System.ComponentModel;
         /// This is the world matrix but is transformed
         /// by the scene graph and the parent nodes. 
         /// </summary>
+#if !XBOX360
+        [CategoryAttribute("World"), DescriptionAttribute("The absolute transformation by the world.")]
+#endif
         public virtual Matrix AbsoluteTransform { get; set; }
 
         /// <summary>
@@ -146,11 +176,17 @@ using System.ComponentModel;
         /// This could be something like a path finding
         /// or rotation controller. 
         /// </summary>
+#if !XBOX360
+        [CategoryAttribute("General"), DescriptionAttribute("You can hook a controller to this actor if you want to!")]
+#endif
         public virtual IController Controller { get; set; }
 
         /// <summary>
         /// The scale of the object.
         /// </summary>
+#if !XBOX360
+        [CategoryAttribute("World"), DescriptionAttribute("The scale of the actor.")]
+#endif
         public virtual Vector3 Scale { get; set; }
         
         /// <summary>
