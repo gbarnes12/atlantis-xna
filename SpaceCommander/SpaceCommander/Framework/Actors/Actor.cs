@@ -35,6 +35,8 @@ using System.ComponentModel;
     {
         #region Private
         private ActorNodeCollection children;
+        private bool _visible;
+        private bool _updateable;
         #endregion
 
         #region Public
@@ -95,14 +97,33 @@ using System.ComponentModel;
         /// <summary>
         /// Determines if this actor is visible or not
         /// </summary>
-        public virtual bool Visible { get; set; }
+        public bool Visible 
+        {
+            get
+            {
+                return _visible;
+            }
+            set
+            {
+                SetVisibilityNodes(value);
+            }
+        }
 
         /// <summary>
         /// Determines if this actor gets updated or 
         /// not.
         /// </summary>
-        public virtual bool Updateable { get; set; }
-
+        public bool Updateable
+        {
+            get
+            {
+                return _updateable;
+            }
+            set
+            {
+                SetUpdateabilityNodes(value);
+            }
+        }
         /// <summary>
         /// Returns the bounding sphere which was calculated 
         /// by the scene graph.
@@ -171,6 +192,36 @@ using System.ComponentModel;
         public virtual BoundingSphere GetBoundingSphere()
         {
             return new BoundingSphere(Vector3.Zero, 0);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        private void SetVisibilityNodes(bool value)
+        {
+            _visible = value;
+
+            if (Children != null)
+            {
+                foreach (Actor actor in Children)
+                    actor.Visible = value;
+            } 
+       }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        private void SetUpdateabilityNodes(bool value)
+        {
+            _updateable = value;
+
+            if (Children != null)
+            {
+                foreach (Actor actor in Children)
+                    actor.Updateable = value;
+            }
         }
 
         /// <summary>

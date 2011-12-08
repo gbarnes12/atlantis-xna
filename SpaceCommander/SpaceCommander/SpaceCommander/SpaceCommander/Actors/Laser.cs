@@ -46,7 +46,7 @@ namespace SpaceCommander.Actors
 
         public void fire(Vector3 shipPosition)
         {
-            this.Position = shipPosition;
+           this.Position = shipPosition;
             fired = true;
         }
 
@@ -66,14 +66,16 @@ namespace SpaceCommander.Actors
         private void CalculateBoundingSphere()
         {
             //Calculate the bounding sphere for the entire model
+            Matrix[] modelTransforms = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(modelTransforms);
 
-            modelSphere = new BoundingSphere();
+            modelSphere = new BoundingSphere(Vector3.Zero, 0);
 
             foreach (ModelMesh mesh in model.Meshes)
             {
-                modelSphere = Microsoft.Xna.Framework.BoundingSphere.CreateMerged(
-                                    modelSphere,
-                                    mesh.BoundingSphere);
+                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
+
+                modelSphere = BoundingSphere.CreateMerged(modelSphere, transformed);
             }
         }
 
