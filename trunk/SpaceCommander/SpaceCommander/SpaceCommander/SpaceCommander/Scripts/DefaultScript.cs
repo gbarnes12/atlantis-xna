@@ -43,6 +43,11 @@
                     Path = GameApplication.Instance.EffectPath,
                     Type = ResourceType.Effect
                 },
+                new Resource() {
+                    Name = "BlurPostProcessor",
+                    Path = GameApplication.Instance.EffectPath,
+                    Type = ResourceType.Effect
+                },
                 // FONTS
                 new Resource() {
                     Name = "Arial",

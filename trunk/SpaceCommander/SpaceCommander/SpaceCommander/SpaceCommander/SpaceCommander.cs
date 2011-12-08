@@ -24,6 +24,7 @@ namespace SpaceCommander
     using Scripts;
     using GameViews.MainMenu;
     using GameViews.Gameplay;
+    using GameApplicationTools.Resources.PostProcessors;
 
     /// <summary>
     /// This is the main type for your game
@@ -77,7 +78,6 @@ namespace SpaceCommander
         //    GameViewManager.Instance.AddGameView(mainMenu);
             GameViewManager.Instance.AddGameView(gamePlayView);
 
-
             base.Initialize();
         }
 
@@ -92,6 +92,14 @@ namespace SpaceCommander
             DefaultScript.LoadContents();
 
             GameViewManager.Instance.LoadContent();
+
+
+            PostProcessor processor = new PostProcessor("BlurPostProcessor", "BlurPostProcessor");
+            processor.Enabled = false;
+            processor.Effect.Parameters["targetSize"].SetValue(new Vector2(GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferWidth,
+                GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferHeight));
+            PostProcessorManager.Instance.AddProcessor(processor);
+
 
             //GameView menueView = GameViewManager.Instance.GetGameView("MainMenu") as GameView;
             //menueView.BlocksInput = true;
@@ -156,7 +164,11 @@ namespace SpaceCommander
         {
             GraphicsDevice.Clear(BackgroundColor);
 
+            PostProcessorManager.Instance.BeginRender();
             GameViewManager.Instance.Render();
+
+            PostProcessorManager.Instance.Render();
+
             UIManager.Instance.Render(gameTime);
 
             base.Draw(gameTime);
