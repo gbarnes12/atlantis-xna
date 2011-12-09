@@ -124,6 +124,7 @@
     <Compile Include="Scripts\MainMenu\MainMenuScript.cs" />
     <Compile Include="SpaceCommander.cs" />
     <Compile Include="StringParse.cs" />
+    <Compile Include="UI\CrossHair.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

@@ -97,6 +97,7 @@
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Console.cs" />
     <Compile Include="UI\TextElement.cs" />
+    <Compile Include="UI\TextureElement.cs" />
     <Compile Include="WorldManager.cs" />
   </ItemGroup>
   <ItemGroup>

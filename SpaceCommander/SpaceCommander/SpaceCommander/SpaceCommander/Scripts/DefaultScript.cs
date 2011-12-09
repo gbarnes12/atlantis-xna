@@ -143,6 +143,12 @@
                     Path = GameApplication.Instance.UIPath + "Buttons\\",
                     Type = ResourceType.Texture2D
                 },
+
+                  new Resource() {
+                    Name = "Crosshair",
+                    Path = GameApplication.Instance.UIPath + "CrossHair\\",
+                    Type = ResourceType.Texture2D
+                },
             };
 
             ResourceManager.Instance.LoadResources(resources);
