@@ -147,6 +147,7 @@
     <Compile Include="UI\Console.cs" />
     <Compile Include="UI\TextElement.cs" />
     <Compile Include="Misc\Utils.cs" />
+    <Compile Include="UI\TextureElement.cs" />
     <Compile Include="WorldManager.cs" />
   </ItemGroup>
   <ItemGroup>

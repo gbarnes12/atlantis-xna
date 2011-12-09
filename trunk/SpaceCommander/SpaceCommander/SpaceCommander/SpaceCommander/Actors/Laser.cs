@@ -19,6 +19,9 @@ namespace SpaceCommander.Actors
         private BoundingSphere modelSphere;
         private Sphere sphere;
         private bool fired = false;
+
+        private float maxRange = 2000; // max range of 2km
+
         #endregion
 
         public Laser(String ID,String modelFile,float scale)

@@ -17,6 +17,7 @@ using GameApplicationTools.Actors.Primitives;
 using GameApplicationTools.Input;
 using GameApplicationTools.Actors;
 using GameApplicationTools.Actors.Properties;
+using SpaceCommander.UI;
 
 
 namespace SpaceCommander.GameViews.Gameplay
@@ -48,7 +49,7 @@ namespace SpaceCommander.GameViews.Gameplay
         {
 
             WorldManager.Instance.GetActor("skySphere").Position = new Vector3(0,0, WorldManager.Instance.GetActor("SpaceShip").Position.Z);
-            ((TextElement)UIManager.Instance.GetActor("TextElementHeadline2")).Text = SceneGraphManager.NodesCulled.ToString();
+            ((TextElement)UIManager.Instance.GetActor("TextElementHeadline2")).Text = "Nodes Culled: "+ SceneGraphManager.NodesCulled.ToString();
 
             //enable shooting
             if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.Space))
@@ -63,7 +64,7 @@ namespace SpaceCommander.GameViews.Gameplay
             //check collision
             foreach (Actor actor in SceneGraphManager.RootNode.Children)
             {
-                if (actor.Properties.ContainsKey(ActorPropertyType.COLLIDEABLE))
+                if (actor.Properties.ContainsKey(ActorPropertyType.COLLIDEABLE) && actor.Visible)
                 {
  
                     BoundingSphere transformedSphere = actor.BoundingSphere.Transform(actor.AbsoluteTransform);
@@ -118,6 +119,7 @@ namespace SpaceCommander.GameViews.Gameplay
             planet2.Position = new Vector3(10000, 0, -10300);
             planet2.LoadContent();
             SceneGraphManager.RootNode.Children.Add(planet2);
+            
 
             //create a skySphere
             SkySphere skySphere = new SkySphere("skySphere", "space", 50000);
@@ -148,10 +150,16 @@ namespace SpaceCommander.GameViews.Gameplay
             #endregion
 
             #region UI Stuff
-            TextElement headline = new TextElement("TextElementHeadline2", new Vector2(400, 100), Color.Yellow, "GamePlayView", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
+            TextElement headline = new TextElement("TextElementHeadline2", new Vector2(600, 20), Color.Yellow, "GamePlayView", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
             headline.Scale = 1f;
             headline.Visible = false;
             UIManager.Instance.AddActor(headline);
+
+
+            //create crossfade
+            CrossHair crosshair = new CrossHair("crossHair", "SpaceShip");
+            crosshair.LoadContent();
+            UIManager.Instance.AddActor(crosshair);
             #endregion
         }
     }
