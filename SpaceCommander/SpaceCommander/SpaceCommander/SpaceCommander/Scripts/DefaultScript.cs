@@ -145,7 +145,13 @@
                 },
 
                   new Resource() {
-                    Name = "Crosshair",
+                    Name = "crosshair_far",
+                    Path = GameApplication.Instance.UIPath + "CrossHair\\",
+                    Type = ResourceType.Texture2D
+                },
+
+                 new Resource() {
+                    Name = "crosshair_near",
                     Path = GameApplication.Instance.UIPath + "CrossHair\\",
                     Type = ResourceType.Texture2D
                 },

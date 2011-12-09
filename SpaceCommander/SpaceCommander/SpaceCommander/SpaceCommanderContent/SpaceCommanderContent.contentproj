@@ -206,8 +206,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\UI\CrossHair\Crosshair.png">
-      <Name>Crosshair</Name>
+    <Compile Include="Assets\UI\CrossHair\crosshair_far.png">
+      <Name>crosshair_far</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\UI\CrossHair\crosshair_near.png">
+      <Name>crosshair_near</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

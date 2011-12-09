@@ -31,7 +31,7 @@ namespace SpaceCommander
     /// </summary>
     public class SpaceCommander : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics;
         KeyboardInputService keyboardInputService;
         Color BackgroundColor = Color.CornflowerBlue;
 
@@ -52,6 +52,7 @@ namespace SpaceCommander
             // Draw as fast as possible :)
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.ApplyChanges();
+
 
             // set our necessary classes for the game
             GameApplication.Instance.SetGame(this);

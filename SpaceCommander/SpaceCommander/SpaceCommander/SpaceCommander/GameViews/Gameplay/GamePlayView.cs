@@ -33,12 +33,22 @@ namespace SpaceCommander.GameViews.Gameplay
             BlocksRendering = false;
 
             ScriptManager.Instance.ExecuteScript(GamePlayScript.OnCreateEvent);
+
+            //test in fullscreen
+    //        /*
+            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.IsFullScreen = true;
+            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferWidth = 1366;
+            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferHeight = 720;
+            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.ApplyChanges();
+      //       */
         }
 
         public override void LoadContent()
         {
             GameApplication.Instance.GetGame().IsMouseVisible = true;
             MouseDevice.Instance.ResetMouseAfterUpdate = false;
+
+            
 
             RegisterActors();
             RegisterEvents();
@@ -50,6 +60,9 @@ namespace SpaceCommander.GameViews.Gameplay
 
             WorldManager.Instance.GetActor("skySphere").Position = new Vector3(0,0, WorldManager.Instance.GetActor("SpaceShip").Position.Z);
             ((TextElement)UIManager.Instance.GetActor("TextElementHeadline2")).Text = "Nodes Culled: "+ SceneGraphManager.NodesCulled.ToString();
+
+            ((TextElement)UIManager.Instance.GetActor("TextPositionShip")).Text = "Ship Position: " + WorldManager.Instance.GetActor("SpaceShip").Position.ToString();
+ 
 
             //enable shooting
             if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.Space))
@@ -150,16 +163,26 @@ namespace SpaceCommander.GameViews.Gameplay
             #endregion
 
             #region UI Stuff
-            TextElement headline = new TextElement("TextElementHeadline2", new Vector2(600, 20), Color.Yellow, "GamePlayView", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
+            TextElement headline = new TextElement("TextElementHeadline2", new Vector2(500, 20), Color.Yellow, "GamePlayView", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
             headline.Scale = 1f;
             headline.Visible = false;
             UIManager.Instance.AddActor(headline);
 
+            TextElement TextPositionShip = new TextElement("TextPositionShip", new Vector2(500, 40), Color.Yellow, "GamePlayView", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
+            TextPositionShip.Scale = 1f;
+            TextPositionShip.Visible = true;
+            UIManager.Instance.AddActor(TextPositionShip);
+
 
             //create crossfade
-            CrossHair crosshair = new CrossHair("crossHair", "SpaceShip");
-            crosshair.LoadContent();
-            UIManager.Instance.AddActor(crosshair);
+            CrossHair crosshair_far = new CrossHair("crossHair_far", "SpaceShip","crosshair_far",3000);
+            crosshair_far.LoadContent();
+            UIManager.Instance.AddActor(crosshair_far);
+
+            //create crossfade
+            CrossHair crosshair_near = new CrossHair("crosshair_near", "SpaceShip", "crosshair_near", 1500);
+            crosshair_near.LoadContent();
+            UIManager.Instance.AddActor(crosshair_near);
             #endregion
         }
     }

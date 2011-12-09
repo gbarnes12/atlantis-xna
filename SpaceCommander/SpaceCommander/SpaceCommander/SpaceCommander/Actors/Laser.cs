@@ -20,7 +20,10 @@ namespace SpaceCommander.Actors
         private Sphere sphere;
         private bool fired = false;
 
-        private float maxRange = 2000; // max range of 2km
+        private float maxRange = 4000; // max range of 4km
+        public Vector3 fireDirection;
+        public Vector3 firePosition;
+        public Matrix fireRotation;
 
         #endregion
 
@@ -50,13 +53,31 @@ namespace SpaceCommander.Actors
         public void fire(Vector3 shipPosition)
         {
            this.Position = shipPosition;
+
+           this.fireDirection = Vector3.Transform(Vector3.UnitZ, WorldManager.Instance.GetActor("SpaceShip").Rotation);
+           this.fireDirection.Normalize();
+          
+            this.fireRotation =  Matrix.Transform(Matrix.Identity, WorldManager.Instance.GetActor("SpaceShip").Rotation);
+            this.firePosition = shipPosition;
             fired = true;
         }
 
         public override void Update(SceneGraphManager sceneGraph)
         {
-            if(fired)
-                this.Position -= 150* Vector3.UnitZ;
+            if (!fired)
+            {
+            }
+            else 
+            {
+                this.Position -= 150 * fireDirection;
+
+                //laser to far away ?
+                if (Vector3.Distance(firePosition, Position) >= maxRange)
+                {
+                    fired = false;
+                    this.Visible = false;
+                }
+            }
 
             base.Update(sceneGraph);
         }
@@ -113,7 +134,7 @@ namespace SpaceCommander.Actors
                             }
 
                             //Set the matrices
-                            basicEffect.World = Matrix.CreateScale(Scale) * transforms[mesh.ParentBone.Index] *
+                            basicEffect.World = Matrix.CreateScale(Scale) * transforms[mesh.ParentBone.Index] * fireRotation *
                                                     AbsoluteTransform;
                             basicEffect.View = camera.View;
                             basicEffect.Projection = camera.Projection;
@@ -126,6 +147,8 @@ namespace SpaceCommander.Actors
 
                         mesh.Draw();
                     }
+
+                    GameApplication.Instance.GetGraphics().BlendState = BlendState.Opaque;
                 }
             }
         }
