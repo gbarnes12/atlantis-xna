@@ -6,6 +6,7 @@ using GameApplicationTools.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameApplicationTools;
+using SpaceCommander.Actors;
 
 namespace SpaceCommander.UI
 {
@@ -16,6 +17,8 @@ namespace SpaceCommander.UI
 
         private float bulletRange = 1800;
 
+        private String filename;
+
         /// <summary>
         /// 
         /// </summary>
@@ -23,23 +26,28 @@ namespace SpaceCommander.UI
         /// <param name="position"></param>
         /// <param name="texture"></param>
         /// <param name="actorID">which actor's target shall be drawn</param>
-        public CrossHair(String ID,  String actorID)
+        public CrossHair(String ID,  String actorID,String filename,float distance)
             : base(ID, Vector2.Zero, null)
         {
             this.actorID = actorID;
             this.Color = Color.White;
+            this.bulletRange = distance;
+            this.filename = filename;
         }
 
         public override void LoadContent()
         {
-            this.texture = ResourceManager.Instance.GetResource<Texture2D>("Crosshair");
+            this.texture = ResourceManager.Instance.GetResource<Texture2D>(filename);
 
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            Vector3 target = WorldManager.Instance.GetActor(actorID).Position - Vector3.UnitZ * bulletRange;
+            Vector3 fireDirection = Vector3.Transform(Vector3.UnitZ, WorldManager.Instance.GetActor("SpaceShip").Rotation);
+            fireDirection.Normalize();
+
+            Vector3 target = WorldManager.Instance.GetActor(actorID).Position - fireDirection * bulletRange;
 
             Vector3 screenPosition = GameApplication.Instance.GetGraphics().Viewport.Project(target,
                 CameraManager.Instance.GetCurrentCamera().Projection,

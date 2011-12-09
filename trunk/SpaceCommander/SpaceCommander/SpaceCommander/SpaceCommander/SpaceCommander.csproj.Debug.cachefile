@@ -25,5 +25,6 @@ Content\Assets\Models\laser.xnb
 Content\Assets\Models\asteroid.xnb
 Content\Assets\Effects\BlurPostProcessor.xnb
 Content\Assets\Textures\Kachel2_bump.xnb
-Content\Assets\UI\CrossHair\Crosshair.xnb
+Content\Assets\UI\CrossHair\crosshair_far.xnb
+Content\Assets\UI\CrossHair\crosshair_near.xnb
 Content\Assets\Audio\Sleep Away.wma

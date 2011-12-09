@@ -22,9 +22,9 @@ namespace SpaceCommander.Actors
         private float yaw, pitch, roll;
         private float max_yaw = 30;
         private float max_roll = 30;
-        private float rotation_speed = 3;
+        private float rotation_speed = 45;
         private Vector3 velocity = Vector3.Zero;
-        private float speed = 10;
+        private float speed = 5;
         private BoundingSphere modelSphere;
         public BoundingSphere Sphere { get; set; }
 
@@ -50,49 +50,87 @@ namespace SpaceCommander.Actors
 
         public override void Update(SceneGraphManager sceneGraph)
         {
+            float speed_x = 0, speed_y = 0,speed_factor =50;
+
             if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A))
             {
-                if (yaw < max_yaw)
-                    yaw += rotation_speed; //degrees
-
+                if (yaw < max_yaw)   
+                    if(yaw <0)
+                        yaw += 2*rotation_speed * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f; //degrees
+                    else
+                        yaw += rotation_speed * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f; //degrees
+                   
+       
+                //move vertical
+                speed_x = speed_factor * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
             }
             else if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D))
             {
-                if (yaw > -max_yaw)
-                    yaw -= rotation_speed;
+                if (yaw > -max_yaw)  
+                     if (yaw > 0)
+                        yaw -= 2 * rotation_speed * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f; //degrees
+                     else
+                        yaw -= rotation_speed * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f; //degrees
+                   
+                //move vertical
+                speed_x = -speed_factor * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
             }
+
+            //no key is pressed, so slow down rotation
             else if (yaw < 0)
-                yaw += rotation_speed;
+                yaw += rotation_speed *2* (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
             else if (yaw > 0)
-                yaw -= rotation_speed;
+                yaw -= rotation_speed *2* (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+
+            if (!KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D) && !KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A))
+            {
+                //stop rotation
+                if (Math.Abs(yaw) <= 2)
+                    yaw = 0;
+            }
 
             if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S))
             {
                 if (roll > -max_roll)
-                    roll -= rotation_speed;
+                    if(roll>0)
+                        roll -= 2*rotation_speed * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+                    else
+                        roll -= rotation_speed * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+
+                speed_y = -speed_factor * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
             }
             else if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W))
             {
                 if (roll < max_roll)
-                    roll += rotation_speed;
+                    if(roll<0)
+                        roll += 2 * rotation_speed * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+                    else
+                        roll += rotation_speed * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+                   
+                speed_y = speed_factor * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+           
             }
+            //no key is pressed, so slow down rotation
             else if (roll < 0)
-                roll += rotation_speed;
+                roll += rotation_speed * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
             else if (roll > 0)
-                roll -= rotation_speed;
+                roll -= rotation_speed * (float)sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+
+            if (!KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W) && !KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S))
+            {
+                //stop rotation
+                if (Math.Abs(roll) <= 2)
+                    roll = 0;
+            }
 
             //move the ship
-            float speed_x = 0, speed_y = 0;
+            Position += new Vector3(-speed_x, speed_y, -1f) * speed;
 
-            if (roll < 0)
-                speed_y = -1;
-            else if (roll > 0)
-                speed_y = 1;
-            if (yaw < 0)
-                speed_x = -1;
-            else if (yaw > 0)
-                speed_x = 1;
-             Position += new Vector3(-speed_x, speed_y, -1f) * speed;
+            if (Position.X < -350)
+                Position = new Vector3(-350,Position.Y,Position.Z);
+            else if(Position.X > 350)
+                Position = new Vector3(350, Position.Y, Position.Z);
+            
 
             //Matrix.CreateRotationX(MathHelper.ToRadians(roll)) * Matrix.CreateRotationY(MathHelper.ToRadians(yaw)) * Matrix.CreateRotationZ(0.0f);
             Rotation = Quaternion.CreateFromYawPitchRoll(MathHelper.ToRadians(yaw), MathHelper.ToRadians(roll), MathHelper.ToRadians(pitch));
