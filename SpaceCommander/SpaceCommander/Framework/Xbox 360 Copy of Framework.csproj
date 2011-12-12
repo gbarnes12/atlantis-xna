@@ -73,6 +73,7 @@
     <Compile Include="Interfaces\IActorNode.cs" />
     <Compile Include="Interfaces\ICollideable.cs" />
     <Compile Include="Interfaces\IController.cs" />
+    <Compile Include="Interfaces\IGameLogic.cs" />
     <Compile Include="Interfaces\IGameView.cs" />
     <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IScript.cs" />
@@ -93,6 +94,8 @@
     <Compile Include="ScriptManager.cs" />
     <Compile Include="Structures\GameView.cs" />
     <Compile Include="Structures\Level.cs" />
+    <Compile Include="Structures\StateMachine\FiniteState.cs" />
+    <Compile Include="Structures\StateMachine\FiniteStateMachine.cs" />
     <Compile Include="UIManager.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Console.cs" />

@@ -38,6 +38,8 @@ namespace SpaceCommander
         public SpaceCommander()
         {
             graphics = new GraphicsDeviceManager(this);
+           // graphics.PreferredBackBufferWidth = 1600;
+           // graphics.PreferredBackBufferHeight = 900;
             Content.RootDirectory = "Content";
         }
 

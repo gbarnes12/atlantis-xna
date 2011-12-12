@@ -18,12 +18,15 @@ using GameApplicationTools.Input;
 using GameApplicationTools.Actors;
 using GameApplicationTools.Actors.Properties;
 using SpaceCommander.UI;
+using SpaceCommander.GameViews.Gameplay.GameLogics;
 
 
 namespace SpaceCommander.GameViews.Gameplay
 {
     public partial class GamePlayView : GameView
     {
+        CollisionGameLogic collision;
+
         public GamePlayView()
             : base("GamePlay")
         {
@@ -36,10 +39,10 @@ namespace SpaceCommander.GameViews.Gameplay
 
             //test in fullscreen
     //        /*
-            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.IsFullScreen = true;
-            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferWidth = 1366;
-            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferHeight = 720;
-            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.ApplyChanges();
+            //((SpaceCommander)GameApplication.Instance.GetGame()).graphics.IsFullScreen = true;
+           // ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferWidth = 1366;
+           // ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferHeight = 720;
+          //  ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.ApplyChanges();
       //       */
         }
 
@@ -48,11 +51,11 @@ namespace SpaceCommander.GameViews.Gameplay
             GameApplication.Instance.GetGame().IsMouseVisible = true;
             MouseDevice.Instance.ResetMouseAfterUpdate = false;
 
-            
-
             RegisterActors();
             RegisterEvents();
             ScriptManager.Instance.ExecuteScript(GamePlayScript.OnLoadEvent);
+
+           collision = new CollisionGameLogic();
         }
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
@@ -73,31 +76,8 @@ namespace SpaceCommander.GameViews.Gameplay
 
             base.Update(gameTime);
 
-
-            //check collision
-            foreach (Actor actor in SceneGraphManager.RootNode.Children)
-            {
-                if (actor.Properties.ContainsKey(ActorPropertyType.COLLIDEABLE) && actor.Visible)
-                {
- 
-                    BoundingSphere transformedSphere = actor.BoundingSphere.Transform(actor.AbsoluteTransform);
-                    BoundingSphere transformedLaserSphere = WorldManager.Instance.GetActor("testlaser").BoundingSphere.Transform(WorldManager.Instance.GetActor("testlaser").AbsoluteTransform);
-
-
-                    if (WorldManager.Instance.GetActor("testlaser").Visible)
-                    {
-                        if (transformedSphere.Intersects(transformedLaserSphere))
-                        {
-                            WorldManager.Instance.GetActor("testlaser").Visible = false;
-                            GameConsole.Instance.WriteLine("Collision!");
-
-                            actor.Visible = false;
-                            actor.Updateable = false;
-                        }
-                    }
-                    
-                }
-            }
+            // update game logics!
+            collision.Update(gameTime, SceneGraphManager);
         }
 
         public void RegisterEvents()

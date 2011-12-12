@@ -4,13 +4,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.ComponentModel;
+
+    using Microsoft.Xna.Framework;
 
     using Events;
     using Interfaces;
-    using GameApplicationTools.Interfaces.Collections;
-    using Microsoft.Xna.Framework;
-    using GameApplicationTools.Actors.Properties;
-using System.ComponentModel;
+    using Interfaces.Collections;
+    using Actors.Properties;
+
 
     /// <summary>
     /// This is the basic actor class from
