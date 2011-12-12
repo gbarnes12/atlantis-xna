@@ -73,6 +73,7 @@
     <Compile Include="Actors\Planet.cs" />
     <Compile Include="Actors\Ship.cs" />
     <Compile Include="Events\Events.cs" />
+    <Compile Include="GameViews\Gameplay\GameLogics\CollisionGameLogic.cs" />
     <Compile Include="GameViews\Gameplay\GamePlayView.cs" />
     <Compile Include="GameViews\MainMenu\MainMenuGameView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
