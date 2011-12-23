@@ -125,6 +125,9 @@
                 // last two frames
                 Delta = new Vector2(current.X - last.X, current.Y - last.Y);
 
+            //save mouse position
+            Position = new Vector2(current.X, current.Y);
+
             // For each mouse button...
             foreach (MouseButtons button in Utils.GetEnumValues<MouseButtons>())
             {

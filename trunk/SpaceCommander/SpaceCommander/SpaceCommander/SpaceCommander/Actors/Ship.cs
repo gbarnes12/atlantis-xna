@@ -12,6 +12,8 @@ using GameApplicationTools;
 using GameApplicationTools.Misc;
 using GameApplicationTools.Input;
 using GameApplicationTools.Actors.Primitives;
+using Microsoft.Xna.Framework.Input;
+using GameApplicationTools.UI;
 
 namespace SpaceCommander.Actors
 {
@@ -31,6 +33,11 @@ namespace SpaceCommander.Actors
         Sphere sphere;
         #endregion
 
+        Ray ray;
+        bool firstTime = true;
+
+        public Vector3 fireTarget;
+
         public Ship(String ID, String GameViewID)
             : base(ID, GameViewID)
         {
@@ -48,6 +55,49 @@ namespace SpaceCommander.Actors
             base.LoadContent();
         }
 
+        public override void Update(SceneGraphManager sceneGraph)
+        {
+            //
+            if (MouseDevice.Instance.Delta != Vector2.Zero || firstTime)
+            {
+                ray = CameraManager.Instance.GetCurrentCamera().GetMouseRayTranslated(MouseDevice.Instance.Position, Position);
+                firstTime = false;
+            }
+
+            fireTarget = ray.Position+new Vector3(0,0,Position.Z) - ray.Direction * GameApplication.Instance.FarPlane;
+
+            Rotation = Quaternion.CreateFromYawPitchRoll((yaw), (-roll), (pitch));
+
+            roll = (float)(Math.Asin((this.fireTarget.Y - this.Position.Y) / Vector3.Distance(Position, fireTarget)));
+            yaw = (float)(Math.Asin((fireTarget.X - Position.X) / Vector3.Distance(Position, fireTarget)));
+
+
+            Vector3 velocity = -Vector3.UnitZ * 10;
+
+            if (KeyboardDevice.Instance.IsKeyDown(Keys.A))// || MathHelper.ToDegrees(yaw) >=1)
+            {
+                velocity.X = -1;
+            }
+            else if (KeyboardDevice.Instance.IsKeyDown(Keys.D))//MathHelper.ToDegrees(yaw)<=-1)
+            {
+                velocity.X = 1;
+            }
+            if (KeyboardDevice.Instance.IsKeyDown(Keys.S))
+            {
+                velocity.Y = -1;
+            }
+            else if (KeyboardDevice.Instance.IsKeyDown(Keys.W))
+            {
+                velocity.Y =  1;
+            }
+
+            //move ship
+            this.Position += velocity;
+
+            base.Update(sceneGraph);
+        }
+
+        /*
         public override void Update(SceneGraphManager sceneGraph)
         {
             float speed_x = 0, speed_y = 0,speed_factor =50;
@@ -138,7 +188,7 @@ namespace SpaceCommander.Actors
 
             base.Update(sceneGraph);
         }
-
+        */
 
 
         private void CalculateBoundingSphere()
