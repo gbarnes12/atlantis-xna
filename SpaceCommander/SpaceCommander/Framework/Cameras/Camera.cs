@@ -168,6 +168,27 @@
             return new Ray(nearPoint, direction);
         }
 
+        public virtual Ray GetMouseRayTranslated(Vector2 mousePosition,Vector3 translation)
+        {
+            Viewport viewport = GameApplication.Instance.GetGraphics().Viewport;
+
+            //GameApplication.Instance.NearPlane
+            //GameApplication.Instance.FarPlane
+            Vector3 nearSource = new Vector3(mousePosition, 0f);
+            Vector3 farSource = new Vector3(mousePosition, 1f);
+
+            Vector3 nearPoint = viewport.Unproject(nearSource,
+                Projection, View, Matrix.Identity * Matrix.CreateTranslation(translation));
+
+            Vector3 farPoint = viewport.Unproject(farSource,
+                Projection, View, Matrix.Identity * Matrix.CreateTranslation(translation));
+
+            Vector3 direction = farPoint - nearPoint;
+            direction.Normalize();
+
+            return new Ray(nearPoint, direction);
+        }
+
         /// <summary>
         /// The load content method. This just does nothing!
         /// </summary>

@@ -25,6 +25,7 @@ namespace SpaceCommander.Actors
         public Vector3 firePosition;
         public Matrix fireRotation;
 
+
         #endregion
 
         public Laser(String ID,String modelFile,float scale)
@@ -50,15 +51,22 @@ namespace SpaceCommander.Actors
                 CalculateBoundingSphere();
         }
 
-        public void fire(Vector3 shipPosition)
+        public void fire(Vector3 shipPosition,Vector3 shipTarget)
         {
            this.Position = shipPosition;
 
-           this.fireDirection = Vector3.Transform(Vector3.UnitZ, WorldManager.Instance.GetActor("SpaceShip").Rotation);
-           this.fireDirection.Normalize();
-          
-            this.fireRotation =  Matrix.Transform(Matrix.Identity, WorldManager.Instance.GetActor("SpaceShip").Rotation);
+           this.fireDirection = shipTarget - shipPosition; // Vector3.Transform(Vector3.UnitZ, WorldManager.Instance.GetActor("SpaceShip").Rotation);
+           this.fireDirection.Normalize();  
+    
+            float roll =(float)Math.Asin((shipTarget.Y-shipPosition.Y)/Vector3.Distance(shipPosition,shipTarget));
+            float yaw = (float)Math.Asin((shipTarget.X - shipPosition.X) / Vector3.Distance(shipPosition, shipTarget));
+
+
+            this.fireRotation =  Matrix.Transform(Matrix.Identity, Quaternion.CreateFromYawPitchRoll(yaw, 0, -roll));
             this.firePosition = shipPosition;
+
+            this.Rotation = WorldManager.Instance.GetActor("SpaceShip").Rotation;
+
             fired = true;
         }
 
@@ -134,7 +142,7 @@ namespace SpaceCommander.Actors
                             }
 
                             //Set the matrices
-                            basicEffect.World = Matrix.CreateScale(Scale) * transforms[mesh.ParentBone.Index] * fireRotation *
+                            basicEffect.World = Matrix.CreateScale(Scale) * transforms[mesh.ParentBone.Index] *// fireRotation *
                                                     AbsoluteTransform;
                             basicEffect.View = camera.View;
                             basicEffect.Projection = camera.Projection;

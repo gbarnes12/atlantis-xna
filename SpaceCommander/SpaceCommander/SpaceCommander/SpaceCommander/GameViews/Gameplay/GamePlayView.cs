@@ -38,12 +38,18 @@ namespace SpaceCommander.GameViews.Gameplay
             ScriptManager.Instance.ExecuteScript(GamePlayScript.OnCreateEvent);
 
             //test in fullscreen
-    //        /*
+        //    /*
+
+            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.IsFullScreen = true;
+            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferWidth = 1366;
+            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferHeight = 768;
+            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.ApplyChanges();
+
             //((SpaceCommander)GameApplication.Instance.GetGame()).graphics.IsFullScreen = true;
            // ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferWidth = 1366;
            // ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferHeight = 720;
           //  ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.ApplyChanges();
-      //       */
+       //      */
         }
 
         public override void LoadContent()
@@ -60,19 +66,24 @@ namespace SpaceCommander.GameViews.Gameplay
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-
+            MouseDevice.Instance.ResetMouseAfterUpdate = false;
+            //MouseDevice.Instance.Update();
             WorldManager.Instance.GetActor("skySphere").Position = new Vector3(0,0, WorldManager.Instance.GetActor("SpaceShip").Position.Z);
             ((TextElement)UIManager.Instance.GetActor("TextElementHeadline2")).Text = "Nodes Culled: "+ SceneGraphManager.NodesCulled.ToString();
+            ((TextElement)UIManager.Instance.GetActor("TextElementHeadline2")).Text = "MouseDevice Position: " + MouseDevice.Instance.Position.ToString();
 
             ((TextElement)UIManager.Instance.GetActor("TextPositionShip")).Text = "Ship Position: " + WorldManager.Instance.GetActor("SpaceShip").Position.ToString();
  
 
             //enable shooting
-            if (KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.Space))
+            if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.Space))
+                ||(MouseDevice.Instance.IsButtonDown(MouseButtons.Left) &&MouseDevice.Instance.WasButtonPressed(MouseButtons.Left)))
             {
                 ((Laser)WorldManager.Instance.GetActor("testlaser")).Visible = true;
-                ((Laser)WorldManager.Instance.GetActor("testlaser")).fire(WorldManager.Instance.GetActor("SpaceShip").Position);
+                ((Laser)WorldManager.Instance.GetActor("testlaser")).fire(WorldManager.Instance.GetActor("SpaceShip").Position, ((Ship)WorldManager.Instance.GetActor("SpaceShip")).fireTarget);
             }
+
+          
 
             base.Update(gameTime);
 
@@ -93,6 +104,20 @@ namespace SpaceCommander.GameViews.Gameplay
             Ship ship = new Ship("SpaceShip", ID);
             ship.LoadContent();
             ship.Updateable = true;
+
+
+            Planet p = new Planet("testplanet", 100000);
+            p.Position = new Vector3(-1000,-1000,-10000);
+            p.Visible = true;
+            p.LoadContent();
+
+            Planet p2 = new Planet("testplanet2", 1000);
+            p2.Position = new Vector3(2000, -1000, -10000);
+            p2.Visible = true;
+            p2.LoadContent();
+
+            SceneGraphManager.RootNode.Children.Add(p2);
+            SceneGraphManager.RootNode.Children.Add(p);
             
 
             Laser laser = new Laser("testlaser","laser", 5);
