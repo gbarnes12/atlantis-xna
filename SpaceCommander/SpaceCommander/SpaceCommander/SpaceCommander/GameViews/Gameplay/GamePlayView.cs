@@ -40,7 +40,7 @@ namespace SpaceCommander.GameViews.Gameplay
             //test in fullscreen
         //    /*
 
-            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.IsFullScreen = true;
+            ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.IsFullScreen = false;
             ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferWidth = 1366;
             ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferHeight = 768;
             ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.ApplyChanges();
@@ -54,7 +54,7 @@ namespace SpaceCommander.GameViews.Gameplay
 
         public override void LoadContent()
         {
-            GameApplication.Instance.GetGame().IsMouseVisible = true;
+            GameApplication.Instance.GetGame().IsMouseVisible = false;
             MouseDevice.Instance.ResetMouseAfterUpdate = false;
 
             RegisterActors();
