@@ -38,6 +38,8 @@ namespace SpaceCommander.Actors
 
         public Vector3 fireTarget;
 
+        Vector3 tempVelocity = Vector3.Zero;
+
         public Ship(String ID, String GameViewID)
             : base(ID, GameViewID)
         {
@@ -74,22 +76,34 @@ namespace SpaceCommander.Actors
 
             Vector3 velocity = -Vector3.UnitZ * 10;
 
-            if (KeyboardDevice.Instance.IsKeyDown(Keys.A))// || MathHelper.ToDegrees(yaw) >=1)
+            float speed = 9;
+
+            //movement by keys
+            if (KeyboardDevice.Instance.IsKeyDown(Keys.A))
             {
-                velocity.X = -1;
+                velocity.X = -speed;
             }
-            else if (KeyboardDevice.Instance.IsKeyDown(Keys.D))//MathHelper.ToDegrees(yaw)<=-1)
+            else if (KeyboardDevice.Instance.IsKeyDown(Keys.D))
             {
-                velocity.X = 1;
+                velocity.X = speed;
             }
             if (KeyboardDevice.Instance.IsKeyDown(Keys.S))
             {
-                velocity.Y = -1;
+                velocity.Y = -speed;
             }
             else if (KeyboardDevice.Instance.IsKeyDown(Keys.W))
             {
-                velocity.Y =  1;
+                velocity.Y = speed;
             }
+
+            //movement by mouse
+
+            this.tempVelocity.X += 1000* MouseDevice.Instance.Delta.X / ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferWidth;
+            this.tempVelocity.Y += -1000 * MouseDevice.Instance.Delta.Y / ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferHeight;
+            this.tempVelocity.Z = velocity.Z;
+
+            velocity = Vector3.Lerp(velocity, tempVelocity,0.03f);
+            tempVelocity -= velocity;
 
             //move ship
             this.Position += velocity;
