@@ -14,31 +14,55 @@ using GameApplicationTools.Input;
 using GameApplicationTools.Actors.Primitives;
 using Microsoft.Xna.Framework.Input;
 using GameApplicationTools.UI;
+using GameApplicationTools.Cameras;
 
 namespace SpaceCommander.Actors
 {
     public class Ship : Actor, ICollideable
     {
         #region Private
+
         private Model model;
+
         private float yaw, pitch, roll;
+
         private float max_yaw = 30;
+
         private float max_roll = 30;
+
         private float rotation_speed = 45;
-        private Vector3 velocity = Vector3.Zero;
-        private float speed = 5;
+
+        private float offsetAcceleration = 9;
+
+        //velocity right-|Up- direction. allows the player to move the ship while still following the path
+        private Vector3 offsetVelocity = Vector3.Zero;
+
+        //stores the current offset position caused by offsetVelocity
+        private Vector3 offsetPosition;
+
         private BoundingSphere modelSphere;
-        public BoundingSphere Sphere { get; set; }
 
         Sphere sphere;
-        #endregion
+
+        Vector3 right;
+
+        Vector3 tempVelocity = Vector3.Zero;
+
+        Path path;
 
         Ray ray;
-        bool firstTime = true;
+
+        double time = 0;
+
+        #endregion
+
+        #region Public
 
         public Vector3 fireTarget;
 
-        Vector3 tempVelocity = Vector3.Zero;
+        public BoundingSphere Sphere { get; set; }
+
+        #endregion
 
         public Ship(String ID, String GameViewID)
             : base(ID, GameViewID)
@@ -48,8 +72,19 @@ namespace SpaceCommander.Actors
             this.Children.Add(sphere);
         }
 
+        public Ship(String ID, String GameViewID,Path path)
+            : base(ID, GameViewID)
+        {
+            this.Scale = new Vector3(0.1f, 0.1f, 0.1f);
+            sphere = new Sphere(ID + "_sphere", 1f);
+            this.path = path;
+            this.Children.Add(sphere);
+        }
+
+
         public override void LoadContent()
         {
+            //load standard model
             model = ResourceManager.Instance.GetResource<Model>("p1_wedge");
             sphere.LoadContent();
             CalculateBoundingSphere();
@@ -59,57 +94,89 @@ namespace SpaceCommander.Actors
 
         public override void Update(SceneGraphManager sceneGraph)
         {
-            //
-            if (MouseDevice.Instance.Delta != Vector2.Zero || firstTime)
-            {
-                ray = CameraManager.Instance.GetCurrentCamera().GetMouseRayTranslated(MouseDevice.Instance.Position, Position);
-                firstTime = false;
-            }
+            //get mouse 3d-ray
+            ray = CameraManager.Instance.GetCurrentCamera().GetMouseRay(MouseDevice.Instance.Position);
+           
+            //update time
+            time += sceneGraph.GameTime.ElapsedGameTime.TotalMilliseconds;
 
-            fireTarget = ray.Position+new Vector3(0,0,Position.Z) - ray.Direction * GameApplication.Instance.FarPlane;
+            //calculate fireTarget (farPlane = max distance)
+            fireTarget = ray.Position - ray.Direction * GameApplication.Instance.FarPlane ;
 
-            Rotation = Quaternion.CreateFromYawPitchRoll((yaw), (-roll), (pitch));
+            //get current point on path
+            Vector3 pathPosition = path.GetPointOnCurve((float)time);
 
-            roll = (float)(Math.Asin((this.fireTarget.Y - this.Position.Y) / Vector3.Distance(Position, fireTarget)));
-            yaw = (float)(Math.Asin((fireTarget.X - Position.X) / Vector3.Distance(Position, fireTarget)));
+            //get next point on curve to calculate the current direction
+            Vector3 nextPathPosition = path.GetPointOnCurve((float)time+1);
 
+            //calculate direction
+            Vector3 currentDirection = nextPathPosition - pathPosition;
 
-            Vector3 velocity = -Vector3.UnitZ * 10;
+            //normalize direction
+            currentDirection.Normalize();
 
-            float speed = 9;
+            //calculate rotation "caused" by following the path
+            yaw = (float)(Math.Atan2(currentDirection.X, currentDirection.Z));
+            roll = (float)(Math.Atan2(-currentDirection.Y, currentDirection.Z));    // !!!! TODO
 
-            //movement by keys
+            //set rotation matrix
+            Rotation = Quaternion.CreateFromYawPitchRoll(((float)Math.PI + yaw), (float)Math.PI+roll, pitch);
+
+            //calculate right vector note: up vector stays the same every time
+            this.right = Vector3.Cross(currentDirection, Vector3.Up);
+
+            //reset offsetVelocity
+            offsetVelocity = Vector3.Zero;
+
+            //movement through keyboard input
             if (KeyboardDevice.Instance.IsKeyDown(Keys.A))
             {
-                velocity.X = -speed;
+                offsetVelocity.X = -offsetAcceleration;
             }
             else if (KeyboardDevice.Instance.IsKeyDown(Keys.D))
             {
-                velocity.X = speed;
+                offsetVelocity.X = offsetAcceleration;
             }
             if (KeyboardDevice.Instance.IsKeyDown(Keys.S))
             {
-                velocity.Y = -speed;
+                offsetVelocity.Y = -offsetAcceleration;
             }
             else if (KeyboardDevice.Instance.IsKeyDown(Keys.W))
             {
-                velocity.Y = speed;
+                offsetVelocity.Y = offsetAcceleration;
             }
+
+            //update offsetPosition (for now just for movement along the x- and y- axis)
+            offsetPosition += right * offsetVelocity.X + Vector3.Up * offsetVelocity.Y;
 
             //movement by mouse
 
-            this.tempVelocity.X += 1000* MouseDevice.Instance.Delta.X / ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferWidth;
-            this.tempVelocity.Y += -1000 * MouseDevice.Instance.Delta.Y / ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferHeight;
-            this.tempVelocity.Z = velocity.Z;
+         //   this.tempVelocity.X += 1000* MouseDevice.Instance.Delta.X / ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferWidth;
+         //   this.tempVelocity.Y += -1000 * MouseDevice.Instance.Delta.Y / ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferHeight;
+        //    this.tempVelocity.Z = velocity.Z;
 
-            velocity = Vector3.Lerp(velocity, tempVelocity,0.03f);
-            tempVelocity -= velocity;
+            //velocity = Vector3.Lerp(velocity, tempVelocity,0.03f);
+            //tempVelocity -= velocity;
 
             //move ship
-            this.Position += velocity;
+           // this.Position += velocity;
+            this.Position = path.GetPointOnCurve((float)time) + offsetPosition;
 
             base.Update(sceneGraph);
         }
+
+        //get time used for moving along the path
+        public double getTime()
+        {
+            return this.time;
+        }
+
+        public Vector3 getRayPosition()
+        {
+            return this.ray.Position;
+        }
+
+
 
         /*
         public override void Update(SceneGraphManager sceneGraph)

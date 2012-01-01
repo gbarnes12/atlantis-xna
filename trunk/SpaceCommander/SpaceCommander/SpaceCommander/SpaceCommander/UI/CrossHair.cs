@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameApplicationTools;
 using SpaceCommander.Actors;
+using GameApplicationTools.Input;
 
 namespace SpaceCommander.UI
 {
@@ -44,10 +45,14 @@ namespace SpaceCommander.UI
 
         public override void Update(GameTime gameTime)
         {
-            Vector3 fireDirection = Vector3.Transform(Vector3.UnitZ, WorldManager.Instance.GetActor("SpaceShip").Rotation);
+            //Vector3 fireDirection = Vector3.Transform(Vector3.UnitZ, WorldManager.Instance.GetActor("SpaceShip").Rotation);
+          //  fireDirection.Normalize();
+
+            Vector3 fireDirection = CameraManager.Instance.GetCurrentCamera().GetMouseRay(MouseDevice.Instance.Position).Direction;
             fireDirection.Normalize();
 
-            Vector3 target = WorldManager.Instance.GetActor(actorID).Position - fireDirection * bulletRange;
+
+          /*  Vector3 target = WorldManager.Instance.GetActor(actorID).Position - fireDirection * bulletRange;
 
             Vector3 screenPosition = GameApplication.Instance.GetGraphics().Viewport.Project(target,
                 CameraManager.Instance.GetCurrentCamera().Projection,
@@ -55,6 +60,9 @@ namespace SpaceCommander.UI
                 Matrix.Identity);
 
             this.Position = new Vector2(screenPosition.X, screenPosition.Y);
+            */
+
+            this.Position = MouseDevice.Instance.Position;
 
             //center crosshair
             this.Position = new Vector2(Position.X - texture.Width / 2, Position.Y - texture.Height / 2);

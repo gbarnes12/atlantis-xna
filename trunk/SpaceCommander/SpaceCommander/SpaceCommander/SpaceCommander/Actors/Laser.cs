@@ -25,6 +25,8 @@ namespace SpaceCommander.Actors
         public Vector3 firePosition;
         public Matrix fireRotation;
 
+        //speed
+        float firePower = 400;
 
         #endregion
 
@@ -58,14 +60,16 @@ namespace SpaceCommander.Actors
            this.fireDirection = shipTarget - shipPosition; // Vector3.Transform(Vector3.UnitZ, WorldManager.Instance.GetActor("SpaceShip").Rotation);
            this.fireDirection.Normalize();  
     
-            float roll =(float)Math.Asin((shipTarget.Y-shipPosition.Y)/Vector3.Distance(shipPosition,shipTarget));
+            float roll = (float)Math.Asin((shipTarget.Y-shipPosition.Y)/Vector3.Distance(shipPosition,shipTarget));
             float yaw = (float)Math.Asin((shipTarget.X - shipPosition.X) / Vector3.Distance(shipPosition, shipTarget));
 
+            yaw = (float)(Math.Atan2(fireDirection.X, fireDirection.Z));
+            roll = (float)(Math.Atan2(fireDirection.Y, fireDirection.Z));
 
-            this.fireRotation =  Matrix.Transform(Matrix.Identity, Quaternion.CreateFromYawPitchRoll(yaw, 0, -roll));
             this.firePosition = shipPosition;
 
-            this.Rotation = WorldManager.Instance.GetActor("SpaceShip").Rotation;
+            //set rotation matrix
+            this.Rotation = Quaternion.CreateFromYawPitchRoll(((float)Math.PI + yaw), (float)Math.PI + roll, 0);
 
             fired = true;
         }
@@ -77,10 +81,10 @@ namespace SpaceCommander.Actors
             }
             else 
             {
-                this.Position -= 150 * fireDirection;
+                this.Position -= firePower * fireDirection;
 
-                //laser to far away ?
-                if (Vector3.Distance(firePosition, Position) >= maxRange)
+                //laser too far away ?
+                if (Vector3.Distance(firePosition, Position) >= GameApplication.Instance.FarPlane)
                 {
                     fired = false;
                     this.Visible = false;
