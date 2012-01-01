@@ -19,6 +19,7 @@ using GameApplicationTools.Actors;
 using GameApplicationTools.Actors.Properties;
 using SpaceCommander.UI;
 using SpaceCommander.GameViews.Gameplay.GameLogics;
+using GameApplicationTools.Cameras;
 
 
 namespace SpaceCommander.GameViews.Gameplay
@@ -68,20 +69,36 @@ namespace SpaceCommander.GameViews.Gameplay
         {
             MouseDevice.Instance.ResetMouseAfterUpdate = false;
             //MouseDevice.Instance.Update();
-            WorldManager.Instance.GetActor("skySphere").Position = new Vector3(0,0, WorldManager.Instance.GetActor("SpaceShip").Position.Z);
+            WorldManager.Instance.GetActor("skySphere").Position = CameraManager.Instance.GetCurrentCamera().Position; //new Vector3(0,0, WorldManager.Instance.GetActor("SpaceShip").Position.Z);
             ((TextElement)UIManager.Instance.GetActor("TextElementHeadline2")).Text = "Nodes Culled: "+ SceneGraphManager.NodesCulled.ToString();
             ((TextElement)UIManager.Instance.GetActor("TextElementHeadline2")).Text = "MouseDevice Position: " + MouseDevice.Instance.Position.ToString();
 
-            ((TextElement)UIManager.Instance.GetActor("TextPositionShip")).Text = "Ship Position: " + WorldManager.Instance.GetActor("SpaceShip").Position.ToString();
+            ((TextElement)UIManager.Instance.GetActor("TextPositionShip")).Text = "Ray Position: " + ((Ship)(WorldManager.Instance.GetActor("SpaceShip"))).getRayPosition().ToString();
  
 
             //enable shooting
             if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.Space))
-                ||(MouseDevice.Instance.IsButtonDown(MouseButtons.Left) &&MouseDevice.Instance.WasButtonPressed(MouseButtons.Left)))
+                ||(MouseDevice.Instance.IsButtonDown(MouseButtons.Left) && MouseDevice.Instance.WasButtonPressed(MouseButtons.Left)))
             {
                 ((Laser)WorldManager.Instance.GetActor("testlaser")).Visible = true;
                 ((Laser)WorldManager.Instance.GetActor("testlaser")).fire(WorldManager.Instance.GetActor("SpaceShip").Position, ((Ship)WorldManager.Instance.GetActor("SpaceShip")).fireTarget);
             }
+
+             if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.D1)))
+             {
+                 CameraManager.Instance.CurrentCamera = "chaseCamera";
+             }
+             else  if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.D2)))
+             {
+                 CameraManager.Instance.CurrentCamera = "pathCamera";
+             }
+             else  if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D3) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.D3)))
+             {
+                 CameraManager.Instance.CurrentCamera = "fpsCamera";
+             }
+            
+
+            //   
 
           
 
@@ -100,8 +117,36 @@ namespace SpaceCommander.GameViews.Gameplay
         {
             #region 3D Stuff
 
+            SceneGraphManager.CullingActive = false;
+
+            float testTimeOffset = 6000;
+
+            //ship-position path
+            Path path = new Path("targetPath",ID);
+            path.LoadContent();
+            path.AddPoint(new Vector3(0, -100, 0), 0);
+            path.AddPoint(new Vector3(0, -300, -8000), testTimeOffset+2000);
+            path.AddPoint(new Vector3(500, -100, -16000), 2*testTimeOffset+4000);
+            path.AddPoint(new Vector3(000, 500, -24000), 3*testTimeOffset+6000);
+            path.AddPoint(new Vector3(0, 0, -30000), 4*testTimeOffset+8000);
+
+            //camera-position path
+            Path path2 = new Path("positionPath", ID,Color.Green);
+            path2.LoadContent();
+            path2.AddPoint(new Vector3(0, -100, 500), 0);
+            path2.AddPoint(new Vector3(0, -300, -8000), testTimeOffset+2400);
+            path2.AddPoint(new Vector3(500, -100, -16000), 2*testTimeOffset+4400);
+            path2.AddPoint(new Vector3(000, 500, -24000), 3*testTimeOffset+6400);
+            path2.AddPoint(new Vector3(0, 0, -29000), 4*testTimeOffset+8000);
+
+            path.SetTangents();
+            path2.SetTangents();
+
+            SceneGraphManager.RootNode.Children.Add(path);
+            SceneGraphManager.RootNode.Children.Add(path2);
+
             //create a ship
-            Ship ship = new Ship("SpaceShip", ID);
+            Ship ship = new Ship("SpaceShip", ID,path);
             ship.LoadContent();
             ship.Updateable = true;
 
@@ -111,12 +156,7 @@ namespace SpaceCommander.GameViews.Gameplay
             p.Visible = true;
             p.LoadContent();
 
-            Planet p2 = new Planet("testplanet2", 1000);
-            p2.Position = new Vector3(2000, -1000, -10000);
-            p2.Visible = true;
-            p2.LoadContent();
 
-            SceneGraphManager.RootNode.Children.Add(p2);
             SceneGraphManager.RootNode.Children.Add(p);
             
 
@@ -127,20 +167,22 @@ namespace SpaceCommander.GameViews.Gameplay
 
             SceneGraphManager.RootNode.Children.Add(ship);
 
-            //ceate a chase camera
-            ChaseCamera camera = new ChaseCamera("GamePlayCamera", new Vector3(0, 50, 700), ship);
-            camera.LoadContent();
-            CameraManager.Instance.CurrentCamera = "GamePlayCamera";
+            //cameras
+            ChaseCamera chaseCamera = new ChaseCamera("chaseCamera", new Vector3(0, 50, 700), ship);
+            chaseCamera.LoadContent();
 
-            //create a planet
-            Planet planet2 = new Planet("GamePlanetEarth3", ID, 10000f);
-            planet2.Position = new Vector3(10000, 0, -10300);
-            planet2.LoadContent();
-            SceneGraphManager.RootNode.Children.Add(planet2);
-            
+            FPSCamera fpsCamera = new FPSCamera("fpsCamera", Vector3.Zero, Vector3.UnitZ,500);
+            fpsCamera.LoadContent();
+          
+            PathCamera pathCamera = new PathCamera("pathCamera",path,path2);
+            pathCamera.LoadContent();
+
+
+            CameraManager.Instance.CurrentCamera = "pathCamera";
+
 
             //create a skySphere
-            SkySphere skySphere = new SkySphere("skySphere", "space", 50000);
+            SkySphere skySphere = new SkySphere("skySphere", "space", 30000);
             skySphere.LoadContent();
             SceneGraphManager.RootNode.Children.Add(skySphere);
          
@@ -179,11 +221,7 @@ namespace SpaceCommander.GameViews.Gameplay
             UIManager.Instance.AddActor(TextPositionShip);
 
 
-            //create crossfade
-            CrossHair crosshair_far = new CrossHair("crossHair_far", "SpaceShip","crosshair_far",3000);
-            crosshair_far.LoadContent();
-            UIManager.Instance.AddActor(crosshair_far);
-
+          
             //create crossfade
             CrossHair crosshair_near = new CrossHair("crosshair_near", "SpaceShip", "crosshair_near", 1500);
             crosshair_near.LoadContent();

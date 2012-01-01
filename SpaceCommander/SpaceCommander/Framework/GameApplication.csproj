@@ -101,6 +101,8 @@
     <Compile Include="Cameras\Camera.cs" />
     <Compile Include="Cameras\ChaseCamera.cs" />
     <Compile Include="Cameras\FPSCamera.cs" />
+    <Compile Include="Cameras\Path.cs" />
+    <Compile Include="Cameras\PathCamera.cs" />
     <Compile Include="Cameras\ThirdPersonCamera.cs" />
     <Compile Include="Actors\Advanced\MeshObject.cs" />
     <Compile Include="Actors\Advanced\SkySphere.cs" />

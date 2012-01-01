@@ -28,6 +28,8 @@
 
         Vector3 rotation;
         Vector3 translation;
+
+        float speed = 50;
         #endregion
 
         #region Public
@@ -38,6 +40,13 @@
             : base(ID, Position, Target)
         {
             View = Matrix.CreateLookAt(Position, Target, Vector3.Up);
+        }
+
+        public FPSCamera(String ID, Vector3 Position, Vector3 Target,float speed)
+            : base(ID, Position, Target)
+        {
+            View = Matrix.CreateLookAt(Position, Target, Vector3.Up);
+            this.speed = speed;
         }
 
 
@@ -63,9 +72,9 @@
             if (KeyboardDevice.Instance != null && MouseDevice.Instance != null)
             {
                 Vector3 inputModifier = new Vector3(
-                (KeyboardDevice.Instance.IsKeyDown(Keys.A) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.D) ? 1 : 0),
+                (KeyboardDevice.Instance.IsKeyDown(Keys.Left) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Right) ? 1 : 0),
                 (KeyboardDevice.Instance.IsKeyDown(Keys.Q) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.E) ? 1 : 0),
-                (KeyboardDevice.Instance.IsKeyDown(Keys.W) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.S) ? 1 : 0)
+                (KeyboardDevice.Instance.IsKeyDown(Keys.Up) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Down) ? 1 : 0)
                 );
 
                 RotateTranslate(new Vector3(MouseDevice.Instance.Delta.Y * -.002f, MouseDevice.Instance.Delta.X * -.002f, 0), inputModifier * .05f);
@@ -73,7 +82,7 @@
                 Rotation = Utils.Vector3ToMatrix(rotation);
 
                 translation = Vector3.Transform(translation, Rotation);
-                Position += translation;
+                Position += translation*speed;
 
                 // Reset translation
                 translation = Vector3.Zero;
