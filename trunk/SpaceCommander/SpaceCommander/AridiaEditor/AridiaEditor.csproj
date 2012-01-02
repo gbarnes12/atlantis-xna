@@ -93,6 +93,9 @@
     <Compile Include="Windows\CreateWindows\CreatePlaneWindow.xaml.cs">
       <DependentUpon>CreatePlaneWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\CreateWindows\CreateSkySphereWindow.xaml.cs">
+      <DependentUpon>CreateSkySphereWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\CreateWindows\CreateTriangleWindow.xaml.cs">
       <DependentUpon>CreateTriangleWindow.xaml</DependentUpon>
     </Compile>
@@ -132,6 +135,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\CreateWindows\CreatePlaneWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\CreateWindows\CreateSkySphereWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

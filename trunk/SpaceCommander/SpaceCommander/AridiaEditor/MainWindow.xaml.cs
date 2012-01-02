@@ -39,6 +39,8 @@ namespace AridiaEditor
     using GameApplicationTools.Resources;
     using GameApplicationTools.Input;
     using GameApplicationTools.Actors.Properties;
+    using AridiaEditor.Windows.CreateWindows;
+    using GameApplicationTools.Actors.Advanced;
 
     public partial class MainWindow : Window
     {
@@ -309,6 +311,7 @@ namespace AridiaEditor
                 ControlEditMode();
 
                 KeyboardDevice.Instance.Update();
+                MouseDevice.Instance.ResetMouseAfterUpdate = false;
                 MouseDevice.Instance.Update();
 
                 if (CameraManager.Instance.CurrentCamera != null)
@@ -412,6 +415,29 @@ namespace AridiaEditor
         #endregion
 
         #region EditorEvents
+        private void CreateSkySphereMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (Level != null)
+            {
+                CreateSkySphereWindow createSkySphereWindow = new CreateSkySphereWindow();
+                createSkySphereWindow.Owner = this;
+
+                if (createSkySphereWindow.ShowDialog().Value)
+                {
+                    SkySphere sphere = new SkySphere(createSkySphereWindow.ID, createSkySphereWindow.Texture, 1f);
+                    sphere.Position = createSkySphereWindow.Position;
+                    sphere.Scale = createSkySphereWindow.Scale;
+                    sphere.LoadContent();
+                    sceneGraph.RootNode.Children.Add(sphere);
+                    LoadWorldView();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please create or load a level first before you add any actor");
+            }
+        }
+
         private void EditModeMoveButton_Click(object sender, RoutedEventArgs e)
         {
             EditMode = EditMode.MOVE;
