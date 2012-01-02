@@ -124,7 +124,7 @@ namespace AridiaEditor
                 ResourceManager.Instance.Content = new ContentManager(ServiceContainer, contentBuilder.OutputDirectory);
                 ResourceManager.Instance.Content.Unload();
                 sceneGraph = new SceneGraphManager();
-                sceneGraph.CullingActive = false;
+                sceneGraph.CullingActive = true;
                 e.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
                 var versionAttribute = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();

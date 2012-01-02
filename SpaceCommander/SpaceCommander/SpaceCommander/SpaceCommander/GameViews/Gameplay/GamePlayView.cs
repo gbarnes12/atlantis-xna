@@ -46,6 +46,7 @@ namespace SpaceCommander.GameViews.Gameplay
             ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferHeight = 768;
             ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.ApplyChanges();
 
+
             //((SpaceCommander)GameApplication.Instance.GetGame()).graphics.IsFullScreen = true;
            // ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferWidth = 1366;
            // ((SpaceCommander)GameApplication.Instance.GetGame()).graphics.PreferredBackBufferHeight = 720;
@@ -96,10 +97,6 @@ namespace SpaceCommander.GameViews.Gameplay
              {
                  CameraManager.Instance.CurrentCamera = "fpsCamera";
              }
-            
-
-            //   
-
           
 
             base.Update(gameTime);
@@ -151,7 +148,7 @@ namespace SpaceCommander.GameViews.Gameplay
             ship.Updateable = true;
 
 
-            Planet p = new Planet("testplanet", 100000);
+            Planet p = new Planet("testplanet", 1000);
             p.Position = new Vector3(-1000,-1000,-10000);
             p.Visible = true;
             p.LoadContent();
