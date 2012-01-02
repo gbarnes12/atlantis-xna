@@ -79,8 +79,8 @@ namespace GameApplicationTools
             drawUIQueue = new List<Actor>();
             
             // set our near plane and far plane variables
-            NearPlane = .01f;
-            FarPlane = 100000f;
+            NearPlane = 1f;
+            FarPlane = 50000f;
 
             // set up all path variables we need thus 
             // we don't create any errors

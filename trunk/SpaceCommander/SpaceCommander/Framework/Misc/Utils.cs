@@ -6,6 +6,8 @@
     using System.Text;
     using Microsoft.Xna.Framework;
     using System.Reflection;
+    using Microsoft.Xna.Framework.Graphics;
+    using System.IO;
 
     /// <summary>
     /// This class contains some useful methods
@@ -269,7 +271,37 @@
 
             // Return that no matching elements were found in the List. 
             return false;
-        } 
+        }
+
+        /// <summary>
+        /// take a screenshot from the game
+        /// </summary>
+        public static void makeScreenshot()
+        {
+
+            int w = GameApplication.Instance.GetGame().GraphicsDevice.PresentationParameters.BackBufferWidth;
+            int h = GameApplication.Instance.GetGame().GraphicsDevice.PresentationParameters.BackBufferHeight;
+
+            //pull the picture from the buffer 
+            int[] backBuffer = new int[w * h];
+            GameApplication.Instance.GetGame().GraphicsDevice.GetBackBufferData(backBuffer);
+
+            //copy into a texture 
+            Texture2D texture = new Texture2D(GameApplication.Instance.GetGame().GraphicsDevice, w, h, false, GameApplication.Instance.GetGame().GraphicsDevice.PresentationParameters.BackBufferFormat);
+            texture.SetData(backBuffer);
+
+            //save to disk 
+            String filename = DateTime.Now.ToString();
+            filename = filename.Replace('.', '-');
+            filename = filename.Replace(':', '-');
+            Stream stream = File.OpenWrite(filename + ".png");
+
+            texture.SaveAsPng(stream, w, h);
+            stream.Dispose();
+
+            texture.Dispose();
+
+        }
 
     }
 }

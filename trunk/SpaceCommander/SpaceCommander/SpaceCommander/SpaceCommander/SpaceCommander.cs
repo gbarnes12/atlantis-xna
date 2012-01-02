@@ -25,6 +25,7 @@ namespace SpaceCommander
     using GameViews.MainMenu;
     using GameViews.Gameplay;
     using GameApplicationTools.Resources.PostProcessors;
+    using GameApplicationTools.Misc;
 
     /// <summary>
     /// This is the main type for your game
@@ -173,6 +174,12 @@ namespace SpaceCommander
             PostProcessorManager.Instance.Render();
 
             UIManager.Instance.Render(gameTime);
+
+            //make a screenshot
+            if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PrintScreen) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.PrintScreen)))
+            {
+                Utils.makeScreenshot();
+            }
 
             base.Draw(gameTime);
         }
