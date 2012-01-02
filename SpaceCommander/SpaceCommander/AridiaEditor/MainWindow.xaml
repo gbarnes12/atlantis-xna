@@ -38,9 +38,6 @@
             <MenuItem Header="World">
                 <MenuItem Header="Cameras">
                     <MenuItem Header="Camera" />
-                    <MenuItem Header="FPS Camera" />
-                    <MenuItem Header="ThirdPerson Camera" />
-                    <MenuItem Header="Chase Camera" />
                 </MenuItem>
                 <MenuItem Header="Lights"/>
                 <MenuItem Header="Primitives">
@@ -50,6 +47,7 @@
                     <MenuItem Header="Bounding Box" />
                 </MenuItem>
                 <MenuItem Header="Advanced">
+                    <MenuItem Header="SkySphere" Name="CreateSkySphereMenuItem" Click="CreateSkySphereMenuItem_Click" />
                     <MenuItem Header="Water" />
                     <MenuItem Header="MeshObject" />
                 </MenuItem>
@@ -65,8 +63,27 @@
                 <MenuItem Header="About"/>
             </MenuItem>
         </Menu>
-        <ToolBar Grid.Row="1" Name="toolbar">
-        </ToolBar>
+
+        <ToolBarTray Grid.RowSpan="2" Height="26" HorizontalAlignment="Left" Margin="0,22,0,0" Name="toolBarTray1" VerticalAlignment="Top" Width="859">
+            <ToolBar Grid.Row="1" Name="toolbar">
+                <Button Content="" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="0,0,0,0" Name="EditModeMoveButton" VerticalAlignment="Top" Width="25" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="EditModeMoveButton_Click" ClickMode="Press">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/AridiaEditor;component/Images/move_icon.png" />
+                    </Button.Background>
+                </Button>
+                <Button BorderBrush="{x:Null}" Content="" Foreground="{x:Null}" Height="23" HorizontalAlignment="Left" Margin="0,0,0,0" Name="EditModeRotateButton" VerticalAlignment="Top" Width="25" Grid.Row="1" Click="EditModeRotateButton_Click" ClickMode="Press">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/AridiaEditor;component/Images/redo.png" Stretch="UniformToFill" TileMode="None" />
+                    </Button.Background>
+                </Button>
+                <Button BorderBrush="{x:Null}" Content="" Foreground="{x:Null}" Height="23" HorizontalAlignment="Left" Margin="0,1,0,0" Name="EditModeScaleButton" VerticalAlignment="Top" Width="25" Grid.Row="1" Click="EditModeScaleButton_Click" ClickMode="Press">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/AridiaEditor;component/Images/ImageScaleIconMono32.gif" />
+                    </Button.Background>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+
         <ad:DockingManager x:Name="dockManager" Grid.Row="2">
             <ad:ResizingPanel Orientation="Vertical">
                 <ad:ResizingPanel Orientation="Horizontal">
@@ -125,20 +142,5 @@
         </StatusBar>
         <ProgressBar Grid.Row="3" Height="18" HorizontalAlignment="Left" Margin="50,3,0,0" Name="progressBar" VerticalAlignment="Top" Width="230" SmallChange="1" />
         <Label Content="Level: no level loaded" Grid.Row="3" Height="24" HorizontalAlignment="Left" Margin="308,0,0,0" Name="LevelStatus" VerticalAlignment="Top" Width="138" />
-        <Button Content="" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="172,0,0,0" Name="EditModeMoveButton" VerticalAlignment="Top" Width="25" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="EditModeMoveButton_Click" ClickMode="Press">
-            <Button.Background>
-                <ImageBrush ImageSource="/AridiaEditor;component/Images/move_icon.png" />
-            </Button.Background>
-        </Button>
-        <Button BorderBrush="{x:Null}" Content="" Foreground="{x:Null}" Height="23" HorizontalAlignment="Left" Margin="203,0,0,0" Name="EditModeRotateButton" VerticalAlignment="Top" Width="25" Grid.Row="1" Click="EditModeRotateButton_Click" ClickMode="Press">
-            <Button.Background>
-                <ImageBrush ImageSource="/AridiaEditor;component/Images/redo.png" Stretch="UniformToFill" TileMode="None" />
-            </Button.Background>
-        </Button>
-        <Button BorderBrush="{x:Null}" Content="" Foreground="{x:Null}" Height="23" HorizontalAlignment="Left" Margin="234,1,0,0" Name="EditModeScaleButton" VerticalAlignment="Top" Width="25" Grid.Row="1" Click="EditModeScaleButton_Click" ClickMode="Press">
-            <Button.Background>
-                <ImageBrush ImageSource="/AridiaEditor;component/Images/ImageScaleIconMono32.gif" />
-            </Button.Background>
-        </Button>
-    </Grid>
+      </Grid>
 </Window>
