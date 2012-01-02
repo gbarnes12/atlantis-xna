@@ -76,6 +76,7 @@ namespace SpaceCommander.Actors
             : base(ID, GameViewID)
         {
             this.Scale = new Vector3(0.1f, 0.1f, 0.1f);
+            this.Scale = new Vector3(50,50,50);
             sphere = new Sphere(ID + "_sphere", 1f);
             this.path = path;
             this.Children.Add(sphere);
@@ -85,7 +86,7 @@ namespace SpaceCommander.Actors
         public override void LoadContent()
         {
             //load standard model
-            model = ResourceManager.Instance.GetResource<Model>("p1_wedge");
+            model = ResourceManager.Instance.GetResource<Model>("spaceship");
             sphere.LoadContent();
             CalculateBoundingSphere();
 
@@ -120,7 +121,7 @@ namespace SpaceCommander.Actors
             roll = (float)(Math.Atan2(-currentDirection.Y, currentDirection.Z));    // !!!! TODO
 
             //set rotation matrix
-            Rotation = Quaternion.CreateFromYawPitchRoll(((float)Math.PI + yaw), (float)Math.PI+roll, pitch);
+            Rotation = Quaternion.CreateFromYawPitchRoll(((float)yaw), (float)Math.PI+roll, pitch);
 
             //calculate right vector note: up vector stays the same every time
             this.right = Vector3.Cross(currentDirection, Vector3.Up);
@@ -295,6 +296,8 @@ namespace SpaceCommander.Actors
 
         public override void PreRender()
         {
+            
+
             base.PreRender();
         }
 
@@ -303,6 +306,8 @@ namespace SpaceCommander.Actors
             if (model != null)
             {
                 Camera camera = CameraManager.Instance.GetCurrentCamera();
+
+                GameApplication.Instance.GetGraphics().BlendState = BlendState.AlphaBlend;
 
                 Matrix[] transforms = new Matrix[model.Bones.Count];
                 model.CopyAbsoluteBoneTransformsTo(transforms);
@@ -314,6 +319,8 @@ namespace SpaceCommander.Actors
                     // as our camera and projection.
                     foreach (BasicEffect effect in mesh.Effects)
                     {
+                        
+
                         effect.EnableDefaultLighting();
                         effect.World =  transforms[mesh.ParentBone.Index] *
                                                        AbsoluteTransform;
@@ -324,6 +331,7 @@ namespace SpaceCommander.Actors
                     mesh.Draw();
 
                 }
+                GameApplication.Instance.GetGraphics().BlendState = BlendState.Opaque;
             }
             base.Render(sceneGraph);
         }
