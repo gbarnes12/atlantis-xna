@@ -71,6 +71,11 @@
                     Type = ResourceType.Model
                 },
                 new Resource() {
+                    Name = "spaceship",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
+                new Resource() {
                     Name = "planet",
                     Path = GameApplication.Instance.ModelPath,
                     Type = ResourceType.Model
