@@ -287,6 +287,11 @@
         /// </summary>
         /// <param name="sceneGraph">The scene graph responsible for this actor - <see cref="SceneGraphManager"/></param>
         public virtual void Render(SceneGraphManager sceneGraph) { }
+
+        /// <summary>
+        /// The post render method. This just does nothing!
+        /// </summary>
+        public virtual void PostRender() { }
     }
 
     /// <summary>

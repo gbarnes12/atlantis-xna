@@ -25,13 +25,13 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 /////////////////////////////////////////////////////////////////////////
-namespace Structures.StateMachine
+namespace GameApplicationTools.Structures.StateMachine
 {
     using System;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
 
-    class FiniteStateMachine
+    public class FiniteStateMachine
     {
         public static Random RNG = new Random();
 

@@ -49,7 +49,7 @@
                 <MenuItem Header="Advanced">
                     <MenuItem Header="SkySphere" Name="CreateSkySphereMenuItem" Click="CreateSkySphereMenuItem_Click" />
                     <MenuItem Header="Water" />
-                    <MenuItem Header="MeshObject" />
+                    <MenuItem Header="MeshObject" Name="CreateMeshObjectMenuItem" Click="CreateMeshObjectMenuItem_Click" />
                 </MenuItem>
                 <MenuItem Header="Prefabs">
                     <MenuItem Header="Trigger Volume" />
@@ -98,9 +98,10 @@
                         <ad:DocumentContent Title="Welcome to Aridia Editor">
                             <Grid Background="White">
                                 <Label Content="Welcome to Aridia Editor" Margin="92,6,98,293" Height="34" FontWeight="Normal" FontSize="18" Width="346" Foreground="#FF8D8D8D" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                <Label Content="Use right-click on the world view and W,A,S,D to navigate through the 3D Space" Margin="92,6,98,393" Height="34" FontWeight="Normal" FontSize="12" Width="446" Foreground="#FF8D8D8D"  HorizontalAlignment="Left" />
                             </Grid>
                         </ad:DocumentContent>
-                        <ad:DocumentContent Title="World View" IsEnabled="True">
+                        <ad:DocumentContent Title="World View">
                             <my:GraphicsDeviceControl  x:Name="xnaControl" LoadContent="loadContent" RenderXna="xnaControl_RenderXna" HwndMouseMove="xnaControl_MouseMove" HwndLButtonDown="xnaControl_HwndLButtonDown" HwndLButtonUp="xnaControl_HwndLButtonUp" HwndRButtonDown="xnaControl_HwndRButtonDown" HwndRButtonUp="xnaControl_HwndRButtonUp" />
                         </ad:DocumentContent>
                     </ad:DocumentPane>

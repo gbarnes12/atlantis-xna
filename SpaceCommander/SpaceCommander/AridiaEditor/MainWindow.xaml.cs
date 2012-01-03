@@ -438,6 +438,29 @@ namespace AridiaEditor
             }
         }
 
+        private void CreateMeshObjectMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (Level != null)
+            {
+                CreateMeshObjectWindow createMeshObjectWindow = new CreateMeshObjectWindow();
+                createMeshObjectWindow.Owner = this;
+
+                if (createMeshObjectWindow.ShowDialog().Value)
+                {
+                    MeshObject obj = new MeshObject(createMeshObjectWindow.ID, createMeshObjectWindow.Model, 1f);
+                    obj.Position = createMeshObjectWindow.Position;
+                    obj.Scale = createMeshObjectWindow.Scale;
+                    obj.LoadContent();
+                    sceneGraph.RootNode.Children.Add(obj);
+                    LoadWorldView();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please create or load a level first before you add any actor");
+            }
+        }
+
         private void EditModeMoveButton_Click(object sender, RoutedEventArgs e)
         {
             EditMode = EditMode.MOVE;
