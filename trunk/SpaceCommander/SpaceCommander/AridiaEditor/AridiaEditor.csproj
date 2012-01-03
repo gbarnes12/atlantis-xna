@@ -90,6 +90,9 @@
     <Compile Include="Windows\CreateWindows\CreateBoxWindow.xaml.cs">
       <DependentUpon>CreateBoxWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\CreateWindows\CreateMeshObjectWindow.xaml.cs">
+      <DependentUpon>CreateMeshObjectWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\CreateWindows\CreatePlaneWindow.xaml.cs">
       <DependentUpon>CreatePlaneWindow.xaml</DependentUpon>
     </Compile>
@@ -131,6 +134,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Windows\CreateWindows\CreateBoxWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\CreateWindows\CreateMeshObjectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

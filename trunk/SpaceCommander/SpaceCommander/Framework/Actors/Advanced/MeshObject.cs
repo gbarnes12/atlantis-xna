@@ -43,6 +43,10 @@
             this.Scale = new Vector3(scale, scale, scale);
             sphere = new Sphere(ID + "_sphere",scale);
             this.Children.Add(sphere);
+
+            // create properties
+            PickableProperty pickableProperty = new PickableProperty();
+            Properties.Add(ActorPropertyType.PICKABLE, pickableProperty);
         }
 
         /// <summary>
