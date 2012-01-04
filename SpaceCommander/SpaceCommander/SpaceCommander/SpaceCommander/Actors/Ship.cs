@@ -317,8 +317,7 @@ namespace SpaceCommander.Actors
                     // as our camera and projection.
                     foreach (BasicEffect effect in mesh.Effects)
                     {
-                        effect.LightingEnabled = true;
-                        effect.VertexColorEnabled = true;
+                        effect.EnableDefaultLighting();
                         
                         effect.PreferPerPixelLighting = true;
                         effect.World =  transforms[mesh.ParentBone.Index] *

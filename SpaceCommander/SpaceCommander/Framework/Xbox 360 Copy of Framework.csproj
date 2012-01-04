@@ -51,6 +51,7 @@
     <Compile Include="Actors\Primitives\Triangle.cs" />
     <None Include="Actors\Properties\ActorProperty.cs" />
     <Compile Include="Actors\Properties\ActorPropertyTypes.cs" />
+    <Compile Include="Actors\Properties\AIProperty.cs" />
     <Compile Include="Actors\Properties\CollideableProperty.cs" />
     <Compile Include="Actors\Properties\EffectProperty.cs" />
     <Compile Include="Actors\Properties\PickableProperty.cs" />
