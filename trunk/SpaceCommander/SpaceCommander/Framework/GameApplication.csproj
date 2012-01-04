@@ -140,6 +140,7 @@
     <Compile Include="ResourceManager.cs" />
     <Compile Include="Resources\PostProcessors\BloomProcessor.cs" />
     <Compile Include="Resources\PostProcessors\PostProcessor.cs" />
+    <Compile Include="Resources\PostProcessors\SSAOProcessor.cs" />
     <Compile Include="Resources\Resource.cs" />
     <Compile Include="Resources\Shader\DefaultEffect.cs" />
     <Compile Include="Resources\Shader\TextureMappingEffect.cs" />

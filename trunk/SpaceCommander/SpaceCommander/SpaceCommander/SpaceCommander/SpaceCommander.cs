@@ -36,6 +36,12 @@ namespace SpaceCommander
         KeyboardInputService keyboardInputService;
         Color BackgroundColor = Color.CornflowerBlue;
 
+        #region PostProcessors
+        SSAOProcessor ssao;
+        PostProcessor blur;
+        BloomProcessor bloom;
+        #endregion
+
         public SpaceCommander()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -98,11 +104,20 @@ namespace SpaceCommander
             GameViewManager.Instance.LoadContent();
 
 
-            PostProcessor processor = new PostProcessor("BlurPostProcessor", "BlurPostProcessor");
-            processor.Enabled = false;
-            processor.Effect.Parameters["targetSize"].SetValue(new Vector2(GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferWidth,
+            blur = new PostProcessor("BlurPostProcessor", "BlurPostProcessor");
+            blur.Enabled = false;
+            blur.Effect.Parameters["targetSize"].SetValue(new Vector2(GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferWidth,
                 GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferHeight));
-            PostProcessorManager.Instance.AddProcessor(processor);
+            PostProcessorManager.Instance.AddProcessor(blur);
+
+            bloom = new BloomProcessor("BloomPostProcessor", "BloomPostProcessor");
+            bloom.Enabled = true;
+            PostProcessorManager.Instance.AddProcessor(blur);
+
+            // Needs some rework! found a tutorial!
+            ssao = new SSAOProcessor("ScreenSpaceAmbientOcclusion", "SSAO", "noise");
+            ssao.Enabled = false;
+            PostProcessorManager.Instance.AddProcessor(ssao);
 
 
             //GameView menueView = GameViewManager.Instance.GetGameView("MainMenu") as GameView;
@@ -147,8 +162,9 @@ namespace SpaceCommander
                 GameApplication.Instance.ExitGame();
             else if (KeyboardDevice.Instance.WasKeyPressed(Keys.Escape))
                 GameApplication.Instance.ExitGame();
-
-            
+            else if (KeyboardDevice.Instance.WasKeyPressed(Keys.T))
+                blur.Enabled = Utils.ToggleBool(blur.Enabled);
+             
             ScriptManager.Instance.Update(gameTime);
             GameViewManager.Instance.Update(gameTime);
             UIManager.Instance.Update(gameTime);
@@ -167,11 +183,13 @@ namespace SpaceCommander
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(BackgroundColor);
+            
 
             PostProcessorManager.Instance.BeginRender();
 
             GameViewManager.Instance.Render();
 
+           
             PostProcessorManager.Instance.Render();
 
             UIManager.Instance.Render(gameTime);

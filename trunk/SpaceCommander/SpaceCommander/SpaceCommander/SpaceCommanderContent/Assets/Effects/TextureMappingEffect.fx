@@ -59,7 +59,7 @@ float4 TexturedPixelShader(VertexPositionTexture input) : COLOR0
 //	[TECHNIQUES]
 //=============================================================================
 
-technique DefaultEffect
+technique TextureMappingEffect
 {
     Pass
     {

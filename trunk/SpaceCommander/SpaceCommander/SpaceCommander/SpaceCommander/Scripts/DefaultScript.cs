@@ -48,6 +48,11 @@
                     Path = GameApplication.Instance.EffectPath,
                     Type = ResourceType.Effect
                 },
+                new Resource() {
+                    Name = "SSAO",
+                    Path = GameApplication.Instance.EffectPath,
+                    Type = ResourceType.Effect
+                },
                 // FONTS
                 new Resource() {
                     Name = "Arial",
@@ -98,6 +103,11 @@
                 },
                 new Resource() {
                     Name = "crate",
+                    Path = GameApplication.Instance.TexturePath,
+                    Type = ResourceType.Texture2D
+                },
+                new Resource() {
+                    Name = "noise",
                     Path = GameApplication.Instance.TexturePath,
                     Type = ResourceType.Texture2D
                 },
