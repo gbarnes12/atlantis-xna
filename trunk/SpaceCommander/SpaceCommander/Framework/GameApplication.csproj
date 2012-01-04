@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\Actor.cs" />
+    <Compile Include="Actors\Advanced\Terrain.cs" />
     <Compile Include="Actors\Properties\ActorPropertyTypes.cs" />
     <Compile Include="Actors\Properties\AIProperty.cs" />
     <Compile Include="Actors\Properties\CollideableProperty.cs" />
