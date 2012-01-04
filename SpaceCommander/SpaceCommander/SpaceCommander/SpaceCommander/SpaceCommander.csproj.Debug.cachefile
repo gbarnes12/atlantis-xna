@@ -17,6 +17,7 @@ Content\Assets\Textures\crate.xnb
 Content\Assets\Textures\Kachel2_bump.xnb
 Content\Assets\UI\CrossHair\crosshair_far.xnb
 Content\Assets\UI\CrossHair\crosshair_near.xnb
+Content\Assets\Textures\chunkheightmap.xnb
 Content\Assets\Models\planet.xnb
 Content\Assets\Models\sphere.xnb
 Content\Assets\Fonts\Arial.xnb
@@ -28,4 +29,6 @@ Content\Assets\Models\laser.xnb
 Content\Assets\Models\spaceship.xnb
 Content\Assets\Textures\space_0.xnb
 Content\Assets\Textures\SpaceShip\wedge_p1_diff_v1_0.xnb
+Content\Assets\Effects\SSAO.xnb
+Content\Assets\Textures\noise.xnb
 Content\Assets\Audio\Sleep Away.wma

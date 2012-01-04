@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Text;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework;
 
     public class PostProcessor
     {
@@ -27,5 +28,14 @@
         }
 
         public virtual void Update(Texture2D result) {}
+
+        public virtual Texture2D Render(Texture2D result, SpriteBatch sceneDrawer)
+        {
+            sceneDrawer.Begin(0, BlendState.Opaque, null, null, null, Effect);
+            sceneDrawer.Draw(result, Vector2.Zero, Color.White);
+            sceneDrawer.End();
+
+            return result;
+        }
     }
 }

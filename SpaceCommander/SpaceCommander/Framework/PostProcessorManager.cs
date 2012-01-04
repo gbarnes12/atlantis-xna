@@ -21,7 +21,7 @@
         SpriteBatch sceneDrawer;
         private static PostProcessorManager instance;
         Dictionary<string, PostProcessor> processors;
-        Texture2D finalResult;
+        public Texture2D finalResult;
         #endregion
 
         #region Public
@@ -151,6 +151,8 @@
                 {
                     GameApplication.Instance.GetGraphics().SetRenderTarget(processor.Target);
                     processor.Update(finalResult); // Update our processor
+                    //finalResult = processor.Render(finalResult, sceneDrawer);
+
                     sceneDrawer.Begin(0, BlendState.Opaque, null, null, null, processor.Effect);
                     sceneDrawer.Draw(finalResult, Vector2.Zero, Color.White);
                     sceneDrawer.End();
