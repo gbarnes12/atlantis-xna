@@ -14,6 +14,7 @@ using GameApplicationTools.Misc;
 using GameApplicationTools.Resources;
 using GameApplicationTools.Actors.Cameras;
 using GameApplicationTools.Actors.Primitives;
+using GameApplicationTools.Actors.Advanced;
 
 namespace TestEnvironment
 {
@@ -63,7 +64,7 @@ namespace TestEnvironment
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             sceneGraph = new SceneGraphManager();
-            sceneGraph.CullingActive = true;
+            sceneGraph.CullingActive = false;
 
             #region RESOURCES
             List<Resource> resources = new List<Resource>()
@@ -82,6 +83,16 @@ namespace TestEnvironment
                     Name = "TextureMappingEffect",
                     Path = GameApplication.Instance.EffectPath,
                     Type = ResourceType.Effect
+                },
+                new Resource() {
+                    Name = "chunkheightmap",
+                    Path = GameApplication.Instance.TexturePath,
+                    Type = ResourceType.Texture2D
+                },
+                new Resource() {
+                    Name = "Kachel2_bump",
+                    Path = GameApplication.Instance.TexturePath,
+                    Type = ResourceType.Texture2D
                 }
             };
 
@@ -89,16 +100,20 @@ namespace TestEnvironment
             #endregion
 
             #region CAMERA
-            Camera cam = new Camera("fps", new Vector3(0, 0, 4), Vector3.Zero);
+            FPSCamera cam = new FPSCamera("fps", new Vector3(640.0f, 640.0f, 1280.0f), new Vector3(640.0f, 0.0f, 640.0f));
             cam.LoadContent();
             CameraManager.Instance.CurrentCamera = "fps";
             #endregion
 
             #region ACTORS
-            Box box = new Box("box", "crate", 1f);
-            box.Position = Vector3.Zero;
-            box.LoadContent();
-            sceneGraph.RootNode.Children.Add(box);
+            //Box box = new Box("box", "crate", 1f);
+            //box.Position = Vector3.Zero;
+            //box.LoadContent();
+
+            Terrain terrain = new Terrain("terrain", "chunkheightmap", "Kachel2_bump", 1f);
+            terrain.LoadContent();
+
+            sceneGraph.RootNode.Children.Add(terrain);
             #endregion
 
             MouseDevice.Instance.ResetMouseAfterUpdate = false;

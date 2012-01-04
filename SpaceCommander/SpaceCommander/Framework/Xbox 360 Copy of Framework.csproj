@@ -44,6 +44,7 @@
     <Compile Include="Actors\Actor.cs" />
     <Compile Include="Actors\Advanced\MeshObject.cs" />
     <Compile Include="Actors\Advanced\SkySphere.cs" />
+    <Compile Include="Actors\Advanced\Terrain.cs" />
     <Compile Include="Actors\Primitives\Axis.cs" />
     <Compile Include="Actors\Primitives\Box.cs" />
     <Compile Include="Actors\Primitives\Plane.cs" />

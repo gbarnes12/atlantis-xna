@@ -169,6 +169,7 @@ namespace SpaceCommander
             GraphicsDevice.Clear(BackgroundColor);
 
             PostProcessorManager.Instance.BeginRender();
+
             GameViewManager.Instance.Render();
 
             PostProcessorManager.Instance.Render();
