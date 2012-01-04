@@ -108,6 +108,7 @@
                         {
                             node.PreRender();
                             node.Render(this);
+                            node.PostRender();
                         }
                         else
                         {
@@ -118,6 +119,7 @@
                     {
                         node.PreRender();
                         node.Render(this);
+                        node.PostRender();
                     }
                 }
             }
