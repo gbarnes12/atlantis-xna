@@ -86,7 +86,7 @@ namespace SpaceCommander.Actors
         public override void LoadContent()
         {
             //load standard model
-            model = ResourceManager.Instance.GetResource<Model>("spaceship");
+            model = ResourceManager.Instance.GetResource<Model>("raumschiff7");
             sphere.LoadContent();
             CalculateBoundingSphere();
 
@@ -318,7 +318,7 @@ namespace SpaceCommander.Actors
                     foreach (BasicEffect effect in mesh.Effects)
                     {
                         effect.EnableDefaultLighting();
-                        
+   
                         effect.PreferPerPixelLighting = true;
                         effect.World =  transforms[mesh.ParentBone.Index] *
                                                        AbsoluteTransform;

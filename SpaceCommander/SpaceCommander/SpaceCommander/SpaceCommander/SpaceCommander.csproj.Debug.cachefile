@@ -2,7 +2,8 @@ Content\Assets\Effects\DefaultEffect.xnb
 Content\Assets\Effects\PlanetEarthEffect.xnb
 Content\Assets\Effects\TextureMappingEffect.xnb
 Content\Assets\Effects\BlurPostProcessor.xnb
-Content\Assets\Textures\space.xnb
+Content\Assets\Effects\SSAO.xnb
+Content\Editor\WebEffect.xnb
 Content\Assets\Textures\PlanetEarth\Earth_Atmos.xnb
 Content\Assets\Textures\PlanetEarth\Earth_Cloud.xnb
 Content\Assets\Textures\PlanetEarth\Earth_Diffuse.xnb
@@ -18,6 +19,9 @@ Content\Assets\Textures\Kachel2_bump.xnb
 Content\Assets\UI\CrossHair\crosshair_far.xnb
 Content\Assets\UI\CrossHair\crosshair_near.xnb
 Content\Assets\Textures\chunkheightmap.xnb
+Content\Assets\Textures\noise.xnb
+Content\Assets\Textures\space.xnb
+Content\Assets\Textures\level1_skymap.xnb
 Content\Assets\Models\planet.xnb
 Content\Assets\Models\sphere.xnb
 Content\Assets\Fonts\Arial.xnb
@@ -27,8 +31,8 @@ Content\Assets\Models\p1_wedge.xnb
 Content\Assets\Models\asteroid.xnb
 Content\Assets\Models\laser.xnb
 Content\Assets\Models\spaceship.xnb
-Content\Assets\Textures\space_0.xnb
+Content\Assets\Models\raumschiff7.xnb
+Content\Assets\Textures\level1_skymap_0.xnb
 Content\Assets\Textures\SpaceShip\wedge_p1_diff_v1_0.xnb
-Content\Assets\Effects\SSAO.xnb
-Content\Assets\Textures\noise.xnb
 Content\Assets\Audio\Sleep Away.wma
+Content\Editor\UI\Top.html

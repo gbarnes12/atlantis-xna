@@ -456,7 +456,7 @@ Mesh CINEMA4D_Mesh {
       0.0;0.0;0.0;;
       0.0;0.0;0.0;;
       TextureFilename {
-        "..\\Textures\\space.png";
+        "..\\Textures\\level1_skymap.jpg";
       }
     }
     

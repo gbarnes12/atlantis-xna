@@ -81,6 +81,11 @@
                     Type = ResourceType.Model
                 },
                 new Resource() {
+                    Name = "raumschiff7",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
+                new Resource() {
                     Name = "planet",
                     Path = GameApplication.Instance.ModelPath,
                     Type = ResourceType.Model
@@ -98,6 +103,11 @@
                 // TEXTURES
                 new Resource() {
                     Name = "space",
+                    Path = GameApplication.Instance.TexturePath,
+                    Type = ResourceType.Texture2D
+                },
+                new Resource() {
+                    Name = "level1_skymap",
                     Path = GameApplication.Instance.TexturePath,
                     Type = ResourceType.Texture2D
                 },

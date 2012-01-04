@@ -102,13 +102,7 @@
             //load the model's texture 
             texture = ResourceManager.Instance.GetResource<Texture2D>(textureFile);
 
-            //set texture to the effect
-            effect.Texture = texture;
 
-            //set the effect to every part of every mesh of the model
-            foreach (ModelMesh mesh in model.Meshes)
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                    part.Effect = effect;
         }
 
         /// <summary>
@@ -156,9 +150,12 @@
                 {
                     // This is where the mesh orientation is set, as well 
                     // as our camera and projection.
-                    foreach (TextureMappingEffect eff in mesh.Effects)
+                    foreach (BasicEffect eff in mesh.Effects)
                     {
                         //WorldMatrix = transforms[mesh.ParentBone.Index] * Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(Angle), new Vector3(0.002f, 0.002f, 0.002f));
+                        eff.EnableDefaultLighting();
+                        eff.Texture = texture;
+                        eff.TextureEnabled = true;
                         eff.World = transforms[mesh.ParentBone.Index] * 
                                          AbsoluteTransform;
                         eff.View = camera.View;
