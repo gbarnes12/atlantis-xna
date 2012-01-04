@@ -179,7 +179,7 @@ namespace SpaceCommander.GameViews.Gameplay
 
 
             //create a skySphere
-            SkySphere skySphere = new SkySphere("skySphere", "space", 30000);
+            SkySphere skySphere = new SkySphere("skySphere", "level1_skymap", 30000);
             skySphere.LoadContent();
             SceneGraphManager.RootNode.Children.Add(skySphere);
          

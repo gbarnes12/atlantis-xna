@@ -104,20 +104,17 @@ namespace SpaceCommander
             GameViewManager.Instance.LoadContent();
 
 
-            blur = new PostProcessor("BlurPostProcessor", "BlurPostProcessor");
-            blur.Enabled = false;
-            blur.Effect.Parameters["targetSize"].SetValue(new Vector2(GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferWidth,
-                GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferHeight));
-            PostProcessorManager.Instance.AddProcessor(blur);
+            //blur = new PostProcessor("BlurPostProcessor", "BlurPostProcessor");
+            //blur.Enabled = false;
+           // blur.Effect.Parameters["targetSize"].SetValue(new Vector2(GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferWidth,
+                //GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferHeight));
+            //PostProcessorManager.Instance.AddProcessor(blur);
 
-            bloom = new BloomProcessor("BloomPostProcessor", "BloomPostProcessor");
-            bloom.Enabled = true;
-            PostProcessorManager.Instance.AddProcessor(blur);
 
             // Needs some rework! found a tutorial!
-            ssao = new SSAOProcessor("ScreenSpaceAmbientOcclusion", "SSAO", "noise");
-            ssao.Enabled = false;
-            PostProcessorManager.Instance.AddProcessor(ssao);
+            //ssao = new SSAOProcessor("ScreenSpaceAmbientOcclusion", "SSAO", "noise");
+            //ssao.Enabled = false;
+            //PostProcessorManager.Instance.AddProcessor(ssao);
 
 
             //GameView menueView = GameViewManager.Instance.GetGameView("MainMenu") as GameView;

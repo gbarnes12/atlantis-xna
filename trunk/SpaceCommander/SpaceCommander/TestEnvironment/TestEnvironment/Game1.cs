@@ -15,6 +15,8 @@ using GameApplicationTools.Resources;
 using GameApplicationTools.Actors.Cameras;
 using GameApplicationTools.Actors.Primitives;
 using GameApplicationTools.Actors.Advanced;
+using TestEnvironment.UserInterface;
+using AwesomiumSharp;
 
 namespace TestEnvironment
 {
@@ -26,10 +28,19 @@ namespace TestEnvironment
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SceneGraphManager sceneGraph;
+        UIManagerEditor uiManager;
+
+
+        MouseState thisMouseState;
+        MouseState lastMoustState;
+
+        KeyboardState thisKeyboardState;
+        KeyboardState lastKeybosrdState;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            this.IsMouseVisible = true;
             Content.RootDirectory = "Content";
         }
 
@@ -42,14 +53,17 @@ namespace TestEnvironment
         protected override void Initialize()
         {
             // Draw as fast as possible :)
-            graphics.SynchronizeWithVerticalRetrace = false;
-            graphics.ApplyChanges();
+
 
 
             // set our necessary classes for the game
             GameApplication.Instance.SetGame(this);
             GameApplication.Instance.SetGraphicsDevice(GraphicsDevice);
-            ResourceManager.Instance.Content = Content;
+            //ResourceManager.Instance.Content = Content;
+
+            uiManager = new UIManagerEditor(this, "http://www.youtube.com");
+            uiManager.TransparentBackground = true;
+            Components.Add(uiManager);
 
             base.Initialize();
         }
@@ -63,7 +77,13 @@ namespace TestEnvironment
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            sceneGraph = new SceneGraphManager();
+            Services.AddService(typeof(SpriteBatch), spriteBatch);
+
+            uiManager.CreateObject("UIEventmanager", "click", webEventManager);
+            uiManager.CreateObject("UIEventmanager", "slide", webEventManager);
+
+
+            /*sceneGraph = new SceneGraphManager();
             sceneGraph.CullingActive = false;
 
             #region RESOURCES
@@ -116,7 +136,27 @@ namespace TestEnvironment
             sceneGraph.RootNode.Children.Add(terrain);
             #endregion
 
-            MouseDevice.Instance.ResetMouseAfterUpdate = false;
+            MouseDevice.Instance.ResetMouseAfterUpdate = false;*/
+        }
+
+        bool RotateModel = false;
+        Color diffuse = Color.White;
+
+        public void webEventManager(object sender, WebView.JSCallbackEventArgs e)
+        {
+            if (e.args[0].ToString() == "rot")
+                RotateModel = !RotateModel;
+
+            if (e.args[0].ToString() == "zoom")
+                //test.Position = new Vector3(0, 0, -float.Parse(e.args[1].ToString()));
+
+            if (e.args[0].ToString() == "red")
+                diffuse.R = byte.Parse(e.args[1].ToString());
+            if (e.args[0].ToString() == "green")
+                diffuse.B = byte.Parse(e.args[1].ToString());
+            if (e.args[0].ToString() == "blue")
+                diffuse.G = byte.Parse(e.args[1].ToString());
+
         }
 
         /// <summary>
@@ -141,13 +181,32 @@ namespace TestEnvironment
             if (KeyboardDevice.Instance.WasKeyPressed(Keys.Escape))
                 this.Exit();
 
-            sceneGraph.Update(gameTime);
+            thisMouseState = Mouse.GetState();
+            thisKeyboardState = Keyboard.GetState();
 
-            KeyboardDevice.Instance.Update();
-            MouseDevice.Instance.Update();
-            EventManager.Instance.Update();
+            // Allows the game to exit
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+                this.Exit();
+
+            // Manage the mouse and keyboard for the UI
+            if (thisMouseState.LeftButton == ButtonState.Pressed)
+                uiManager.LeftButtonDown();
+
+            if (thisMouseState.LeftButton == ButtonState.Released && lastMoustState.LeftButton == ButtonState.Pressed)
+                uiManager.LeftButtonUp();
+
+            uiManager.MouseMoved(thisMouseState.X, thisMouseState.Y);
+            uiManager.ScrollWheel(thisMouseState.ScrollWheelValue - lastMoustState.ScrollWheelValue);
+
+            if (thisKeyboardState.GetPressedKeys().Length > 0)
+                uiManager.KeyPressed(thisKeyboardState.GetPressedKeys()[0]);
+            
+            uiManager.PushData("", "ShowCubePosition", new JSValue(0), new JSValue(0), new JSValue(0));
 
             base.Update(gameTime);
+
+            lastMoustState = thisMouseState;
+            lastKeybosrdState = thisKeyboardState;
         }
 
         /// <summary>
@@ -158,16 +217,16 @@ namespace TestEnvironment
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            sceneGraph.Render();
+           // sceneGraph.Render();
 
-            UIManager.Instance.Render(gameTime);
+            //UIManager.Instance.Render(gameTime);
 
             //make a screenshot
-            if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PrintScreen) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.PrintScreen)))
-            {
-                Utils.makeScreenshot();
-            }
-
+            //if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PrintScreen) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.PrintScreen)))
+           // {
+           //     Utils.makeScreenshot();
+//}
+        //
             base.Draw(gameTime);
         }
     }
