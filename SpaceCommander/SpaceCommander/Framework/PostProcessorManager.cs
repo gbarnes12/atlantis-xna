@@ -36,6 +36,8 @@
                 return instance;
             }
         }
+
+        public bool IsEnabled { get; set; }
         #endregion
 
 
@@ -50,6 +52,7 @@
                 GameApplication.Instance.GetGraphics().DisplayMode.Format, DepthFormat.Depth24Stencil8);
 
             sceneDrawer = new SpriteBatch(GameApplication.Instance.GetGraphics());
+            IsEnabled = true;
         }
 
 
@@ -132,7 +135,8 @@
         /// </summary>
         public void BeginRender()
         {
-            GameApplication.Instance.GetGraphics().SetRenderTarget(sceneTarget);
+            if(IsEnabled)
+                GameApplication.Instance.GetGraphics().SetRenderTarget(sceneTarget);
         }
 
         /// <summary>
@@ -140,31 +144,34 @@
         /// </summary>
         public void Render()
         {
-            GameApplication.Instance.GetGraphics().SetRenderTarget(null);
-            finalResult = (Texture2D)sceneTarget;
-            GameApplication.Instance.GetGraphics().Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-
-            
-            foreach (PostProcessor processor in processors.Values)
+            if (IsEnabled)
             {
-                if (processor.Enabled)
+                GameApplication.Instance.GetGraphics().SetRenderTarget(null);
+                finalResult = (Texture2D)sceneTarget;
+                GameApplication.Instance.GetGraphics().Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Coral, 1.0f, 0);
+
+
+                foreach (PostProcessor processor in processors.Values)
                 {
-                    GameApplication.Instance.GetGraphics().SetRenderTarget(processor.Target);
-                    processor.Update(finalResult); // Update our processor
-                    //finalResult = processor.Render(finalResult, sceneDrawer);
+                    if (processor.Enabled)
+                    {
+                        GameApplication.Instance.GetGraphics().SetRenderTarget(processor.Target);
+                        processor.Update(finalResult); // Update our processor
+                        //finalResult = processor.Render(finalResult, sceneDrawer);
 
-                    sceneDrawer.Begin(0, BlendState.Opaque, null, null, null, processor.Effect);
-                    sceneDrawer.Draw(finalResult, Vector2.Zero, Color.White);
-                    sceneDrawer.End();
-                    GameApplication.Instance.GetGraphics().SetRenderTarget(null);
-                    finalResult = (Texture2D)processor.Target;
+                        sceneDrawer.Begin(0, BlendState.Opaque, null, null, null, processor.Effect);
+                        sceneDrawer.Draw(finalResult, Vector2.Zero, Color.White);
+                        sceneDrawer.End();
+                        GameApplication.Instance.GetGraphics().SetRenderTarget(null);
+                        finalResult = (Texture2D)processor.Target;
+                    }
                 }
-            }
-            
 
-            sceneDrawer.Begin();
-            sceneDrawer.Draw(finalResult, Vector2.Zero, Color.White);
-            sceneDrawer.End();
+
+                sceneDrawer.Begin();
+                sceneDrawer.Draw(finalResult, Vector2.Zero, Color.White);
+                sceneDrawer.End();
+            }
         }
 
     }

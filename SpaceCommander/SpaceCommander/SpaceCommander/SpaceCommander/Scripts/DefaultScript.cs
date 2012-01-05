@@ -95,6 +95,11 @@
                     Path = GameApplication.Instance.ModelPath,
                     Type = ResourceType.Model
                 },
+                new Resource() {
+                    Name = "skysphere",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
                  new Resource() {
                     Name = "laser",
                     Path = GameApplication.Instance.ModelPath,

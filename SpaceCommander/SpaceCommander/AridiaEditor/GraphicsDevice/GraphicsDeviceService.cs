@@ -72,6 +72,7 @@ namespace AridiaEditor
                 GraphicsProfile.HiDef,
                 parameters);
 
+
             if (DeviceCreated != null)
                 DeviceCreated(this, EventArgs.Empty);
         }
@@ -129,6 +130,7 @@ namespace AridiaEditor
 
             parameters.BackBufferWidth = Math.Max(parameters.BackBufferWidth, width);
             parameters.BackBufferHeight = Math.Max(parameters.BackBufferHeight, height);
+            
 
             graphicsDevice.Reset(parameters);
 

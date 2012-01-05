@@ -24,6 +24,7 @@ Content\Assets\Textures\space.xnb
 Content\Assets\Textures\level1_skymap.xnb
 Content\Assets\Models\planet.xnb
 Content\Assets\Models\sphere.xnb
+Content\Assets\Models\skysphere.xnb
 Content\Assets\Fonts\Arial.xnb
 Content\Assets\Fonts\ConsoleFont.xnb
 Content\Assets\Audio\Sleep Away.xnb
@@ -33,10 +34,8 @@ Content\Assets\Models\laser.xnb
 Content\Assets\Models\spaceship.xnb
 Content\Assets\Models\raumschiff7.xnb
 Content\Assets\Textures\level1_skymap_0.xnb
+Content\Assets\Textures\noise_0.xnb
 Content\Assets\Textures\SpaceShip\wedge_p1_diff_v1_0.xnb
 Content\Assets\Audio\Sleep Away.wma
-Content\Editor\UI\Top.html
-icudt42.dll
-Awesomium.dll
-AwesomiumProcess.exe
-AwesomiumSharp.dll
+Content\Editor\UI\top.html
+Content\Editor\UI\css\StyleSheet.css

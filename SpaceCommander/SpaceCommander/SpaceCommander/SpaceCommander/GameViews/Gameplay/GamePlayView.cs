@@ -179,8 +179,10 @@ namespace SpaceCommander.GameViews.Gameplay
 
 
             //create a skySphere
-            SkySphere skySphere = new SkySphere("skySphere", "level1_skymap", 30000);
+            SkySphere skySphere = new SkySphere("skySphere", "level1_skymap", 30000f);
+            skySphere.Position = Vector3.Zero;
             skySphere.LoadContent();
+         
             SceneGraphManager.RootNode.Children.Add(skySphere);
          
             //100 asteroids with random position, scale and rotation
@@ -188,8 +190,8 @@ namespace SpaceCommander.GameViews.Gameplay
 
             for (int i = 0; i < 100; i++)
             {
-               // EffectProperty effectProp = new EffectProperty();
-                //effectProp.Effect = ResourceManager.Instance.GetResource<Effect>("DefaultEffect");
+                EffectProperty effectProp = new EffectProperty();
+                effectProp.Effect = ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect");
 
                 MeshObject asteroid01 = new MeshObject("asteroid" + i, "asteroid", 1f);
                 //asteroid01.Properties.Add(ActorPropertyType.EFFECT, effectProp);

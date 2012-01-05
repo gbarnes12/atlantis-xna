@@ -109,7 +109,7 @@ namespace SpaceCommander
            // blur.Effect.Parameters["targetSize"].SetValue(new Vector2(GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferWidth,
                 //GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferHeight));
             //PostProcessorManager.Instance.AddProcessor(blur);
-
+            PostProcessorManager.Instance.IsEnabled = true;
 
             // Needs some rework! found a tutorial!
             //ssao = new SSAOProcessor("ScreenSpaceAmbientOcclusion", "SSAO", "noise");
