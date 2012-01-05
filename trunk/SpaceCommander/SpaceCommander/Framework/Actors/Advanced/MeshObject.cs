@@ -97,8 +97,12 @@
                 if (effect != null)
                 {
                     foreach (ModelMesh mesh in Model.Meshes)
+                    {
                         foreach (ModelMeshPart part in mesh.MeshParts)
+                        {
                             part.Effect = effect;
+                        }
+                    }
                 }
             }
 

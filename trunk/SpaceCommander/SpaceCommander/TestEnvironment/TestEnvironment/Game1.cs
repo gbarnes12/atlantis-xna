@@ -15,8 +15,8 @@ using GameApplicationTools.Resources;
 using GameApplicationTools.Actors.Cameras;
 using GameApplicationTools.Actors.Primitives;
 using GameApplicationTools.Actors.Advanced;
-using TestEnvironment.UserInterface;
-using AwesomiumSharp;
+using GameApplicationTools.Actors.Properties;
+
 
 namespace TestEnvironment
 {
@@ -28,14 +28,7 @@ namespace TestEnvironment
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SceneGraphManager sceneGraph;
-        UIManagerEditor uiManager;
-
-
-        MouseState thisMouseState;
-        MouseState lastMoustState;
-
-        KeyboardState thisKeyboardState;
-        KeyboardState lastKeybosrdState;
+        float angle = 0f;
 
         public Game1()
         {
@@ -52,18 +45,10 @@ namespace TestEnvironment
         /// </summary>
         protected override void Initialize()
         {
-            // Draw as fast as possible :)
-
-
-
             // set our necessary classes for the game
             GameApplication.Instance.SetGame(this);
             GameApplication.Instance.SetGraphicsDevice(GraphicsDevice);
-            //ResourceManager.Instance.Content = Content;
-
-            uiManager = new UIManagerEditor(this, "http://www.youtube.com");
-            uiManager.TransparentBackground = true;
-            Components.Add(uiManager);
+            ResourceManager.Instance.Content = Content;
 
             base.Initialize();
         }
@@ -77,13 +62,7 @@ namespace TestEnvironment
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Services.AddService(typeof(SpriteBatch), spriteBatch);
-
-            uiManager.CreateObject("UIEventmanager", "click", webEventManager);
-            uiManager.CreateObject("UIEventmanager", "slide", webEventManager);
-
-
-            /*sceneGraph = new SceneGraphManager();
+            sceneGraph = new SceneGraphManager();
             sceneGraph.CullingActive = false;
 
             #region RESOURCES
@@ -110,9 +89,19 @@ namespace TestEnvironment
                     Type = ResourceType.Texture2D
                 },
                 new Resource() {
+                    Name = "wedge_p1_diff_v1",
+                    Path = GameApplication.Instance.TexturePath + "SpaceShip\\",
+                    Type = ResourceType.Texture2D
+                },
+                new Resource() {
                     Name = "Kachel2_bump",
                     Path = GameApplication.Instance.TexturePath,
                     Type = ResourceType.Texture2D
+                },
+                new Resource() {
+                    Name = "p1_wedge",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
                 }
             };
 
@@ -120,7 +109,7 @@ namespace TestEnvironment
             #endregion
 
             #region CAMERA
-            FPSCamera cam = new FPSCamera("fps", new Vector3(640.0f, 640.0f, 1280.0f), new Vector3(640.0f, 0.0f, 640.0f));
+            Camera cam = new Camera("fps", new Vector3(0, 0, 4), new Vector3(0, 0.0f, 0));
             cam.LoadContent();
             CameraManager.Instance.CurrentCamera = "fps";
             #endregion
@@ -130,33 +119,29 @@ namespace TestEnvironment
             //box.Position = Vector3.Zero;
             //box.LoadContent();
 
-            Terrain terrain = new Terrain("terrain", "chunkheightmap", "Kachel2_bump", 1f);
-            terrain.LoadContent();
+            //Terrain terrain = new Terrain("terrain", "chunkheightmap", "Kachel2_bump", 1f);
+            //terrain.LoadContent();
 
-            sceneGraph.RootNode.Children.Add(terrain);
+            EffectProperty effProp = new EffectProperty();
+            effProp.Effect = ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect");
+            effProp.Effect.Parameters["DiffuseTexture"].SetValue(ResourceManager.Instance.GetResource<Texture2D>("wedge_p1_diff_v1"));
+            effProp.Effect.Parameters["CameraPosition"].SetValue(cam.Position);
+            effProp.Effect.Parameters["LightDirection"].SetValue(new Vector3(0, 1, -1));
+            effProp.Effect.Parameters["SpecularColor"].SetValue(new Vector4(1f, 1f, 1f, 0.1f));
+            effProp.Effect.Parameters["SpecularColorActive"].SetValue(true);
+            
+            MeshObject mesh = new MeshObject("ship", "p1_wedge", 0.001f);
+            mesh.Properties.Add(ActorPropertyType.EFFECT, effProp);
+            
+            mesh.Position = Vector3.Zero;
+            
+            mesh.Scale = new Vector3(0.001f);
+            
+            mesh.LoadContent();
+            sceneGraph.RootNode.Children.Add(mesh);
             #endregion
 
-            MouseDevice.Instance.ResetMouseAfterUpdate = false;*/
-        }
-
-        bool RotateModel = false;
-        Color diffuse = Color.White;
-
-        public void webEventManager(object sender, WebView.JSCallbackEventArgs e)
-        {
-            if (e.args[0].ToString() == "rot")
-                RotateModel = !RotateModel;
-
-            if (e.args[0].ToString() == "zoom")
-                //test.Position = new Vector3(0, 0, -float.Parse(e.args[1].ToString()));
-
-            if (e.args[0].ToString() == "red")
-                diffuse.R = byte.Parse(e.args[1].ToString());
-            if (e.args[0].ToString() == "green")
-                diffuse.B = byte.Parse(e.args[1].ToString());
-            if (e.args[0].ToString() == "blue")
-                diffuse.G = byte.Parse(e.args[1].ToString());
-
+            MouseDevice.Instance.ResetMouseAfterUpdate = false;
         }
 
         /// <summary>
@@ -181,32 +166,16 @@ namespace TestEnvironment
             if (KeyboardDevice.Instance.WasKeyPressed(Keys.Escape))
                 this.Exit();
 
-            thisMouseState = Mouse.GetState();
-            thisKeyboardState = Keyboard.GetState();
+            angle += 0.005f;
+            WorldManager.Instance.GetActor("ship").Rotation = Quaternion.CreateFromYawPitchRoll(angle, 0, 0);
 
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
 
-            // Manage the mouse and keyboard for the UI
-            if (thisMouseState.LeftButton == ButtonState.Pressed)
-                uiManager.LeftButtonDown();
+            sceneGraph.Update(gameTime);
 
-            if (thisMouseState.LeftButton == ButtonState.Released && lastMoustState.LeftButton == ButtonState.Pressed)
-                uiManager.LeftButtonUp();
-
-            uiManager.MouseMoved(thisMouseState.X, thisMouseState.Y);
-            uiManager.ScrollWheel(thisMouseState.ScrollWheelValue - lastMoustState.ScrollWheelValue);
-
-            if (thisKeyboardState.GetPressedKeys().Length > 0)
-                uiManager.KeyPressed(thisKeyboardState.GetPressedKeys()[0]);
-            
-            uiManager.PushData("", "ShowCubePosition", new JSValue(0), new JSValue(0), new JSValue(0));
+            KeyboardDevice.Instance.Update();
+            MouseDevice.Instance.Update();
 
             base.Update(gameTime);
-
-            lastMoustState = thisMouseState;
-            lastKeybosrdState = thisKeyboardState;
         }
 
         /// <summary>
@@ -217,16 +186,16 @@ namespace TestEnvironment
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-           // sceneGraph.Render();
+            sceneGraph.Render();
 
-            //UIManager.Instance.Render(gameTime);
+            UIManager.Instance.Render(gameTime);
 
             //make a screenshot
-            //if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PrintScreen) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.PrintScreen)))
-           // {
-           //     Utils.makeScreenshot();
-//}
-        //
+            if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PrintScreen) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.PrintScreen)))
+            {
+                Utils.makeScreenshot();
+            }
+        
             base.Draw(gameTime);
         }
     }

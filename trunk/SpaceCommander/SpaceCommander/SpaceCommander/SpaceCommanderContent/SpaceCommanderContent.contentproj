@@ -262,9 +262,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Editor\UI\Top.html">
+    <Compile Include="Assets\Models\skysphere.x">
+      <Name>skysphere</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <None Include="Editor\UI\top.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Name>Top</Name>
+      <Name>top</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </None>

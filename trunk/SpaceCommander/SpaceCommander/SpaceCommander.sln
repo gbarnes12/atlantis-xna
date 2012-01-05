@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AridiaEditor", "AridiaEdito
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEnvironment", "TestEnvironment\TestEnvironment\TestEnvironment.csproj", "{F1EFB279-640B-45E9-B693-428AFAAD589C}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "UIContent", "UIContent\UIContent.contentproj", "{DCDB3454-4FF1-477C-B510-5FE82F1D445A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,14 +113,6 @@ Global
 		{F1EFB279-640B-45E9-B693-428AFAAD589C}.Release|x86.ActiveCfg = Release|x86
 		{F1EFB279-640B-45E9-B693-428AFAAD589C}.Release|x86.Build.0 = Release|x86
 		{F1EFB279-640B-45E9-B693-428AFAAD589C}.Release|Xbox 360.ActiveCfg = Release|x86
-		{DCDB3454-4FF1-477C-B510-5FE82F1D445A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCDB3454-4FF1-477C-B510-5FE82F1D445A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{DCDB3454-4FF1-477C-B510-5FE82F1D445A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DCDB3454-4FF1-477C-B510-5FE82F1D445A}.Debug|Xbox 360.ActiveCfg = Debug|Any CPU
-		{DCDB3454-4FF1-477C-B510-5FE82F1D445A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCDB3454-4FF1-477C-B510-5FE82F1D445A}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{DCDB3454-4FF1-477C-B510-5FE82F1D445A}.Release|x86.ActiveCfg = Debug|Any CPU
-		{DCDB3454-4FF1-477C-B510-5FE82F1D445A}.Release|Xbox 360.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
