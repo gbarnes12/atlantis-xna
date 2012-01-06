@@ -96,6 +96,7 @@
     <Compile Include="Resources\PostProcessors\SSAOProcessor.cs" />
     <Compile Include="Resources\Resource.cs" />
     <Compile Include="Resources\Shader\DefaultEffect.cs" />
+    <Compile Include="Resources\Shader\MeshTag.cs" />
     <Compile Include="Resources\Shader\TextureMappingEffect.cs" />
     <Compile Include="SceneGraphManager.cs" />
     <Compile Include="ScriptManager.cs" />

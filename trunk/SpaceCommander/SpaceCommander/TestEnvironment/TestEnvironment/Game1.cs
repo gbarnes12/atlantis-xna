@@ -152,17 +152,10 @@ namespace TestEnvironment
             lightDirection = new Vector3(0, 4, -1);
 
             MeshObject mesh = new MeshObject("ship", "p1_wedge", 0.001f);
-            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["CameraPosition"].SetValue(cam.Position);
-            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["LightDirection"].SetValue(lightDirection);
-            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["DiffuseIntensity"].SetValue(1f);
-            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["SpecularColorActive"].SetValue(true);
-            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["NormalMapTexture"].SetValue(ResourceManager.Instance.GetResource<Texture2D>("wedge_p1_diff_v1_normal"));
-
             mesh.Position = Vector3.Zero;
-
             mesh.Scale = new Vector3(0.001f);
-            
             mesh.LoadContent();
+            mesh.SetModelEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect"), true);
             sceneGraph.RootNode.Children.Add(mesh);
 
             TextElement element = new TextElement("text", new Vector2(1, 1), Color.Black, "Test", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
@@ -198,24 +191,7 @@ namespace TestEnvironment
             angle += 0.005f;
             WorldManager.Instance.GetActor("ship").Rotation = Quaternion.CreateFromYawPitchRoll(angle, 0, 0);
 
-            Vector3 inputModifier = new Vector3(
-                (KeyboardDevice.Instance.IsKeyDown(Keys.Left) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Right) ? 1 : 0),
-                (KeyboardDevice.Instance.IsKeyDown(Keys.Q) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.E) ? 1 : 0),
-                (KeyboardDevice.Instance.IsKeyDown(Keys.Up) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Down) ? 1 : 0)
-                );
 
-            inputModifier = inputModifier * .05f;
-
-            lightDirection += inputModifier * 30f;
-
-            MeshObject mesh = WorldManager.Instance.GetActor<MeshObject>("ship");
-
-            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["LightDirection"].SetValue(lightDirection);
-
-            if(KeyboardDevice.Instance.WasKeyPressed(Keys.G))
-                ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["DiffuseColor"].SetValue(Color.Red.ToVector4());
-
-            UIManager.Instance.GetActor<TextElement>("text").Text = "Light Direction: " + lightDirection;
 
             sceneGraph.Update(gameTime);
 
