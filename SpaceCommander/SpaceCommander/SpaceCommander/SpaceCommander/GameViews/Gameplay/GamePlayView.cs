@@ -190,7 +190,7 @@ namespace SpaceCommander.GameViews.Gameplay
 
             for (int i = 0; i < 100; i++)
             {
-                EffectProperty effectProp = new EffectProperty();
+                EffectProperty effectProp = new EffectProperty("TextureMappingEffect");
                 effectProp.Effect = ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect");
 
                 MeshObject asteroid01 = new MeshObject("asteroid" + i, "asteroid", 1f);
