@@ -14,6 +14,7 @@
     using GameApplicationTools.Actors.Primitives;
     using GameApplicationTools.Actors.Properties;
     using GameApplicationTools.Actors.Properties.EffectPropertyControllers;
+    using GameApplicationTools.Resources.Shader;
 
     /// <summary>
     /// Represents a basic model in our world
@@ -53,6 +54,104 @@
             effProp.Effect = ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect");
             effProp.Controller = new TextureMappingPropertyController();
             Properties.Add(ActorPropertyType.EFFECT, effProp);
+        }
+
+        /// <summary>
+        /// Caches the basic effect and creates a mesh tag so
+        /// we can recreate it later on!
+        /// </summary>
+        private void generateTags()
+        {
+            foreach(ModelMesh mesh in Model.Meshes)
+                foreach(ModelMeshPart part in mesh.MeshParts)
+                    if (part.Effect is BasicEffect)
+                    {
+                        BasicEffect effect = (BasicEffect)part.Effect;
+                        MeshTag tag = new MeshTag(effect.DiffuseColor, effect.Texture, 
+                            effect.SpecularPower);
+                        part.Tag = tag;
+                    }
+        }
+
+        /// <summary>
+        /// Will cache the current effects thus we can restore 
+        /// those later on!
+        /// </summary>
+        public void CacheEffects()
+        {
+            foreach (ModelMesh mesh in Model.Meshes)
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                    ((MeshTag)part.Tag).CachedEffect = part.Effect;
+        }
+
+        /// <summary>
+        /// Restores the cached effects again
+        /// to the model mesh parts.
+        /// </summary>
+        public void RestoreCachedEffects()
+        {
+            foreach (ModelMesh mesh in Model.Meshes)
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                    part.Effect = ((MeshTag)part.Tag).CachedEffect;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="effect"></param>
+        /// <param name="CopyEffect"></param>
+        public void SetModelEffect(Effect effect, bool CopyEffect)
+        {
+            foreach (ModelMesh mesh in Model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    Effect toSet = effect;
+
+                    // Copy the effect if necessary
+                    if (CopyEffect)
+                        toSet = effect.Clone();
+
+                    MeshTag tag = ((MeshTag)part.Tag);
+
+                    // if this ModelMeshPart has a texture, set it to the effect
+                    if (tag.Texture != null)
+                    {
+                        setEffectParameter(toSet, "DiffuseTexture", tag.Texture);
+                        setEffectParameter(toSet, "TextureEnabled", true);
+                    }
+                    else
+                    {
+                        setEffectParameter(toSet, "TextureEnabled", false);
+                    }
+
+                    setEffectParameter(toSet, "DiffuseColor", tag.Color);
+                    setEffectParameter(toSet, "SpecularPower", tag.SpecularPower);
+
+                    part.Effect = toSet;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Will set a parameter on the effect file!
+        /// </summary>
+        /// <param name="effect"></param>
+        /// <param name="paramName"></param>
+        /// <param name="val"></param>
+        private void setEffectParameter(Effect effect, string paramName, object val)
+        {
+            if (effect.Parameters[paramName] == null)
+                return;
+
+            if (val is Vector3)
+                effect.Parameters[paramName].SetValue((Vector3)val);
+            else if(val is bool)
+                effect.Parameters[paramName].SetValue((bool)val);
+            else if (val is Matrix)
+                effect.Parameters[paramName].SetValue((Matrix)val);
+            else if (val is Texture2D)
+                effect.Parameters[paramName].SetValue((Texture2D)val);
         }
 
         /// <summary>
@@ -99,33 +198,14 @@
 
             if (Model != null)
             {
-                #region TextureMappingCustomEffect
-                
-
-                if (this.Properties.ContainsKey(ActorPropertyType.EFFECT))
-                {
-                    Effect effect = ((EffectProperty)Properties[ActorPropertyType.EFFECT]).Effect;
-                    if (effect != null)
-                    {
-                        foreach (ModelMesh mesh in Model.Meshes)
-                        {
-                            foreach (ModelMeshPart part in mesh.MeshParts)
-                            {
-                                if (((EffectProperty)Properties[ActorPropertyType.EFFECT]).Name == "TextureMappingEffect")
-                                    effect.Parameters["DiffuseTexture"].SetValue(((BasicEffect)part.Effect).Texture);
-
-
-                                part.Effect = effect.Clone();
-                            }
-                        }
-                    }
-                }
-                #endregion
-
+                generateTags();
                 CalculateBoundingSphere();
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void PreRender()
         {
             RasterizerState rs = new RasterizerState();
@@ -145,42 +225,45 @@
             {
                 if (Model != null)
                 {
-                        Camera camera = CameraManager.Instance.GetCurrentCamera();
-                        // Copy the model hierarchy transforms
+                       Camera camera = CameraManager.Instance.GetCurrentCamera();
+
+                       // Copy the model hierarchy transforms
                        Matrix[] transforms = new Matrix[Model.Bones.Count];
                        Model.CopyAbsoluteBoneTransformsTo(transforms);
  
                        // Render each mesh in the model
                        foreach (ModelMesh mesh in Model.Meshes)
                        {
-                           foreach (Effect effect in mesh.Effects)
+                           foreach (ModelMeshPart part in mesh.MeshParts)
                            {
-                               if (!this.Properties.ContainsKey(ActorPropertyType.EFFECT))
+                               Effect effect = part.Effect;
+
+                               if (effect is BasicEffect)
                                {
-                                   BasicEffect basicEffect = effect as BasicEffect;
-
-                                   //Set the matrices
-                                   basicEffect.World = transforms[mesh.ParentBone.Index] *
-                                                           AbsoluteTransform;
-                                   basicEffect.View = camera.View;
-                                   basicEffect.Projection = camera.Projection;
-
-                                   basicEffect.EnableDefaultLighting();
+                                   ((BasicEffect)effect).World = transforms[mesh.ParentBone.Index] * AbsoluteTransform;
+                                   ((BasicEffect)effect).View = camera.View;
+                                   ((BasicEffect)effect).Projection = camera.Projection;
+                                   ((BasicEffect)effect).EnableDefaultLighting();
                                }
                                else
                                {
-                                   ((EffectProperty)Properties[ActorPropertyType.EFFECT]).Update(effect, 
-                                                                                    transforms[mesh.ParentBone.Index] * AbsoluteTransform);
-                                   
+                                   setEffectParameter(effect, "World", transforms[mesh.ParentBone.Index] * AbsoluteTransform);
+                                   setEffectParameter(effect, "View", camera.View);
+                                   setEffectParameter(effect, "Projection", camera.Projection);
+                                   setEffectParameter(effect, "CameraPosition", camera.Position);
                                }
+
                            }
- 
+
                            mesh.Draw();
                        }
                 }
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void PostRender()
         {
             RasterizerState rs = new RasterizerState();
