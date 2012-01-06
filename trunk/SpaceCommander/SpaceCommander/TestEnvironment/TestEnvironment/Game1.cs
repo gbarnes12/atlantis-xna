@@ -16,6 +16,7 @@ using GameApplicationTools.Actors.Cameras;
 using GameApplicationTools.Actors.Primitives;
 using GameApplicationTools.Actors.Advanced;
 using GameApplicationTools.Actors.Properties;
+using GameApplicationTools.UI;
 
 
 namespace TestEnvironment
@@ -29,10 +30,12 @@ namespace TestEnvironment
         SpriteBatch spriteBatch;
         SceneGraphManager sceneGraph;
         float angle = 0f;
+        Vector3 lightDirection;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferMultiSampling = true;
             this.IsMouseVisible = true;
             Content.RootDirectory = "Content";
         }
@@ -94,7 +97,17 @@ namespace TestEnvironment
                     Type = ResourceType.Texture2D
                 },
                 new Resource() {
+                    Name = "wedge_p1_diff_v1_normal",
+                    Path = GameApplication.Instance.TexturePath + "SpaceShip\\",
+                    Type = ResourceType.Texture2D
+                },
+                new Resource() {
                     Name = "Kachel2_bump",
+                    Path = GameApplication.Instance.TexturePath,
+                    Type = ResourceType.Texture2D
+                },
+                new Resource() {
+                    Name = "masonry-wall-normal-map",
                     Path = GameApplication.Instance.TexturePath,
                     Type = ResourceType.Texture2D
                 },
@@ -102,6 +115,21 @@ namespace TestEnvironment
                     Name = "p1_wedge",
                     Path = GameApplication.Instance.ModelPath,
                     Type = ResourceType.Model
+                },
+                new Resource() {
+                    Name = "raumschiff7",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
+                new Resource() {
+                    Name = "wall",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
+                new Resource() {
+                    Name = "Arial",
+                    Path = GameApplication.Instance.FontPath,
+                    Type = ResourceType.SpriteFont
                 }
             };
 
@@ -121,24 +149,25 @@ namespace TestEnvironment
 
             //Terrain terrain = new Terrain("terrain", "chunkheightmap", "Kachel2_bump", 1f);
             //terrain.LoadContent();
+            lightDirection = new Vector3(0, 4, -1);
 
-            EffectProperty effProp = new EffectProperty();
-            effProp.Effect = ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect");
-            effProp.Effect.Parameters["DiffuseTexture"].SetValue(ResourceManager.Instance.GetResource<Texture2D>("wedge_p1_diff_v1"));
-            effProp.Effect.Parameters["CameraPosition"].SetValue(cam.Position);
-            effProp.Effect.Parameters["LightDirection"].SetValue(new Vector3(0, 1, -1));
-            effProp.Effect.Parameters["SpecularColor"].SetValue(new Vector4(1f, 1f, 1f, 0.1f));
-            effProp.Effect.Parameters["SpecularColorActive"].SetValue(true);
-            
             MeshObject mesh = new MeshObject("ship", "p1_wedge", 0.001f);
-            mesh.Properties.Add(ActorPropertyType.EFFECT, effProp);
-            
+            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["CameraPosition"].SetValue(cam.Position);
+            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["LightDirection"].SetValue(lightDirection);
+            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["DiffuseIntensity"].SetValue(1f);
+            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["SpecularColorActive"].SetValue(true);
+            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["NormalMapTexture"].SetValue(ResourceManager.Instance.GetResource<Texture2D>("wedge_p1_diff_v1_normal"));
+
             mesh.Position = Vector3.Zero;
-            
+
             mesh.Scale = new Vector3(0.001f);
             
             mesh.LoadContent();
             sceneGraph.RootNode.Children.Add(mesh);
+
+            TextElement element = new TextElement("text", new Vector2(1, 1), Color.Black, "Test", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
+            element.LoadContent();
+            UIManager.Instance.AddActor(element);
             #endregion
 
             MouseDevice.Instance.ResetMouseAfterUpdate = false;
@@ -169,8 +198,28 @@ namespace TestEnvironment
             angle += 0.005f;
             WorldManager.Instance.GetActor("ship").Rotation = Quaternion.CreateFromYawPitchRoll(angle, 0, 0);
 
+            Vector3 inputModifier = new Vector3(
+                (KeyboardDevice.Instance.IsKeyDown(Keys.Left) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Right) ? 1 : 0),
+                (KeyboardDevice.Instance.IsKeyDown(Keys.Q) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.E) ? 1 : 0),
+                (KeyboardDevice.Instance.IsKeyDown(Keys.Up) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Down) ? 1 : 0)
+                );
+
+            inputModifier = inputModifier * .05f;
+
+            lightDirection += inputModifier * 30f;
+
+            MeshObject mesh = WorldManager.Instance.GetActor<MeshObject>("ship");
+
+            ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["LightDirection"].SetValue(lightDirection);
+
+            if(KeyboardDevice.Instance.WasKeyPressed(Keys.G))
+                ((EffectProperty)mesh.Properties[ActorPropertyType.EFFECT]).Effect.Parameters["DiffuseColor"].SetValue(Color.Red.ToVector4());
+
+            UIManager.Instance.GetActor<TextElement>("text").Text = "Light Direction: " + lightDirection;
 
             sceneGraph.Update(gameTime);
+
+            UIManager.Instance.Update(gameTime);
 
             KeyboardDevice.Instance.Update();
             MouseDevice.Instance.Update();
@@ -189,6 +238,7 @@ namespace TestEnvironment
             sceneGraph.Render();
 
             UIManager.Instance.Render(gameTime);
+
 
             //make a screenshot
             if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PrintScreen) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.PrintScreen)))

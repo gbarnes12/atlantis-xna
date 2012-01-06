@@ -98,6 +98,8 @@
     <Compile Include="Actors\Properties\AIProperty.cs" />
     <Compile Include="Actors\Properties\CollideableProperty.cs" />
     <Compile Include="Actors\Properties\EffectProperty.cs" />
+    <Compile Include="Actors\Properties\EffectPropertyControllers\EffectPropertyController.cs" />
+    <Compile Include="Actors\Properties\EffectPropertyControllers\TextureMappingPropertyController.cs" />
     <Compile Include="Actors\Properties\PickableProperty.cs" />
     <Compile Include="Actors\UIActor.cs" />
     <Compile Include="Cameras\Camera.cs" />

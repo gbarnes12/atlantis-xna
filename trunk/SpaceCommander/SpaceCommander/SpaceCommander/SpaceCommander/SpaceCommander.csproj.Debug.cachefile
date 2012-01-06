@@ -22,9 +22,15 @@ Content\Assets\Textures\chunkheightmap.xnb
 Content\Assets\Textures\noise.xnb
 Content\Assets\Textures\space.xnb
 Content\Assets\Textures\level1_skymap.xnb
+Content\Assets\Textures\SpaceShip\wedge_p1_diff_v1_normal.xnb
+Content\Assets\Textures\background_brick_wall.xnb
+Content\Assets\Textures\background_brick_wall_normal.xnb
+Content\Assets\Textures\masonry-wall-normal-map.xnb
+Content\Assets\Textures\masonry-wall-texture.xnb
 Content\Assets\Models\planet.xnb
 Content\Assets\Models\sphere.xnb
 Content\Assets\Models\skysphere.xnb
+Content\Assets\Models\wall.xnb
 Content\Assets\Fonts\Arial.xnb
 Content\Assets\Fonts\ConsoleFont.xnb
 Content\Assets\Audio\Sleep Away.xnb
@@ -35,6 +41,7 @@ Content\Assets\Models\spaceship.xnb
 Content\Assets\Models\raumschiff7.xnb
 Content\Assets\Textures\level1_skymap_0.xnb
 Content\Assets\Textures\noise_0.xnb
+Content\Assets\Textures\masonry-wall-texture_0.xnb
 Content\Assets\Textures\SpaceShip\wedge_p1_diff_v1_0.xnb
 Content\Assets\Audio\Sleep Away.wma
 Content\Editor\UI\top.html

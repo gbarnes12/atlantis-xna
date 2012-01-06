@@ -13,6 +13,7 @@
     using Interfaces;
     using GameApplicationTools.Actors.Primitives;
     using GameApplicationTools.Actors.Properties;
+    using GameApplicationTools.Actors.Properties.EffectPropertyControllers;
 
     /// <summary>
     /// Represents a basic model in our world
@@ -47,6 +48,11 @@
             // create properties
             PickableProperty pickableProperty = new PickableProperty();
             Properties.Add(ActorPropertyType.PICKABLE, pickableProperty);
+
+            EffectProperty effProp = new EffectProperty("TextureMappingEffect");
+            effProp.Effect = ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect");
+            effProp.Controller = new TextureMappingPropertyController();
+            Properties.Add(ActorPropertyType.EFFECT, effProp);
         }
 
         /// <summary>
@@ -91,25 +97,43 @@
             if (_modelFileName != "")
                 Model = ResourceManager.Instance.GetResource<Model>(_modelFileName);
 
-            if (this.Properties.ContainsKey(ActorPropertyType.EFFECT))
+            if (Model != null)
             {
-                Effect effect = ((EffectProperty)Properties[ActorPropertyType.EFFECT]).Effect;
-                if (effect != null)
+                #region TextureMappingCustomEffect
+                
+
+                if (this.Properties.ContainsKey(ActorPropertyType.EFFECT))
                 {
-                    foreach (ModelMesh mesh in Model.Meshes)
+                    Effect effect = ((EffectProperty)Properties[ActorPropertyType.EFFECT]).Effect;
+                    if (effect != null)
                     {
-                        foreach (ModelMeshPart part in mesh.MeshParts)
+                        foreach (ModelMesh mesh in Model.Meshes)
                         {
-                            part.Effect = effect;
+                            foreach (ModelMeshPart part in mesh.MeshParts)
+                            {
+                                if (((EffectProperty)Properties[ActorPropertyType.EFFECT]).Name == "TextureMappingEffect")
+                                    effect.Parameters["DiffuseTexture"].SetValue(((BasicEffect)part.Effect).Texture);
+
+
+                                part.Effect = effect.Clone();
+                            }
                         }
                     }
                 }
-            }
+                #endregion
 
-            if(Model != null)
                 CalculateBoundingSphere();
+            }
         }
 
+        public override void PreRender()
+        {
+            RasterizerState rs = new RasterizerState();
+            rs.CullMode = CullMode.None;
+            GameApplication.Instance.GetGraphics().RasterizerState = rs;
+
+            base.PreRender();
+        }
 
         /// <summary>
         /// Finally render the model to the screen with some basic effect
@@ -121,8 +145,8 @@
             {
                 if (Model != null)
                 {
-                    Camera camera = CameraManager.Instance.GetCurrentCamera();
-                    // Copy the model hierarchy transforms
+                        Camera camera = CameraManager.Instance.GetCurrentCamera();
+                        // Copy the model hierarchy transforms
                        Matrix[] transforms = new Matrix[Model.Bones.Count];
                        Model.CopyAbsoluteBoneTransformsTo(transforms);
  
@@ -145,18 +169,28 @@
                                }
                                else
                                {
-                                   effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] *
-                                                           AbsoluteTransform);
-                                   effect.Parameters["View"].SetValue(camera.View);
-                                   effect.Parameters["Projection"].SetValue(camera.Projection);
+                                   ((EffectProperty)Properties[ActorPropertyType.EFFECT]).Update(effect, 
+                                                                                    transforms[mesh.ParentBone.Index] * AbsoluteTransform);
+                                   
                                }
                            }
  
                            mesh.Draw();
                        }
-                    
                 }
             }
+        }
+
+        public override void PostRender()
+        {
+            RasterizerState rs = new RasterizerState();
+            rs = null;
+            rs = new RasterizerState();
+            rs.CullMode = CullMode.CullCounterClockwiseFace;
+            GameApplication.Instance.GetGraphics().RasterizerState = rs;
+
+
+            base.PostRender();
         }
 
        
