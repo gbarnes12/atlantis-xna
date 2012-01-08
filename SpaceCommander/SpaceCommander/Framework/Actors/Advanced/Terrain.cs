@@ -12,7 +12,7 @@ using GameApplicationTools.Actors.Cameras;
     public class Terrain : Actor
     {
         #region Private
-        TextureMappingEffect effect;
+        Effect effect;
         Texture2D DiffuseTexture;
         Texture2D HeightMap;
         String HeightMapFile;
@@ -60,14 +60,14 @@ using GameApplicationTools.Actors.Cameras;
         public override void LoadContent()
         {
             //create a new effect
-            effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone());
+            effect = ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone();
 
             //load the model's texture 
             DiffuseTexture = ResourceManager.Instance.GetResource<Texture2D>(DiffuseMapFile);
             HeightMap = ResourceManager.Instance.GetResource<Texture2D>(HeightMapFile);
 
             //set texture to the effect
-            effect.Texture = DiffuseTexture;
+            effect.Parameters["DiffuseTexture"].SetValue(DiffuseTexture);
 
             SetupFirstChunk();
         }
@@ -83,19 +83,19 @@ using GameApplicationTools.Actors.Cameras;
             Vector2 bottomLeft = new Vector2(0.0f, 1.0f);
             Vector2 bottomRight = new Vector2(1.0f, 1.0f);
 
-            VertexPositionTexture[] vertices = new VertexPositionTexture[128 * 128];
+            VertexPositionNormalTexture[] vertices = new VertexPositionNormalTexture[128 * 128];
             int index = 0;
 
             for (int z = 0; z < 128; z++)
             {
                 for (int x = 0; x < 128; x++)
                 {
-                    vertices[z * 128 + x] = new VertexPositionTexture(new Vector3(x * 10.0f, heights[z * 128 + x].R, z * 10.0f), topLeft);
+                    vertices[z * 128 + x] = new VertexPositionNormalTexture(new Vector3(x * 10.0f, heights[z * 128 + x].R, z * 10.0f), Vector3.Up, topLeft);
                 }
             }
 
-            this.vertexBuffer = new VertexBuffer(GameApplication.Instance.GetGraphics(), VertexPositionTexture.VertexDeclaration, 128 * 128, BufferUsage.WriteOnly);
-            this.vertexBuffer.SetData<VertexPositionTexture>(vertices);
+            this.vertexBuffer = new VertexBuffer(GameApplication.Instance.GetGraphics(), VertexPositionNormalTexture.VertexDeclaration, 128 * 128, BufferUsage.WriteOnly);
+            this.vertexBuffer.SetData<VertexPositionNormalTexture>(vertices);
 
             int[] indices = new int[127 * 127 * 6];
             index = 0;
@@ -138,9 +138,10 @@ using GameApplicationTools.Actors.Cameras;
 
 
             //WorldMatrix = transforms[mesh.ParentBone.Index] * Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(Angle), new Vector3(0.002f, 0.002f, 0.002f));
-            effect.World = AbsoluteTransform;
-            effect.View = camera.View;
-            effect.Projection = camera.Projection;
+            effect.Parameters["World"].SetValue(AbsoluteTransform);
+            effect.Parameters["View"].SetValue(camera.View);
+            effect.Parameters["Projection"].SetValue(camera.Projection);
+
             effect.CurrentTechnique.Passes[0].Apply();   
 
             GameApplication.Instance.GetGraphics().SetVertexBuffer(this.vertexBuffer);

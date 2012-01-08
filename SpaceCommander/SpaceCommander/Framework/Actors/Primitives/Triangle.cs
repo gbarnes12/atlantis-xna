@@ -34,7 +34,7 @@
         #region Private
         // those classes are needed in order
         // to create a working triangle
-        DefaultEffect effect;
+        Effect effect;
         VertexBuffer vertexBuffer;
         IndexBuffer indexBuffer;
         VertexPositionColor[] vertices;
@@ -72,7 +72,7 @@
         public override void LoadContent()
         {
             // load some basiseffect
-            effect = new DefaultEffect(ResourceManager.Instance.GetResource<Effect>("DefaultEffect").Clone());
+            effect = ResourceManager.Instance.GetResource<Effect>("DefaultEffect").Clone();
 
 
             // set up our vertices
@@ -104,9 +104,9 @@
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
 
-            effect.World = AbsoluteTransform;
-            effect.View = camera.View;
-            effect.Projection = camera.Projection;
+            effect.Parameters["World"].SetValue(AbsoluteTransform);
+            effect.Parameters["View"].SetValue(camera.View);
+            effect.Parameters["Projection"].SetValue(camera.Projection);
 
             effect.CurrentTechnique.Passes[0].Apply();
 

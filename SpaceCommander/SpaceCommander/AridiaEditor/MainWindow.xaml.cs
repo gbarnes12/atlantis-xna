@@ -41,8 +41,9 @@ namespace AridiaEditor
     using GameApplicationTools.Actors.Properties;
     using AridiaEditor.Windows.CreateWindows;
     using GameApplicationTools.Actors.Advanced;
+    using Microsoft.Windows.Controls.Ribbon;
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : RibbonWindow
     {
         public static List<Error> errors;
         public static TextBlock outputTextBlock;
@@ -112,9 +113,14 @@ namespace AridiaEditor
                 contentBuilder = new ContentBuilder();
                 ResourceBuilder.Instance.ContentBuilder = contentBuilder;
 
+                resourceContent.Activate();
+                
+                
+
                 errors = new List<Error>();
                 outputTextBlock = output;
                 EditorStatus = EditorStatus.STARTING;
+                EditMode = AridiaEditor.EditMode.STANDARD;
                 errorDataGrid.ItemsSource = errors;
                 Output.AddToOutput("WELCOME TO ARIDIA WORLD EDITOR ------------");
 
@@ -349,7 +355,12 @@ namespace AridiaEditor
                             if (cam.GetMouseRay(new Vector2(x, y)).Intersects(Utils.TransformBoundingSphere(actor.BoundingSphere, actor.AbsoluteTransform)) != null)
                             {
                                 Output.AddToOutput("Object : " + actor.ID + " has been picked!");
-                                propertyGrid.SelectedObject = actor;
+
+                                if(actor is MeshObject)
+                                    propertyGrid.SelectedObject = (MeshObject)actor;
+                                else
+                                    propertyGrid.SelectedObject = actor;
+
                                 SelectedObject = actor;
 
                                 ((PickableProperty)actor.Properties[ActorPropertyType.PICKABLE]).IsPicked = true;
@@ -476,6 +487,11 @@ namespace AridiaEditor
             EditMode = EditMode.SCALE;
         }
 
+        private void EditModeStandardButton_Click(object sender, RoutedEventArgs e)
+        {
+            EditMode = EditMode.STANDARD;
+        }
+
         private void TextureBrowserItem_Click(object sender, RoutedEventArgs e)
         {
             if (EditorStatus == EditorStatus.IDLE)
@@ -590,7 +606,7 @@ namespace AridiaEditor
 
                 if (createBoxWindow.ShowDialog().Value)
                 {
-                    Box box = new Box(createBoxWindow.ID, createBoxWindow.Texture, 1f);
+                    Box box = new Box(createBoxWindow.ID, createBoxWindow.Texture, createBoxWindow.Normalmap, 1f);
                     box.Position = createBoxWindow.Position;
                     box.Scale = createBoxWindow.Scale;
                     box.LoadContent();
@@ -670,6 +686,7 @@ namespace AridiaEditor
 
     public enum EditMode
     {
+        STANDARD,
         MOVE,
         ROTATE,
         SCALE

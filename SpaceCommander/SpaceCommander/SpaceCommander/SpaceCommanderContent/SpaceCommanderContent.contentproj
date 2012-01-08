@@ -275,6 +275,26 @@
       <ProcessorParameters_TextureFormat>Color</ProcessorParameters_TextureFormat>
       <ProcessorParameters_GenerateTangentFrames>True</ProcessorParameters_GenerateTangentFrames>
     </Compile>
+    <Compile Include="Assets\Models\Ground.x">
+      <Name>Ground</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Effects\FogEffect.fx">
+      <Name>FogEffect</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Effects\NormalMappingEffect.fx">
+      <Name>NormalMappingEffect</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\brick_wall.FBX">
+      <Name>brick_wall</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <None Include="Editor\UI\top.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Name>top</Name>
@@ -326,6 +346,25 @@
     </Compile>
     <Compile Include="Assets\Textures\masonry-wall-texture.jpg">
       <Name>masonry-wall-texture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Textures\Checker.bmp">
+      <Name>Checker</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Textures\brick_normal_map.jpg">
+      <Name>brick_normal_map</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Textures\brick_texture_map.jpg">
+      <Name>brick_texture_map</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

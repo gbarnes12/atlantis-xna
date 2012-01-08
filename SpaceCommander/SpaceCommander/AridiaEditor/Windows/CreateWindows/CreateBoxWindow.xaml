@@ -25,5 +25,7 @@
         </Grid>
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="65,67,0,0" Name="textures" VerticalAlignment="Top" Width="131" />
         <Label Content="Texture:" Height="23" HorizontalAlignment="Left" Margin="5,67,0,0" Name="textureLabel" VerticalAlignment="Top" Width="52" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="101,102,0,0" Name="normalmap" VerticalAlignment="Top" Width="95" />
+        <Label Content="Normal Map:" Height="31" HorizontalAlignment="Left" Margin="10,102,0,0" Name="label5" VerticalAlignment="Top" Width="85" />
     </Grid>
 </Window>

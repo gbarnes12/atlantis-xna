@@ -61,6 +61,10 @@
     <Reference Include="Microsoft.Xna.Framework.Storage, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Xact, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Ribbon for WPF\V4.0\RibbonControlsLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -196,6 +200,10 @@
       <Project>{1B7A24EC-1D63-46AA-B658-9B859839FF21}</Project>
       <Name>GameApplication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WpfCustomControlLibrary\WpfCustomControlLibrary.csproj">
+      <Project>{24D05160-3F24-4445-ADE8-B386A82685D8}</Project>
+      <Name>WpfCustomControlLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -222,6 +230,30 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\gnome_document_new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Content\Shader\TextureMapping.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\iconsave_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\saveasicon_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\exiticon_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\iconsettings_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\iconload_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\new_small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

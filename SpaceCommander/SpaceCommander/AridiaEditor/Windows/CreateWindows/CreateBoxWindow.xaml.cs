@@ -27,6 +27,7 @@
         public Vector3 Scale { get; set; }
         public String ID { get; set; }
         public String Texture { get; set; }
+        public String Normalmap { get; set; }
 
         public CreateBoxWindow()
         {
@@ -37,6 +38,15 @@
                 ComboBoxItem item = new ComboBoxItem();
                 item.Content = texture;
                 textures.Items.Add(item);
+                
+            }
+
+            foreach (string texture in ResourceManager.Instance.GetResourcesOfType<Texture2D>().Keys)
+            {
+                ComboBoxItem item = new ComboBoxItem();
+                item.Content = texture;
+                normalmap.Items.Add(item);
+
             }
         }
 
@@ -46,13 +56,14 @@
             if (idTextBox.Text != string.Empty && positionX.Text != string.Empty
                 && positionY.Text != string.Empty && positionZ.Text != string.Empty
                 && scaleX.Text != string.Empty && scaleY.Text != string.Empty
-                && scaleZ.Text != string.Empty && textures.SelectedItem != null)
+                && scaleZ.Text != string.Empty && textures.SelectedItem != null && normalmap.SelectedItem != null)
             {
                 if (!WorldManager.Instance.GetActors().ContainsKey(idTextBox.Text))
                 {
                     Position = new Vector3(float.Parse(positionX.Text), float.Parse(positionY.Text), float.Parse(positionZ.Text));
                     Scale = new Vector3(float.Parse(scaleX.Text), float.Parse(scaleY.Text), float.Parse(scaleZ.Text));
                     Texture = ((ComboBoxItem)textures.SelectedItem).Content.ToString();
+                    Normalmap = ((ComboBoxItem)normalmap.SelectedItem).Content.ToString();
                     ID = idTextBox.Text.ToString();
                     DialogResult = true;
                     this.Close();

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shader>
+  <Name>Texture Mapping</Name>
+  <Description>Standard effect which draws a texture with different lighting options.</Description>
+  <File>TextureMappingEffect</File>
+  <Parameters>
+    <Parameter>
+      <Name>TextureEnabled</Name>
+      <Description></Description>
+      <Type>bool</Type>
+      <Default>true</Default>
+    </Parameter>
+    <Parameter>
+      <Name>DiffuseColor</Name>
+      <Description></Description>
+      <Type>Vector3</Type>
+      <Default>{1,1,1}</Default>
+    </Parameter>
+    <Parameter>
+      <Name>AmbientColor</Name>
+      <Description></Description>
+      <Type>Vector3</Type>
+      <Default>{1,1,1}</Default>
+    </Parameter>
+    <Parameter>
+      <Name>LightColor</Name>
+      <Description></Description>
+      <Type>Vector3</Type>
+      <Default>{1,1,1}</Default>
+    </Parameter>
+    <Parameter>
+      <Name>LightDirection</Name>
+      <Description></Description>
+      <Type>Vector3</Type>
+      <Default>{1,1,1}</Default>
+    </Parameter>
+    <Parameter>
+      <Name>SpecularColor</Name>
+      <Description></Description>
+      <Type>Vector3</Type>
+      <Default>{1,1,1}</Default>
+    </Parameter>
+    <Parameter>
+      <Name>SpecularPower</Name>
+      <Description></Description>
+      <Type>float</Type>
+      <Default>32</Default>
+    </Parameter>
+  </Parameters>
+</Shader>
