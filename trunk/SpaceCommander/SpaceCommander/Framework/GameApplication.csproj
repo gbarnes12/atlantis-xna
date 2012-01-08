@@ -144,9 +144,11 @@
     <Compile Include="Resources\PostProcessors\PostProcessor.cs" />
     <Compile Include="Resources\PostProcessors\SSAOProcessor.cs" />
     <Compile Include="Resources\Resource.cs" />
-    <Compile Include="Resources\Shader\DefaultEffect.cs" />
+    <Compile Include="Resources\Shader\FogMaterial.cs" />
+    <Compile Include="Resources\Shader\LightingMaterial.cs" />
+    <Compile Include="Resources\Shader\Material.cs" />
     <Compile Include="Resources\Shader\MeshTag.cs" />
-    <Compile Include="Resources\Shader\TextureMappingEffect.cs" />
+    <Compile Include="Resources\Shader\NormalMapMaterial.cs" />
     <Compile Include="SceneGraphManager.cs" />
     <Compile Include="ScriptManager.cs" />
     <Compile Include="Structures\GameView.cs" />

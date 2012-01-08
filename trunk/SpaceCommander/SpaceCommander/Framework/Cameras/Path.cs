@@ -14,7 +14,7 @@ namespace GameApplicationTools.Cameras
     {
         #region Private
 
-        DefaultEffect effect;
+        Effect effect;
         
         VertexBuffer vertexBuffer;
         
@@ -62,7 +62,7 @@ namespace GameApplicationTools.Cameras
         public override void LoadContent()
         {
             // load some kind of basicEffect
-            effect = new DefaultEffect(ResourceManager.Instance.GetResource<Effect>("DefaultEffect").Clone());
+            effect = ResourceManager.Instance.GetResource<Effect>("DefaultEffect").Clone();
 
             //set visible
             this.Visible = true;
@@ -216,9 +216,9 @@ namespace GameApplicationTools.Cameras
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
 
-            effect.World = AbsoluteTransform;
-            effect.View = camera.View;
-            effect.Projection = camera.Projection;
+            effect.Parameters["World"].SetValue(AbsoluteTransform);
+            effect.Parameters["View"].SetValue(camera.View);
+            effect.Parameters["Projection"].SetValue(camera.Projection);
             effect.CurrentTechnique.Passes[0].Apply();
 
 

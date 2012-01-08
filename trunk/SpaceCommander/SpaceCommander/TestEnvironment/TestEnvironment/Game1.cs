@@ -17,6 +17,7 @@ using GameApplicationTools.Actors.Primitives;
 using GameApplicationTools.Actors.Advanced;
 using GameApplicationTools.Actors.Properties;
 using GameApplicationTools.UI;
+using GameApplicationTools.Resources.Shader;
 
 
 namespace TestEnvironment
@@ -87,7 +88,22 @@ namespace TestEnvironment
                     Type = ResourceType.Effect
                 },
                 new Resource() {
+                    Name = "NormalMappingEffect",
+                    Path = GameApplication.Instance.EffectPath,
+                    Type = ResourceType.Effect
+                },
+                new Resource() {
+                    Name = "FogEffect",
+                    Path = GameApplication.Instance.EffectPath,
+                    Type = ResourceType.Effect
+                },
+                new Resource() {
                     Name = "chunkheightmap",
+                    Path = GameApplication.Instance.TexturePath,
+                    Type = ResourceType.Texture2D
+                },
+                new Resource() {
+                    Name = "brick_normal_map",
                     Path = GameApplication.Instance.TexturePath,
                     Type = ResourceType.Texture2D
                 },
@@ -107,12 +123,37 @@ namespace TestEnvironment
                     Type = ResourceType.Texture2D
                 },
                 new Resource() {
+                    Name = "Checker",
+                    Path = GameApplication.Instance.TexturePath,
+                    Type = ResourceType.Texture2D
+                },
+                new Resource() {
                     Name = "masonry-wall-normal-map",
                     Path = GameApplication.Instance.TexturePath,
                     Type = ResourceType.Texture2D
                 },
                 new Resource() {
+                    Name = "level1_skymap",
+                    Path = GameApplication.Instance.TexturePath,
+                    Type = ResourceType.Texture2D
+                },
+                new Resource() {
                     Name = "p1_wedge",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
+                new Resource() {
+                    Name = "Ground",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
+                new Resource() {
+                    Name = "brick_wall",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
+                new Resource() {
+                    Name = "sphere",
                     Path = GameApplication.Instance.ModelPath,
                     Type = ResourceType.Model
                 },
@@ -137,26 +178,42 @@ namespace TestEnvironment
             #endregion
 
             #region CAMERA
-            Camera cam = new Camera("fps", new Vector3(0, 0, 4), new Vector3(0, 0.0f, 0));
+            FPSCamera cam = new FPSCamera("fps", new Vector3(0, 5, -5), new Vector3(0, 3, 0));
             cam.LoadContent();
             CameraManager.Instance.CurrentCamera = "fps";
             #endregion
 
             #region ACTORS
-            //Box box = new Box("box", "crate", 1f);
-            //box.Position = Vector3.Zero;
-            //box.LoadContent();
+            FogMaterial mat = new FogMaterial();
+            mat.FogStart = 2000;
+            mat.LightDirection = new Vector3(1f, 1f, 1);
+            mat.LightColor = Vector3.One;
 
-            //Terrain terrain = new Terrain("terrain", "chunkheightmap", "Kachel2_bump", 1f);
-            //terrain.LoadContent();
-            lightDirection = new Vector3(0, 4, -1);
+            NormalMapMaterial normal = new NormalMapMaterial(ResourceManager.Instance.GetResource<Texture2D>("wedge_p1_diff_v1_normal"));
+            normal.LightDirection = new Vector3(1f, 1f, .5f);
+            normal.LightColor = Vector3.One;
+            normal.SpecularPower = 32;
 
-            MeshObject mesh = new MeshObject("ship", "p1_wedge", 0.001f);
-            mesh.Position = Vector3.Zero;
-            mesh.Scale = new Vector3(0.001f);
+            LightingMaterial lighting = new LightingMaterial();
+            lighting.LightDirection = new Vector3(.5f, .5f, .5f);
+            //lighting.LightColor = Color.Aqua.ToVector3();
+            lighting.SpecularPower = 1;
+
+            MeshObject mesh = new MeshObject("ship", "p1_wedge", 0.01f);
+            mesh.Position = new Vector3(0, 3, 0);
+            mesh.Scale = new Vector3(0.01f);
             mesh.LoadContent();
+            mesh.Material = lighting;
             mesh.SetModelEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect"), true);
             sceneGraph.RootNode.Children.Add(mesh);
+
+            MeshObject plane = new MeshObject("plane", "Ground", 0.01f);
+            plane.Position = new Vector3(0, 0, 0);
+            plane.Scale = new Vector3(0.01f);
+            plane.LoadContent();
+            plane.Material = mat;
+            plane.SetModelEffect(ResourceManager.Instance.GetResource<Effect>("FogEffect"), true);
+            sceneGraph.RootNode.Children.Add(plane);
 
             TextElement element = new TextElement("text", new Vector2(1, 1), Color.Black, "Test", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));
             element.LoadContent();

@@ -26,7 +26,7 @@
         #region Private
 
         Model model;
-        TextureMappingEffect effect;
+        Effect effect;
         Texture2D texture;
         String textureFile;
         BoundingSphere modelSphere;
@@ -94,7 +94,7 @@
         public override void LoadContent()
         {
             //create a new effect
-            effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone());
+            effect = ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone();
 
             //load the sphere; model stays the same for every kind of skysphere
             model = ResourceManager.Instance.GetResource<Model>("sphere");
@@ -102,8 +102,8 @@
             //load the model's texture 
             texture = ResourceManager.Instance.GetResource<Texture2D>(textureFile);
 
-            effect.Texture = texture;
-
+            effect.Parameters["DiffuseTexture"].SetValue(texture);
+            effect.Parameters["TextureEnabled"].SetValue(true);
             foreach (ModelMesh mesh in model.Meshes)
                 foreach (ModelMeshPart part in mesh.MeshParts)
                     part.Effect = effect;
@@ -120,12 +120,12 @@
             {
                 //set cullMode to None
                 RasterizerState rs = new RasterizerState();
-                rs.CullMode = CullMode.CullCounterClockwiseFace;
+                rs.CullMode = CullMode.None;
                 GameApplication.Instance.GetGraphics().RasterizerState = rs;
 
                 GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
                 {
-                    Filter = TextureFilter.Linear,
+                    Filter = TextureFilter.Anisotropic,
 
                     AddressU = TextureAddressMode.Wrap,
                     AddressV = TextureAddressMode.Wrap,
@@ -155,14 +155,15 @@
                 {
                     // This is where the mesh orientation is set, as well 
                     // as our camera and projection.
-                    foreach (TextureMappingEffect eff in mesh.Effects)
+                    foreach (Effect eff in mesh.Effects)
                     {
                         //WorldMatrix = transforms[mesh.ParentBone.Index] * Utils.CreateWorldMatrix(Position, Matrix.CreateRotationY(Angle), new Vector3(0.002f, 0.002f, 0.002f));
-                        
-                        eff.World = transforms[mesh.ParentBone.Index] * 
-                                         AbsoluteTransform;
-                        eff.View = camera.View;
-                        eff.Projection = camera.Projection;
+
+                        effect.Parameters["World"].SetValue(AbsoluteTransform);
+                        effect.Parameters["View"].SetValue(camera.View);
+                        effect.Parameters["Projection"].SetValue(camera.Projection);
+                        effect.Parameters["CameraPosition"].SetValue(camera.Position);
+                        effect.Parameters["TextureEnabled"].SetValue(true);
                        
                     }
                     // Draw the mesh, using the effects set above.

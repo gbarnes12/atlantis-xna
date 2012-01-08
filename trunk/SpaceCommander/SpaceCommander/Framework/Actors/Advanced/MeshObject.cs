@@ -30,6 +30,7 @@
     {
         #region Public
         public Model Model { get; set; }
+        public Material Material { get; set; }
         #endregion
 
         #region Private
@@ -50,10 +51,7 @@
             PickableProperty pickableProperty = new PickableProperty();
             Properties.Add(ActorPropertyType.PICKABLE, pickableProperty);
 
-            EffectProperty effProp = new EffectProperty("TextureMappingEffect");
-            effProp.Effect = ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect");
-            effProp.Controller = new TextureMappingPropertyController();
-            Properties.Add(ActorPropertyType.EFFECT, effProp);
+            Material = new Material();
         }
 
         /// <summary>
@@ -251,6 +249,8 @@
                                    setEffectParameter(effect, "View", camera.View);
                                    setEffectParameter(effect, "Projection", camera.Projection);
                                    setEffectParameter(effect, "CameraPosition", camera.Position);
+
+                                   Material.SetEffectParameters(effect);
                                }
 
                            }

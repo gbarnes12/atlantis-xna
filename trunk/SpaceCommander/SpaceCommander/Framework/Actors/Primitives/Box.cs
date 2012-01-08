@@ -34,15 +34,17 @@
         VertexBuffer VertextBuffer;
         IndexBuffer IndexBuffer;
         TextureFilter textureFilter = TextureFilter.Linear;
-        TextureMappingEffect effect;
+        Effect effect;
         Sphere sphere;
         String _textureName;
+        String _normalMapTexture;
         #endregion
 
-        public Box(String ID, String textureName, float Scale) 
+        public Box(String ID, String textureName, String normalMapTexture ,float Scale) 
             : base(ID, null)
         {
             _textureName = textureName;
+            _normalMapTexture = normalMapTexture;
             this.Scale = new Vector3(Scale, Scale, Scale);
             sphere = new Sphere(ID + "_sphere", Scale);
             this.Children.Add(sphere);
@@ -52,10 +54,11 @@
             Properties.Add(ActorPropertyType.PICKABLE, pickableProperty);
         }
 
-        public Box(String ID, String textureName, String GameViewID, float Scale)
+        public Box(String ID, String textureName, String normalMapTexture, String GameViewID, float Scale)
             : base(ID, GameViewID)
         {
             _textureName = textureName;
+            _normalMapTexture = normalMapTexture;
             this.Scale = new Vector3(Scale, Scale, Scale);
             sphere = new Sphere(ID + "_sphere", Scale);
             this.Children.Add(sphere);
@@ -79,43 +82,43 @@
             Vector2 bottomLeft = new Vector2(0.0f, 1.0f);
             Vector2 bottomRight = new Vector2(1.0f, 1.0f);
 
-            VertexPositionTexture[] boxData = new VertexPositionTexture[]
+            VertexPositionNormalTexture[] boxData = new VertexPositionNormalTexture[]
             {
                 // Front Surface
-                new VertexPositionTexture(new Vector3(-1.0f, -1.0f, 1.0f),bottomLeft),
-                new VertexPositionTexture(new Vector3(-1.0f, 1.0f, 1.0f),topLeft), 
-                new VertexPositionTexture(new Vector3(1.0f, -1.0f, 1.0f),bottomRight),
-                new VertexPositionTexture(new Vector3(1.0f, 1.0f, 1.0f),topRight),  
+                new VertexPositionNormalTexture(new Vector3(-1.0f, -1.0f, 1.0f), Vector3.Up ,bottomLeft),
+                new VertexPositionNormalTexture(new Vector3(-1.0f, 1.0f, 1.0f), Vector3.Up ,topLeft), 
+                new VertexPositionNormalTexture(new Vector3(1.0f, -1.0f, 1.0f), Vector3.Up ,bottomRight),
+                new VertexPositionNormalTexture(new Vector3(1.0f, 1.0f, 1.0f), Vector3.Up ,topRight),  
 
                 // Front Surface
-                new VertexPositionTexture(new Vector3(1.0f, -1.0f, -1.0f),bottomLeft),
-                new VertexPositionTexture(new Vector3(1.0f, 1.0f, -1.0f),topLeft), 
-                new VertexPositionTexture(new Vector3(-1.0f, -1.0f, -1.0f),bottomRight),
-                new VertexPositionTexture(new Vector3(-1.0f, 1.0f, -1.0f),topRight), 
+                new VertexPositionNormalTexture(new Vector3(1.0f, -1.0f, -1.0f), Vector3.Up,bottomLeft),
+                new VertexPositionNormalTexture(new Vector3(1.0f, 1.0f, -1.0f), Vector3.Up,topLeft), 
+                new VertexPositionNormalTexture(new Vector3(-1.0f, -1.0f, -1.0f), Vector3.Up,bottomRight),
+                new VertexPositionNormalTexture(new Vector3(-1.0f, 1.0f, -1.0f), Vector3.Up,topRight), 
 
                 // Left Surface
-                new VertexPositionTexture(new Vector3(-1.0f, -1.0f, -1.0f),bottomLeft),
-                new VertexPositionTexture(new Vector3(-1.0f, 1.0f, -1.0f),topLeft),
-                new VertexPositionTexture(new Vector3(-1.0f, -1.0f, 1.0f),bottomRight),
-                new VertexPositionTexture(new Vector3(-1.0f, 1.0f, 1.0f),topRight),
+                new VertexPositionNormalTexture(new Vector3(-1.0f, -1.0f, -1.0f), Vector3.Up,bottomLeft),
+                new VertexPositionNormalTexture(new Vector3(-1.0f, 1.0f, -1.0f), Vector3.Up,topLeft),
+                new VertexPositionNormalTexture(new Vector3(-1.0f, -1.0f, 1.0f), Vector3.Up,bottomRight),
+                new VertexPositionNormalTexture(new Vector3(-1.0f, 1.0f, 1.0f), Vector3.Up,topRight),
 
                 // Right Surface
-                new VertexPositionTexture(new Vector3(1.0f, -1.0f, 1.0f),bottomLeft),
-                new VertexPositionTexture(new Vector3(1.0f, 1.0f, 1.0f),topLeft),
-                new VertexPositionTexture(new Vector3(1.0f, -1.0f, -1.0f),bottomRight),
-                new VertexPositionTexture(new Vector3(1.0f, 1.0f, -1.0f),topRight),
+                new VertexPositionNormalTexture(new Vector3(1.0f, -1.0f, 1.0f), Vector3.Up,bottomLeft),
+                new VertexPositionNormalTexture(new Vector3(1.0f, 1.0f, 1.0f), Vector3.Up,topLeft),
+                new VertexPositionNormalTexture(new Vector3(1.0f, -1.0f, -1.0f), Vector3.Up,bottomRight),
+                new VertexPositionNormalTexture(new Vector3(1.0f, 1.0f, -1.0f), Vector3.Up,topRight),
 
                 // Top Surface
-                new VertexPositionTexture(new Vector3(-1.0f, 1.0f, 1.0f),bottomLeft),
-                new VertexPositionTexture(new Vector3(-1.0f, 1.0f, -1.0f),topLeft),
-                new VertexPositionTexture(new Vector3(1.0f, 1.0f, 1.0f),bottomRight),
-                new VertexPositionTexture(new Vector3(1.0f, 1.0f, -1.0f),topRight),
+                new VertexPositionNormalTexture(new Vector3(-1.0f, 1.0f, 1.0f), Vector3.Up,bottomLeft),
+                new VertexPositionNormalTexture(new Vector3(-1.0f, 1.0f, -1.0f), Vector3.Up,topLeft),
+                new VertexPositionNormalTexture(new Vector3(1.0f, 1.0f, 1.0f), Vector3.Up,bottomRight),
+                new VertexPositionNormalTexture(new Vector3(1.0f, 1.0f, -1.0f), Vector3.Up,topRight),
 
                 // Bottom Surface
-                new VertexPositionTexture(new Vector3(-1.0f, -1.0f, -1.0f),bottomLeft),
-                new VertexPositionTexture(new Vector3(-1.0f, -1.0f, 1.0f),topLeft),
-                new VertexPositionTexture(new Vector3(1.0f, -1.0f, -1.0f),bottomRight),
-                new VertexPositionTexture(new Vector3(1.0f, -1.0f, 1.0f),topRight),
+                new VertexPositionNormalTexture(new Vector3(-1.0f, -1.0f, -1.0f), Vector3.Up,bottomLeft),
+                new VertexPositionNormalTexture(new Vector3(-1.0f, -1.0f, 1.0f), Vector3.Up,topLeft),
+                new VertexPositionNormalTexture(new Vector3(1.0f, -1.0f, -1.0f), Vector3.Up,bottomRight),
+                new VertexPositionNormalTexture(new Vector3(1.0f, -1.0f, 1.0f), Vector3.Up,topRight),
             };
 
             short[] boxIndices = new short[] { 
@@ -127,16 +130,18 @@
                 20, 21, 22, 22, 21, 23
             };
 
-            VertextBuffer = new VertexBuffer(GameApplication.Instance.GetGraphics(), VertexPositionTexture.VertexDeclaration, 24, BufferUsage.WriteOnly);
+            VertextBuffer = new VertexBuffer(GameApplication.Instance.GetGraphics(), VertexPositionNormalTexture.VertexDeclaration, 24, BufferUsage.WriteOnly);
             IndexBuffer = new IndexBuffer(GameApplication.Instance.GetGraphics(), IndexElementSize.SixteenBits, 36, BufferUsage.WriteOnly);
 
-            VertextBuffer.SetData<VertexPositionTexture>(boxData);
+            VertextBuffer.SetData<VertexPositionNormalTexture>(boxData);
             IndexBuffer.SetData<short>(boxIndices);
             boxData = null;
             boxIndices = null;
 
-            effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone());
-            effect.Texture = ResourceManager.Instance.GetResource<Texture2D>(_textureName);
+            effect = ResourceManager.Instance.GetResource<Effect>("NormalMappingEffect").Clone();
+            effect.Parameters["DiffuseTexture"].SetValue(ResourceManager.Instance.GetResource<Texture2D>(_textureName));
+            effect.Parameters["TextureEnabled"].SetValue(true);
+            effect.Parameters["NormalTexture"].SetValue(ResourceManager.Instance.GetResource<Texture2D>(_normalMapTexture));
         }
 
         /// <summary>
@@ -176,9 +181,10 @@
         public override void Render(SceneGraphManager sceneGraph)
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
-            effect.World = AbsoluteTransform;
-            effect.View = camera.View;
-            effect.Projection = camera.Projection;
+
+            effect.Parameters["World"].SetValue(AbsoluteTransform);
+            effect.Parameters["View"].SetValue(camera.View);
+            effect.Parameters["Projection"].SetValue(camera.Projection);
 
             effect.CurrentTechnique.Passes[0].Apply();
 

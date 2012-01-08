@@ -1,0 +1,13 @@
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\bin\Debug\WpfCustomControlLibrary.dll
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\bin\Debug\WpfCustomControlLibrary.pdb
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\obj\Debug\WpfCustomControlLibrary_MarkupCompile.cache
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\obj\Debug\WpfCustomControlLibrary_MarkupCompile.lref
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\obj\Debug\Themes\Generic.baml
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\obj\Debug\WpfCustomControlLibrary.g.resources
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\obj\Debug\WpfCustomControlLibrary.Properties.Resources.resources
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\obj\Debug\GenerateResource.read.1.tlog
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\obj\Debug\GenerateResource.write.1.tlog
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\obj\Debug\WpfCustomControlLibrary.dll
+C:\Users\GavinLaptop\Documents\Programmierung\Desktop\C#\Atlantis\SpaceCommander\SpaceCommander\WpfCustomControlLibrary\obj\Debug\WpfCustomControlLibrary.pdb

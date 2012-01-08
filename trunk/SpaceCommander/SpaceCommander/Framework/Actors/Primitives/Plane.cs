@@ -37,11 +37,12 @@
         #region Private
         // those classes are needed in order
         // to create a working plane
-        TextureMappingEffect effect;
+        Effect effect;
         VertexBuffer VertexBuffer;
         IndexBuffer IndexBuffer;
-        TextureFilter textureFilter = TextureFilter.Linear;
+        TextureFilter textureFilter = TextureFilter.Anisotropic;
         String _textureFile;
+        Texture2D texture;
         #endregion
 
         public Plane(String ID, String textureFile)
@@ -66,39 +67,48 @@
         {
             // Fill in texture coordinates to display full texture
             // on quad
-            Vector2 topLeft = new Vector2(0.0f, 0.0f);
-            Vector2 topRight = new Vector2(1200f, 0.0f);
-            Vector2 bottomLeft = new Vector2(0.0f, 1200f);
-            Vector2 bottomRight = new Vector2(1200f, 1200f);
+            Vector2 topLeft = new Vector2(0.0f, 0f);
+            Vector2 topRight = new Vector2(400f, 0.0f);
+            Vector2 bottomLeft = new Vector2(0.0f, 400f);
+            Vector2 bottomRight = new Vector2(400f, 400f);
 
             // since we use an index buffer we just need to declare
             // four vertices thus we can create a quad only streches to the z-Axis
             // and of course x-Axis. 
-            VertexPositionTexture[] vertices = new VertexPositionTexture[]
+            VertexPositionNormalTexture[] vertices = new VertexPositionNormalTexture[]
             {
-                new VertexPositionTexture(new Vector3(2000f, 0f, -2000f), topRight),
-                new VertexPositionTexture(new Vector3(2000f, 0f, 2000f), bottomRight),
-                new VertexPositionTexture(new Vector3(0f, 0f, 2000f), bottomLeft),
-                new VertexPositionTexture(new Vector3(0f, 0f, -2000f), topLeft),
+                new VertexPositionNormalTexture(new Vector3(2000f, 0f, -2000f), Vector3.Up, topRight),
+                new VertexPositionNormalTexture(new Vector3(2000f, 0f, 2000f), Vector3.Up,bottomRight),
+                new VertexPositionNormalTexture(new Vector3(0f, 0f, 2000f), Vector3.Up,bottomLeft),
+                new VertexPositionNormalTexture(new Vector3(0f, 0f, -2000f), Vector3.Up, topLeft),
             };
 
             // Set the index buffer for each vertex, using
             // clockwise winding
             short[] indices = new short[] { 0, 1, 2, 0, 2, 3 };
 
-            VertexBuffer = new VertexBuffer(GameApplication.Instance.GetGraphics(), VertexPositionTexture.VertexDeclaration, 4, BufferUsage.WriteOnly);
+            VertexBuffer = new VertexBuffer(GameApplication.Instance.GetGraphics(), VertexPositionNormalTexture.VertexDeclaration, 4, BufferUsage.WriteOnly);
             IndexBuffer = new IndexBuffer(GameApplication.Instance.GetGraphics(), IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly);
 
-            VertexBuffer.SetData<VertexPositionTexture>(vertices);
+            VertexBuffer.SetData<VertexPositionNormalTexture>(vertices);
             IndexBuffer.SetData<short>(indices);
             vertices = null;
             indices = null;
 
             // now we need to load our texture mapping effect and of course our texture into cache
             // this may need to be redesigned once we use some sort of resource manager!
-            effect = new TextureMappingEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect").Clone());
-            effect.Texture = ResourceManager.Instance.GetResource<Texture2D>(_textureFile);
+            effect = ResourceManager.Instance.GetResource<Effect>("FogEffect").Clone();
+            texture = ResourceManager.Instance.GetResource<Texture2D>(_textureFile);
 
+        }
+
+        public override void Update(SceneGraphManager sceneGraph)
+        {
+            Camera camera = CameraManager.Instance.GetCurrentCamera();
+
+           // Position = new Vector3(camera.Position.X - 1000, 0, camera.Position.Z + 1000);
+
+            base.Update(sceneGraph);
         }
 
         /// <summary>
@@ -111,18 +121,11 @@
         {
             Camera camera = CameraManager.Instance.GetCurrentCamera();
 
-            GameApplication.Instance.GetGraphics().SamplerStates[0] = new SamplerState()
-            {
-                Filter = textureFilter,
-                AddressU = TextureAddressMode.Wrap,
-                AddressV = TextureAddressMode.Wrap,
-                AddressW = TextureAddressMode.Wrap
-            };
-
-            effect.World = AbsoluteTransform;
-            effect.View = camera.View;
-            effect.Projection = camera.Projection;
-
+            effect.Parameters["World"].SetValue(AbsoluteTransform);
+            effect.Parameters["View"].SetValue(camera.View);
+            effect.Parameters["Projection"].SetValue(camera.Projection);
+            effect.Parameters["TextureEnabled"].SetValue(true);
+            effect.Parameters["DiffuseTexture"].SetValue(texture);
             effect.CurrentTechnique.Passes[0].Apply();
 
             GameApplication.Instance.GetGraphics().SetVertexBuffer(VertexBuffer);
