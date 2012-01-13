@@ -27,6 +27,8 @@
             LightColor = new Vector3(.9f, .9f, .9f);
             SpecularColor = new Vector3(1, 1, 1);
             SpecularPower = 32f;
+
+            
         }
 
         public override void SetEffectParameters(Effect effect)

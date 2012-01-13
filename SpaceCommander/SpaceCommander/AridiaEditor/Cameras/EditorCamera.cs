@@ -9,6 +9,7 @@
     using GameApplicationTools.Input;
     using Microsoft.Xna.Framework.Input;
     using GameApplicationTools.Misc;
+    using GameApplicationTools;
 
 
     public class EditorCamera : Camera
@@ -57,6 +58,7 @@
             {
                 if (Active)
                 {
+
                     if (KeyboardDevice.Instance != null && MouseDevice.Instance != null)
                     {
                         Vector3 inputModifier = new Vector3(

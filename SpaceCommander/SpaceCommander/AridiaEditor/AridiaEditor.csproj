@@ -241,19 +241,36 @@
     <Resource Include="Images\iconsave_small.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\saveasicon_small.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\exiticon_small.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\iconsettings_small.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\iconload_small.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\new_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\iconmodel_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\iconproperties_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\iconsavelayout_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\iconsavelayout_small1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\iconshader_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\iconsettings_small.png" />
+    <Resource Include="Images\iconshelp_small.png" />
+    <Resource Include="Images\icontexture_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\saveasicon_small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
