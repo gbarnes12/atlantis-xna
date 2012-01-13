@@ -42,6 +42,8 @@ namespace AridiaEditor
     using AridiaEditor.Windows.CreateWindows;
     using GameApplicationTools.Actors.Advanced;
     using Microsoft.Windows.Controls.Ribbon;
+    using GameApplicationTools.Resources.Shader;
+    using System.CodeDom.Compiler;
 
     public partial class MainWindow : RibbonWindow
     {
@@ -114,8 +116,6 @@ namespace AridiaEditor
                 ResourceBuilder.Instance.ContentBuilder = contentBuilder;
 
                 resourceContent.Activate();
-                
-                
 
                 errors = new List<Error>();
                 outputTextBlock = output;
@@ -435,6 +435,8 @@ namespace AridiaEditor
 
                 if (createSkySphereWindow.ShowDialog().Value)
                 {
+
+                
                     SkySphere sphere = new SkySphere(createSkySphereWindow.ID, createSkySphereWindow.Texture, 1f);
                     sphere.Position = createSkySphereWindow.Position;
                     sphere.Scale = createSkySphereWindow.Scale;
@@ -458,10 +460,47 @@ namespace AridiaEditor
 
                 if (createMeshObjectWindow.ShowDialog().Value)
                 {
+
+                    String classx = "namespace AridiaEditor.Temp.Shader {";
+                    classx += "using Microsoft.Xna.Framework.Graphics;";
+                    classx += "using GameApplicationTools.Resources.Shader;";
+                    classx += "public class TestMaterial : LightingMaterial {";
+                    classx += "}";
+                    classx += "}";
+
+                    CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+
+                    CompilerParameters cp = new CompilerParameters();
+                    cp.ReferencedAssemblies.Add("system.dll");
+                    cp.ReferencedAssemblies.Add("C:\\Program Files (x86)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\Microsoft.Xna.Framework.Graphics.dll");
+
+                    FileInfo fi = new FileInfo(Assembly.GetEntryAssembly().Location);
+              
+                    String path = System.IO.Path.GetDirectoryName(
+                        System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+                    cp.ReferencedAssemblies.Add(fi.DirectoryName + "\\GameApplication.dll");
+                    
+                    cp.CompilerOptions = "/t:library";
+                    cp.GenerateInMemory = true;
+
+                    CompilerResults cr =
+                    provider.CompileAssemblyFromSource(cp, classx);
+
+                    if (cr.Errors.Count > 0)
+                    {
+                        throw new Exception(cr.Errors[0].ErrorText);
+                    }
+
+                    Assembly assembly = cr.CompiledAssembly;
+                    object o = assembly.CreateInstance("AridiaEditor.Temp.Shader.TestMaterial");
+
+
                     MeshObject obj = new MeshObject(createMeshObjectWindow.ID, createMeshObjectWindow.Model, 1f);
                     obj.Position = createMeshObjectWindow.Position;
                     obj.Scale = createMeshObjectWindow.Scale;
                     obj.LoadContent();
+                    obj.SetModelEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect"), true);
+                    obj.Material = o as Material;
                     sceneGraph.RootNode.Children.Add(obj);
                     LoadWorldView();
                 }
@@ -514,7 +553,18 @@ namespace AridiaEditor
                     if (parent.Header.ToString() == "Actors" || parent.Header.ToString() == WorldManager.Instance.GetActor(item.Header.ToString()).Parent.ID)
                     {
                         SelectedObject = WorldManager.Instance.GetActor(item.Header.ToString());
-                        propertyGrid.SelectedObject = SelectedObject as Actor;
+
+                        if (SelectedObject as Actor is MeshObject)
+                        {
+                            propertyGrid.SelectedObject = SelectedObject as MeshObject;
+                            shaderPropertyGrid.Enabled = true;
+                            shaderPropertyGrid.SelectedObject = ((MeshObject)SelectedObject).Material;
+                        }
+                        else
+                        {
+                            shaderPropertyGrid.Enabled = false;
+                            propertyGrid.SelectedObject = SelectedObject as Actor;
+                        }
                     }
                 }
                 else if (parent.Header.ToString() == "Cameras")

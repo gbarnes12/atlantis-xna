@@ -30,10 +30,22 @@
             </r:Ribbon.ApplicationMenu>
             <r:RibbonTab Name="FilesTab" Header="Files" Height="75">
                 <r:RibbonGroup Header="Manage">
-                    <r:RibbonButton  Name="NewMenuItem"  Label="New" Height="55" Width="55" FlowDirection="LeftToRight" Click="NewMenuItem_Click" LargeImageSource="/AridiaEditor;component/Images/new_small.png" ToolTipDescription="Test" ToolTipFooterTitle="Test" />
-                    <r:RibbonButton Label="Load" Height="55" Width="50" FlowDirection="LeftToRight" LargeImageSource="/AridiaEditor;component/Images/iconload_small.png" />
-                    <r:RibbonButton Label="Save" LargeImageSource="/AridiaEditor;component/Images/iconsave_small.png"  Height="55" Width="50" FlowDirection="LeftToRight" />
-                    <r:RibbonButton Label="Save as" Height="25" Width="62" FlowDirection="LeftToRight" HorizontalContentAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Top" SnapsToDevicePixels="False" SmallImageSource="/AridiaEditor;component/Images/saveasicon_small.png">
+                    <r:RibbonButton  Name="NewMenuItem"  Label="New" Height="51" Width="55" FlowDirection="LeftToRight" Click="NewMenuItem_Click" LargeImageSource="/AridiaEditor;component/Images/new_small.png" ToolTipDescription="Test" ToolTipFooterTitle="Test" SnapsToDevicePixels="True" >
+                        <r:RibbonButton.ControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.ControlSizeDefinition>
+                    </r:RibbonButton>
+                    <r:RibbonButton Label="Load" Height="51" Width="50" FlowDirection="LeftToRight" LargeImageSource="/AridiaEditor;component/Images/iconload_small.png" SnapsToDevicePixels="True" >
+                        <r:RibbonButton.ControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.ControlSizeDefinition>
+                    </r:RibbonButton>
+                    <r:RibbonButton Label="Save" LargeImageSource="/AridiaEditor;component/Images/iconsave_small.png"  Height="51" Width="50" FlowDirection="LeftToRight" SnapsToDevicePixels="True" >
+                        <r:RibbonButton.ControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.ControlSizeDefinition>
+                    </r:RibbonButton>
+                    <r:RibbonButton Label="Save as" Height="25" Width="62" FlowDirection="LeftToRight" HorizontalContentAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Top" SnapsToDevicePixels="True" SmallImageSource="/AridiaEditor;component/Images/saveasicon_small.png">
                         <r:RibbonButton.ControlSizeDefinition>
                             <r:RibbonControlSizeDefinition ImageSize="Small" RenderOptions.ClearTypeHint="Enabled" />
                         </r:RibbonButton.ControlSizeDefinition>
@@ -45,42 +57,69 @@
                     </r:RibbonButton>
                 </r:RibbonGroup>
                 <r:RibbonGroup Header="Editor">
-                    <r:RibbonButton Name="SettingsMenuItem" Label="Settings" Height="55" Width="50" FlowDirection="LeftToRight" Click="SettingsMenuItem_Click" LargeImageSource="/AridiaEditor;component/Images/iconsettings_small.png">
+                    <r:RibbonButton Name="SettingsMenuItem" Label="Settings" Height="55" Width="50" FlowDirection="LeftToRight" Click="SettingsMenuItem_Click" LargeImageSource="/AridiaEditor;component/Images/iconsettings_small.png" SnapsToDevicePixels="True">
                         <r:RibbonButton.ControlSizeDefinition>
-                            <r:RibbonControlSizeDefinition ImageSize="Large" RenderOptions.ClearTypeHint="Enabled" />
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" Width="32" />
                         </r:RibbonButton.ControlSizeDefinition>
                     </r:RibbonButton>
-                    <r:RibbonButton Name="SaveLayoutMenuItem" Label="Save Layout" Height="20" Width="100" FlowDirection="LeftToRight" Click="SaveLayoutMenuItem_Click" />
-                    <r:RibbonSplitButton Name="ViewsMenuItem" Label="Views"  Height="20" Width="100" FlowDirection="LeftToRight">
+                    <r:RibbonButton Name="SaveLayoutMenuItem" Label="Save Layout" Height="20" Width="100" FlowDirection="LeftToRight" Click="SaveLayoutMenuItem_Click"  SmallImageSource="/AridiaEditor;component/Images/iconsavelayout_small1.png" SnapsToDevicePixels="True">
+                        <r:RibbonButton.ControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition ImageSize="Small" />
+                        </r:RibbonButton.ControlSizeDefinition>
+                    </r:RibbonButton>
+                    <r:RibbonSplitButton Name="ViewsMenuItem" Label="Views"  Height="20" Width="100" FlowDirection="LeftToRight" SnapsToDevicePixels="True" HorizontalContentAlignment="Right">
+                        <r:RibbonSplitButton.ControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" />
+                        </r:RibbonSplitButton.ControlSizeDefinition>
                         <r:RibbonSplitMenuItem Header="Test"></r:RibbonSplitMenuItem>
                     </r:RibbonSplitButton>
-                    <r:RibbonButton Label="Help" Height="55" Width="50" FlowDirection="LeftToRight" />
+                    <r:RibbonButton Label="Help" Height="51" Width="50" FlowDirection="LeftToRight" LargeImageSource="/AridiaEditor;component/Images/iconshelp_small.png" SnapsToDevicePixels="True">
+                        <r:RibbonButton.ControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.ControlSizeDefinition>
+                    </r:RibbonButton>
                 </r:RibbonGroup>
                 <r:RibbonGroup Header="Libaries">
-                    <r:RibbonButton Label="Properties" Height="55" Width="50" FlowDirection="LeftToRight" />
-                    <r:RibbonButton Label="Shaders" Height="55" Width="50" FlowDirection="LeftToRight" />
-                    <r:RibbonButton Label="Models" Height="55" Width="50" FlowDirection="LeftToRight" />
-                    <r:RibbonButton Label="Textures" Height="55" Width="50" FlowDirection="LeftToRight" />
+                    <r:RibbonButton Label="Properties"  Height="55" Width="60" FlowDirection="LeftToRight" LargeImageSource="/AridiaEditor;component/Images/iconproperties_small.png" SnapsToDevicePixels="True" >
+                        <r:RibbonButton.ControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.ControlSizeDefinition>
+                    </r:RibbonButton>
+                    <r:RibbonButton Label="Shaders" Height="51" Width="50" FlowDirection="LeftToRight" LargeImageSource="/AridiaEditor;component/Images/iconshader_small.png" SnapsToDevicePixels="True" MinWidth="0">
+                        <r:RibbonButton.ControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.ControlSizeDefinition>
+                    </r:RibbonButton>
+                    <r:RibbonButton Label="Models" Height="51" Width="50" FlowDirection="LeftToRight" LargeImageSource="/AridiaEditor;component/Images/iconmodel_small.png" SnapsToDevicePixels="True">
+                        <r:RibbonButton.ControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.ControlSizeDefinition>
+                    </r:RibbonButton>
+                    <r:RibbonButton Label="Textures" Height="51" Width="50" FlowDirection="LeftToRight" LargeImageSource="/AridiaEditor;component/Images/icontexture_small.png" SnapsToDevicePixels="True" >
+                        <r:RibbonButton.ControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.ControlSizeDefinition>
+                    </r:RibbonButton>
                 </r:RibbonGroup>
             </r:RibbonTab>
             <r:RibbonTab Name="ActorsTab" Header="Actors" Height="75">
                 <r:RibbonGroup Header="Primitves">
-                    <r:RibbonButton Name="CreateBoxMenuItem" Label="Box" Height="55" Width="50" FlowDirection="LeftToRight" Click="CreateBoxMenuItem_Click" />
-                    <r:RibbonButton Name="CreatePlaneMenuItem"  Label="Plane" Height="55" Width="50" FlowDirection="LeftToRight" Click="CreatePlaneMenuItem_Click" />
-                    <r:RibbonButton Name="CreateTriangleMenuItem" Label="Triangle" Height="55" Width="50" FlowDirection="LeftToRight" Click="CreateTriangleMenuItem_Click" />
+                    <r:RibbonButton Name="CreateBoxMenuItem" Label="Box" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateBoxMenuItem_Click" SnapsToDevicePixels="True" />
+                    <r:RibbonButton Name="CreatePlaneMenuItem"  Label="Plane" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreatePlaneMenuItem_Click" SnapsToDevicePixels="True" />
+                    <r:RibbonButton Name="CreateTriangleMenuItem" Label="Triangle" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateTriangleMenuItem_Click" SnapsToDevicePixels="True" />
                 </r:RibbonGroup>
                 <r:RibbonGroup Header="Advanced">
-                    <r:RibbonButton Label="MeshObject" Name="CreateMeshObjectMenuItem" Height="55" Width="50" FlowDirection="LeftToRight" Click="CreateMeshObjectMenuItem_Click" />
-                    <r:RibbonButton Label="SkySphere" Name="CreateSkySphereMenuItem" Height="55" Width="50" FlowDirection="LeftToRight" Click="CreateSkySphereMenuItem_Click" />
+                    <r:RibbonButton Label="MeshObject" Name="CreateMeshObjectMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateMeshObjectMenuItem_Click" SnapsToDevicePixels="True" />
+                    <r:RibbonButton Label="SkySphere" Name="CreateSkySphereMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateSkySphereMenuItem_Click" SnapsToDevicePixels="True" />
                 </r:RibbonGroup>
                 <r:RibbonGroup Header="Tools">
-                    <r:RibbonButton Label="Standard" Name="StandardMenuItem" Height="55" Width="50" FlowDirection="LeftToRight" Click="EditModeStandardButton_Click"  />
-                    <r:RibbonButton Label="Move" Name="MoveMenuItem" Height="55" Width="50" FlowDirection="LeftToRight" Click="EditModeMoveButton_Click" LargeImageSource="/AridiaEditor;component/Images/move_icon.png" />
-                    <r:RibbonButton Label="Scale" Name="ScaleMenutItem" Height="55" Width="50" FlowDirection="LeftToRight" Click="EditModeScaleButton_Click" LargeImageSource="/AridiaEditor;component/Images/ImageScaleIconMono32.gif" />
-                    <r:RibbonButton Label="Rotate" Name="RotateMenuItem" Height="55" Width="50" FlowDirection="LeftToRight" Click="EditModeRotateButton_Click" LargeImageSource="/AridiaEditor;component/Images/redo.png" />
+                    <r:RibbonButton Label="Standard" Name="StandardMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeStandardButton_Click" SnapsToDevicePixels="True" />
+                    <r:RibbonButton Label="Move" Name="MoveMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeMoveButton_Click" LargeImageSource="/AridiaEditor;component/Images/move_icon.png" SnapsToDevicePixels="True" />
+                    <r:RibbonButton Label="Scale" Name="ScaleMenutItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeScaleButton_Click" LargeImageSource="/AridiaEditor;component/Images/ImageScaleIconMono32.gif" SnapsToDevicePixels="True" />
+                    <r:RibbonButton Label="Rotate" Name="RotateMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeRotateButton_Click" LargeImageSource="/AridiaEditor;component/Images/redo.png" SnapsToDevicePixels="True" />
                 </r:RibbonGroup>
             </r:RibbonTab>
-            <r:RibbonTab Name="TerrainTab" Header="Terrain" Height="75"/>
+            <r:RibbonTab Name="TerrainTab" Header="Terrain" Height="75" SnapsToDevicePixels="True" />
         </r:Ribbon>
         <ad:DockingManager x:Name="dockManager" Grid.Row="2" Margin="0,128,0,0">
             <ad:ResizingPanel Orientation="Vertical">
@@ -89,12 +128,18 @@
                         <ad:DockableContent x:Name="resourceContent" Title="Actor Properties">
                             <ScrollViewer HorizontalScrollBarVisibility="Disabled" Height="Auto">
                                 <StackPanel>
-                                    <wfi:WindowsFormsHost IsEnabled="True" Height="300">
-                                        <swf:PropertyGrid x:Name="propertyGrid" />
-                                    </wfi:WindowsFormsHost>
                                     <acc:Accordion Orientation="Vertical" ClipToBounds="False" CanVerticallyScroll="True" UseLayoutRounding="False">
+                                        <Expander Header="Actor Properties" IsExpanded="True">
+                                            <wfi:WindowsFormsHost IsEnabled="True" Height="300">
+                                                <swf:PropertyGrid x:Name="propertyGrid" />
+                                            </wfi:WindowsFormsHost>
+                                        </Expander>
                                         <Expander Header="Properties"></Expander>
-                                        <Expander Header="Shader"></Expander>
+                                        <Expander Header="Shader">
+                                            <wfi:WindowsFormsHost IsEnabled="True" Height="300">
+                                                <swf:PropertyGrid x:Name="shaderPropertyGrid" Enabled="False" />
+                                            </wfi:WindowsFormsHost>
+                                        </Expander>
                                         <Expander Header="Scripts"></Expander>
                                     </acc:Accordion>
                                 </StackPanel>

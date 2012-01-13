@@ -12,6 +12,11 @@
     /// </summary>
     public class Material
     {
+        public Material()
+        {
+         
+        }
+
         public virtual void SetEffectParameters(Effect effect)
         {
         }
