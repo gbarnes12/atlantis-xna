@@ -130,9 +130,9 @@ namespace SpaceCommander.GameViews.Gameplay
             //camera-position path
             Path path2 = new Path("positionPath", ID,Color.Green);
             path2.LoadContent();
-            path2.AddPoint(new Vector3(0, -100, 500), 0);
-            path2.AddPoint(new Vector3(0, -300, -8000), testTimeOffset+2400);
-            path2.AddPoint(new Vector3(500, -100, -16000), 2*testTimeOffset+4400);
+            path2.AddPoint(new Vector3(0, 200, 500), 0);
+            path2.AddPoint(new Vector3(0, 300, -8000), testTimeOffset+2400);
+            path2.AddPoint(new Vector3(500, 100, -16000), 2*testTimeOffset+4400);
             path2.AddPoint(new Vector3(000, 500, -24000), 3*testTimeOffset+6400);
             path2.AddPoint(new Vector3(0, 0, -29000), 4*testTimeOffset+8000);
 
@@ -188,6 +188,7 @@ namespace SpaceCommander.GameViews.Gameplay
             //100 asteroids with random position, scale and rotation
             Random random = new Random();
 
+            /*
             for (int i = 0; i < 100; i++)
             {
                 EffectProperty effectProp = new EffectProperty("TextureMappingEffect");
@@ -203,9 +204,18 @@ namespace SpaceCommander.GameViews.Gameplay
                 asteroid01.Rotation = Quaternion.CreateFromYawPitchRoll(random.Next(20,100),random.Next(20,100),random.Next(20,100));
                 asteroid01.Position = new Vector3(random.Next(-1000, 1000), random.Next(-500, 500), random.Next(-100, 0) - i * 300);
                 asteroid01.LoadContent();
+                asteroid01.SetModelEffect(ResourceManager.Instance.GetResource<Effect>("PPModel"),true);
 
                 SceneGraphManager.RootNode.Children.Add(asteroid01);
             }
+             * */
+
+            MeshObject obj = new MeshObject("tea", "teapot", 1.0f);
+            obj.LoadContent();
+            obj.Position = new Vector3(0,-100,0);
+            obj.SetModelEffect(ResourceManager.Instance.GetResource<Effect>("PPModel"), true);
+            SceneGraphManager.RootNode.Children.Add(obj);
+
             #endregion
 
             #region UI Stuff

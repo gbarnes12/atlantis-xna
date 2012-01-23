@@ -180,19 +180,18 @@ namespace SpaceCommander
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(BackgroundColor);
-            
 
             PostProcessorManager.Instance.BeginRender();
 
             GameViewManager.Instance.Render();
 
-           
-            PostProcessorManager.Instance.Render();
+      
+           // PostProcessorManager.Instance.Render();
 
             UIManager.Instance.Render(gameTime);
 
             //make a screenshot
-            if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PrintScreen) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.PrintScreen)))
+            if ((KeyboardDevice.Instance.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F2) && KeyboardDevice.Instance.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.F2)))
             {
                 Utils.makeScreenshot();
             }

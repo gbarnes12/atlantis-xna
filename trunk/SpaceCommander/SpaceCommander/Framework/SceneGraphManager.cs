@@ -10,6 +10,7 @@
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using GameApplicationTools.Actors.Advanced;
 
     public class SceneGraphManager
     {
@@ -19,6 +20,8 @@
         GraphicsDevice device;
         GameTime gameTime;
         int nodesCulled;
+
+        PrelightingRenderer lightRenderer;
         #endregion
         // Properties
 
@@ -52,6 +55,21 @@
         {
             rootNode = new Actor("rootNode", null);
             CullingActive = true;
+
+            lightRenderer = new PrelightingRenderer(GameApplication.Instance.GetGame().GraphicsDevice, GameApplication.Instance.GetGame().Content, this);
+
+            lightRenderer.Lights = new List<PointLight>() 
+            {
+                new PointLight("pointLight01",null,new Vector3(-1000, 1000, 0), Color.Red * .85f, 2000),
+                new PointLight("pointLight09",null,new Vector3(0, 0, 0), Color.Red * .85f, 2000),
+                new PointLight("pointLight02",null,new Vector3(1000, 1000, 0), Color.Orange * .85f, 2000),
+                new PointLight("pointLight03",null,new Vector3(0, 1000, 1000), Color.Yellow * .85f, 2000),
+                new PointLight("pointLight04",null,new Vector3(0, 1000, -1000), Color.Green * .85f, 2000),
+                new PointLight("pointLight05",null,new Vector3(1000, 1000, 1000), Color.Blue * .85f, 2000),
+                new PointLight("pointLight06",null,new Vector3(-1000, 1000, 1000), Color.Indigo * .85f, 2000),
+                new PointLight("pointLight07",null,new Vector3(1000, 1000, -1000), Color.Violet * .85f, 2000),
+                new PointLight("pointLight08",null,new Vector3(-1000, 1000, -1000), Color.White * .85f, 2000)
+            };
         }
 
         public void SetGameTime(GameTime gameTime)
@@ -62,7 +80,7 @@
         // Methods
         void CalculateTransformsRecursive(Actor node)
         {
-            node.AbsoluteTransform = Matrix.CreateScale(node.Scale)* Matrix.CreateTranslation(node.Offset) *
+            node.AbsoluteTransform = Matrix.CreateScale(node.Scale) * Matrix.CreateTranslation(node.Offset) *
                 Matrix.CreateFromQuaternion(node.Rotation) *
                 node.AbsoluteTransform *
                 Matrix.CreateTranslation(node.Position);
@@ -102,6 +120,7 @@
                                                                  node.AbsoluteTransform);
                     transformedSphere.Radius = node.BoundingSphere.Radius;
 
+
                     if (CullingActive)
                     {
                         if (CameraManager.Instance.GetCurrentCamera().Frustum.Intersects(transformedSphere))
@@ -139,7 +158,7 @@
         {
             gameTime = time;
 
-            if(CameraManager.Instance.CurrentCamera != null)
+            if (CameraManager.Instance.CurrentCamera != null)
                 CameraManager.Instance.GetCurrentCamera().Update(time);
 
             UpdateRecursive(rootNode);
@@ -151,7 +170,17 @@
             nodesCulled = 0;
             rootNode.AbsoluteTransform = Matrix.Identity;
 
+            applyLighting(rootNode);
+
+            GameApplication.Instance.GetGame().GraphicsDevice.Clear(Color.Black);
+
             DrawRecursive(rootNode);
+        }
+
+        private void applyLighting(Actor node)
+        {
+            lightRenderer.Draw(node);
+          
         }
     }
 }
