@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\Actor.cs" />
+    <Compile Include="Actors\Advanced\PointLight.cs" />
     <Compile Include="Actors\Advanced\Terrain.cs" />
     <Compile Include="Actors\Properties\ActorPropertyTypes.cs" />
     <Compile Include="Actors\Properties\AIProperty.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="MediaManager.cs" />
     <Compile Include="Misc\StreamLoader.cs" />
     <Compile Include="PostProcessorManager.cs" />
+    <Compile Include="PrelightingRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManager.cs" />
     <Compile Include="Resources\PostProcessors\BloomProcessor.cs" />
@@ -148,7 +150,10 @@
     <Compile Include="Resources\Shader\LightingMaterial.cs" />
     <Compile Include="Resources\Shader\Material.cs" />
     <Compile Include="Resources\Shader\MeshTag.cs" />
+    <Compile Include="Resources\Shader\MultiLightingMaterial.cs" />
     <Compile Include="Resources\Shader\NormalMapMaterial.cs" />
+    <Compile Include="Resources\Shader\PointLightMaterial.cs" />
+    <Compile Include="Resources\Shader\SpotLightMaterial.cs" />
     <Compile Include="SceneGraphManager.cs" />
     <Compile Include="ScriptManager.cs" />
     <Compile Include="Structures\GameView.cs" />

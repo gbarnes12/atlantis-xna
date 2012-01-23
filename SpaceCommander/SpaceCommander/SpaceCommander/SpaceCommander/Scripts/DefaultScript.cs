@@ -53,6 +53,11 @@
                     Path = GameApplication.Instance.EffectPath,
                     Type = ResourceType.Effect
                 },
+                 new Resource() {
+                    Name = "PPModel",
+                    Path = GameApplication.Instance.EffectPath,
+                    Type = ResourceType.Effect
+                },
                 // FONTS
                 new Resource() {
                     Name = "Arial",
@@ -102,6 +107,11 @@
                 },
                  new Resource() {
                     Name = "laser",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
+                 new Resource() {
+                    Name = "teapot",
                     Path = GameApplication.Instance.ModelPath,
                     Type = ResourceType.Model
                 },

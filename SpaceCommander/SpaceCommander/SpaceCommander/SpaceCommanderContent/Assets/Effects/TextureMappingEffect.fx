@@ -109,7 +109,7 @@ technique TextureMappingEffect
 {
 	pass Pass1
 	{
-		VertexShader = compile vs_1_1 VertexShaderFunction();
+		VertexShader = compile vs_2_0 VertexShaderFunction();
 		PixelShader  = compile ps_2_0 PixelShaderFunction();
 	}
 }

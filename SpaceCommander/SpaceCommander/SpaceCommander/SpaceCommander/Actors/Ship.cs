@@ -121,7 +121,7 @@ namespace SpaceCommander.Actors
             roll = (float)(Math.Atan2(-currentDirection.Y, currentDirection.Z));    // !!!! TODO
 
             //set rotation matrix
-            Rotation = Quaternion.CreateFromYawPitchRoll(((float)yaw), (float)Math.PI+roll, pitch);
+            Rotation = Quaternion.CreateFromYawPitchRoll(((float)yaw), (float)Math.PI-roll, pitch);
 
             //calculate right vector note: up vector stays the same every time
             this.right = Vector3.Cross(currentDirection, Vector3.Up);

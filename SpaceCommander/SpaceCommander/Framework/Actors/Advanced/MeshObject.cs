@@ -228,7 +228,7 @@
                        // Copy the model hierarchy transforms
                        Matrix[] transforms = new Matrix[Model.Bones.Count];
                        Model.CopyAbsoluteBoneTransformsTo(transforms);
- 
+
                        // Render each mesh in the model
                        foreach (ModelMesh mesh in Model.Meshes)
                        {
