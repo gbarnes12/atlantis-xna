@@ -39,11 +39,15 @@ namespace AridiaEditor
     using GameApplicationTools.Resources;
     using GameApplicationTools.Input;
     using GameApplicationTools.Actors.Properties;
+    using GameApplicationTools.Resources.Shader;
+
     using AridiaEditor.Windows.CreateWindows;
     using GameApplicationTools.Actors.Advanced;
     using Microsoft.Windows.Controls.Ribbon;
-    using GameApplicationTools.Resources.Shader;
+    using AridiaEditor.Databases;
     using System.CodeDom.Compiler;
+    using AridiaEditor.Databases.Data;
+    using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 
     public partial class MainWindow : RibbonWindow
     {
@@ -94,11 +98,15 @@ namespace AridiaEditor
                         Settings.Default.Save();
 
                         InitializeComponent();
+
                     }
                 }
             }
 
-            EditMode = EditMode.ROTATE;
+            EditMode = EditMode.STANDARD;
+
+            // set the index.hml content file!
+            webBrowser.Source = new Uri(Environment.CurrentDirectory + "\\Content\\Instructions\\index.html");
         }
 
         /// <summary>
@@ -129,8 +137,13 @@ namespace AridiaEditor
                 ServiceContainer.AddService<IGraphicsDeviceService>(GraphicsDeviceService.AddRef(new IntPtr(), 100, 100));
                 ResourceManager.Instance.Content = new ContentManager(ServiceContainer, contentBuilder.OutputDirectory);
                 ResourceManager.Instance.Content.Unload();
+                
+
+
                 sceneGraph = new SceneGraphManager();
                 sceneGraph.CullingActive = true;
+                sceneGraph.LightingActive = false; //deactivate lighting on beginning!
+
                 e.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
                 var versionAttribute = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -159,6 +172,7 @@ namespace AridiaEditor
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
             {
                 EditorStatus = EditorStatus.LOADING;
+                Database.Instance.LoadData();
 
                 progressStatusBarItem.Dispatcher.Invoke(
                   System.Windows.Threading.DispatcherPriority.Normal,
@@ -198,6 +212,7 @@ namespace AridiaEditor
                 progressStatusBarItem.Content = "Ready";
                 progressBar.Value = 0;
                 Output.AddToOutput("Building of content files completed...");
+                sceneGraph.Lighting.LoadContent();
             };
             #endregion
 
@@ -356,10 +371,17 @@ namespace AridiaEditor
                             {
                                 Output.AddToOutput("Object : " + actor.ID + " has been picked!");
 
-                                if(actor is MeshObject)
+                                if (actor is MeshObject)
+                                {
                                     propertyGrid.SelectedObject = (MeshObject)actor;
+                                    shaderPropertyGrid.Enabled = true;
+                                    shaderPropertyGrid.SelectedObject = ((MeshObject)actor).Material;
+                                    
+                                }
                                 else
+                                {
                                     propertyGrid.SelectedObject = actor;
+                                }
 
                                 SelectedObject = actor;
 
@@ -392,6 +414,7 @@ namespace AridiaEditor
                 }
 
                 propertyGrid.SelectedObject = null;
+                shaderPropertyGrid.SelectedObject = null;
                 SelectedObject = null;
             }
 
@@ -406,8 +429,6 @@ namespace AridiaEditor
                     
                 }
             }
-
-            
         }
 
         private void xnaControl_HwndRButtonUp(object sender, HwndMouseEventArgs e)
@@ -460,47 +481,82 @@ namespace AridiaEditor
 
                 if (createMeshObjectWindow.ShowDialog().Value)
                 {
-
-                    String classx = "namespace AridiaEditor.Temp.Shader {";
-                    classx += "using Microsoft.Xna.Framework.Graphics;";
-                    classx += "using GameApplicationTools.Resources.Shader;";
-                    classx += "public class TestMaterial : LightingMaterial {";
-                    classx += "}";
-                    classx += "}";
-
-                    CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-
-                    CompilerParameters cp = new CompilerParameters();
-                    cp.ReferencedAssemblies.Add("system.dll");
-                    cp.ReferencedAssemblies.Add("C:\\Program Files (x86)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\Microsoft.Xna.Framework.Graphics.dll");
-
-                    FileInfo fi = new FileInfo(Assembly.GetEntryAssembly().Location);
-              
-                    String path = System.IO.Path.GetDirectoryName(
-                        System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
-                    cp.ReferencedAssemblies.Add(fi.DirectoryName + "\\GameApplication.dll");
-                    
-                    cp.CompilerOptions = "/t:library";
-                    cp.GenerateInMemory = true;
-
-                    CompilerResults cr =
-                    provider.CompileAssemblyFromSource(cp, classx);
-
-                    if (cr.Errors.Count > 0)
-                    {
-                        throw new Exception(cr.Errors[0].ErrorText);
-                    }
-
-                    Assembly assembly = cr.CompiledAssembly;
-                    object o = assembly.CreateInstance("AridiaEditor.Temp.Shader.TestMaterial");
-
-
                     MeshObject obj = new MeshObject(createMeshObjectWindow.ID, createMeshObjectWindow.Model, 1f);
                     obj.Position = createMeshObjectWindow.Position;
                     obj.Scale = createMeshObjectWindow.Scale;
                     obj.LoadContent();
-                    obj.SetModelEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect"), true);
-                    obj.Material = o as Material;
+                    
+                    obj.SetModelEffect(ResourceManager.Instance.GetResource<Effect>(Database.Instance.Shaders[createMeshObjectWindow.Shader].File), true);
+                    Shader shader = Database.Instance.Shaders[createMeshObjectWindow.Shader];
+
+                    if (shader.Type == Databases.Data.MaterialType.None ||
+                        shader.Type == Databases.Data.MaterialType.Engine)
+                    {
+                        // because we are using an in engine shader we don't need to compile anything in
+                        // here and can use the shader straight away and create a new instance of its material!
+
+                        string typeName = shader.Content;
+                        Type type = Type.GetType(typeName);
+                        if (type != null)
+                        {
+                            Material mat = (Material)Activator.CreateInstance(type);
+                            obj.Material = mat;
+                        }
+                    }
+                    else if (shader.Type == Databases.Data.MaterialType.Compile)
+                    {
+                        // compile our shader code !
+                        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+
+                        CompilerParameters cp = new CompilerParameters();
+                        cp.ReferencedAssemblies.Add("system.dll");
+                        cp.ReferencedAssemblies.Add("system.drawing.dll");
+                        cp.ReferencedAssemblies.Add("C:\\Program Files (x86)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\Microsoft.Xna.Framework.Graphics.dll");
+                        cp.ReferencedAssemblies.Add("C:\\Program Files (x86)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\Microsoft.Xna.Framework.dll");
+
+                        FileInfo fi = new FileInfo(Assembly.GetEntryAssembly().Location);
+
+                        String path = System.IO.Path.GetDirectoryName(
+                            System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+                        cp.ReferencedAssemblies.Add(fi.DirectoryName + "\\GameApplication.dll");
+
+                        cp.CompilerOptions = "/t:library";
+                        cp.GenerateInMemory = true;
+
+                        CompilerResults cr =
+                        provider.CompileAssemblyFromSource(cp, shader.Content);
+
+                        if (cr.Errors.Count > 0)
+                        {
+                            foreach (CompilerError error in cr.Errors)
+                            {
+                                Error err = new Error();
+                                err.Name = "MESHOBJECT::SHADER_COMPILE1001";
+                                err.Type = ErrorType.FATAL;
+                                err.Description = new Exception(error.ErrorText).ToString();
+                                Output.AddToError(err);
+                            }
+                        }
+                        else
+                        {
+                            Assembly assembly = cr.CompiledAssembly;
+                            try
+                            {
+                                object o = assembly.CreateInstance(shader.Namespace);
+                                if (o != null)
+                                    obj.Material = (Material)o;
+                            }
+                            catch (Exception exception)
+                            {
+                                Error err = new Error();
+                                err.Name = "MESHOBJECT::MATERIAL_CREATE_INSTANCE1001";
+                                err.Type = ErrorType.FATAL;
+                                err.Description = exception.ToString();
+                                Output.AddToError(err);
+                            }
+                        }
+                    }
+
                     sceneGraph.RootNode.Children.Add(obj);
                     LoadWorldView();
                 }
@@ -725,6 +781,13 @@ namespace AridiaEditor
                 e.Handled = true;
             }
         }
+
+        private void shaderPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            string test = e.ChangedItem.PropertyDescriptor.Category;
+
+        }
+ 
     }
 
     public enum EditorStatus

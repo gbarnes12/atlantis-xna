@@ -107,6 +107,7 @@
     <Compile Include="Resources\Shader\SpotLightMaterial.cs" />
     <Compile Include="SceneGraphManager.cs" />
     <Compile Include="ScriptManager.cs" />
+    <Compile Include="Structures\Editor\EditorTextureList.cs" />
     <Compile Include="Structures\GameView.cs" />
     <Compile Include="Structures\Level.cs" />
     <Compile Include="Structures\StateMachine\FiniteState.cs" />

@@ -35,8 +35,7 @@ namespace GameApplicationTools
 
         SceneGraphManager sceneGraph;
 
-        public PrelightingRenderer(GraphicsDevice GraphicsDevice,
-            ContentManager Content, SceneGraphManager sceneGraph)
+        public PrelightingRenderer(GraphicsDevice GraphicsDevice, SceneGraphManager sceneGraph)
         {
             //get sceneGraph
             this.sceneGraph = sceneGraph;
@@ -54,19 +53,22 @@ namespace GameApplicationTools
             lightTarg = new RenderTarget2D(GraphicsDevice, viewWidth,
                 viewHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
+            this.graphicsDevice = GraphicsDevice;
+        }
+
+        public void LoadContent()
+        {
             // Load effects
-            depthNormalEffect = Content.Load<Effect>("Assets/Effects/PPDepthNormal");
-            lightingEffect = Content.Load<Effect>("Assets/Effects/PPLight");
+            depthNormalEffect = ResourceManager.Instance.GetResource<Effect>("PPDepthNormal");
+            lightingEffect = ResourceManager.Instance.GetResource<Effect>("PPLight");
 
             // Set effect parameters to light mapping effect
             lightingEffect.Parameters["viewportWidth"].SetValue(viewWidth);
             lightingEffect.Parameters["viewportHeight"].SetValue(viewHeight);
 
             // Load point light mesh and set light mapping effect to it
-            lightMesh = Content.Load<Model>("Assets/Models/PPLightMesh");
+            lightMesh = ResourceManager.Instance.GetResource<Model>("PPLightMesh");
             lightMesh.Meshes[0].MeshParts[0].Effect = lightingEffect;
-
-            this.graphicsDevice = GraphicsDevice;
         }
 
         public void Draw(Actor node)

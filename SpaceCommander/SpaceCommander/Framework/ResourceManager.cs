@@ -197,6 +197,33 @@
         }
 
         /// <summary>
+        /// Returns a list of specific objects within our manager!
+        /// </summary>
+        /// <typeparam name="T">The type which to retrieve</typeparam>
+        /// <returns>A list object of objects with the </returns>
+        public List<T> GetResourcesOfTypeAsList<T>()
+        {
+            try
+            {
+                List<T> list = new List<T>();
+                // we need to pass over null as third argument 
+                // because due to the fact that XBOX 360 needs this 
+                // third parameter. 
+                foreach (object res in _resources.Values)
+                {
+                    if(res is T)
+                        list.Add((T)Convert.ChangeType(res, typeof(T), null));
+                }
+
+                return list;
+            }
+            catch (InvalidCastException)
+            {
+                return new List<T>();
+            }
+        }
+
+        /// <summary>
         /// Returns a dictionary of resources of the given type
         /// you want to have!
         /// </summary>

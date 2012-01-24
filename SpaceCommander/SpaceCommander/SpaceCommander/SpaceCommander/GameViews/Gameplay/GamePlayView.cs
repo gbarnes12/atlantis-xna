@@ -63,6 +63,8 @@ namespace SpaceCommander.GameViews.Gameplay
             RegisterEvents();
             ScriptManager.Instance.ExecuteScript(GamePlayScript.OnLoadEvent);
 
+            SceneGraphManager.Lighting.LoadContent();
+
            collision = new CollisionGameLogic();
         }
 

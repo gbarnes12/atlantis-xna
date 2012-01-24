@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shader>
+  <Name>Custom Planet Shader</Name>
+  <Description>An effect file which uses a sphere to draw multiple textures on it and create the illusion of a planet.</Description>
+  <File>PlanetEarthEffect</File>
+  <Material>
+    <Type comment="Options: None, Engine, Compile">Compile</Type>
+    <Content>
+      <Namespace>SpaceCommander.Materials.PlanetEarthMaterial</Namespace>
+      <Code>
+        namespace SpaceCommander.Materials
+        {
+        using System;
+        using System.Text;
+        using System.ComponentModel;
+        using Microsoft.Xna.Framework;
+        using Microsoft.Xna.Framework.Graphics;
+        using GameApplicationTools.Structures.Editor;
+        using GameApplicationTools.Resources.Shader;
+
+        public class PlanetEarthMaterial : Material
+        {
+        #if !XBOX360
+        [EditorAttribute(typeof(EditorTextureList), typeof(System.Drawing.Design.UITypeEditor))]
+        #endif
+        public Texture2D ColorMap { get; set; }
+
+        #if !XBOX360
+        [EditorAttribute(typeof(EditorTextureList), typeof(System.Drawing.Design.UITypeEditor))]
+        #endif
+        public Texture2D GlowMap { get; set; }
+
+        #if !XBOX360
+        [EditorAttribute(typeof(EditorTextureList), typeof(System.Drawing.Design.UITypeEditor))]
+        #endif
+        public Texture2D BumpMap;
+
+        #if !XBOX360
+        [EditorAttribute(typeof(EditorTextureList), typeof(System.Drawing.Design.UITypeEditor))]
+        #endif
+        public Texture2D ReflectionMap;
+
+        #if !XBOX360
+        [EditorAttribute(typeof(EditorTextureList), typeof(System.Drawing.Design.UITypeEditor))]
+        #endif
+        public Texture2D CloudMap;
+
+        #if !XBOX360
+        [EditorAttribute(typeof(EditorTextureList), typeof(System.Drawing.Design.UITypeEditor))]
+        #endif
+        public Texture2D WaveMap;
+
+        #if !XBOX360
+        [EditorAttribute(typeof(EditorTextureList), typeof(System.Drawing.Design.UITypeEditor))]
+        #endif
+        public Texture2D AtmosMap;
+
+        public float AmbientIntensity = 1f;
+
+        public Vector4 AmbientColor = Vector4.One;
+
+        public Vector3 LightDirection  = Vector3.One;
+
+        public float time;
+
+        public float cloudSpeed = .0025f;
+        public float cloudHeight = .005f;
+        public float cloudShadowIntensity = 1f;
+
+        public PlanetEarthMaterial()
+        {
+
+        }
+
+        public override void SetEffectParameters(Effect effect)
+        {
+        base.SetEffectParameters(effect);
+
+        if (effect.Parameters["ColorMap"] != null)
+        effect.Parameters["ColorMap"].SetValue(ColorMap);
+
+        if (effect.Parameters["GlowMap"] != null)
+        effect.Parameters["GlowMap"].SetValue(GlowMap);
+
+        if (effect.Parameters["BumpMap"] != null)
+        effect.Parameters["BumpMap"].SetValue(BumpMap);
+
+        if (effect.Parameters["ReflectionMap"] != null)
+        effect.Parameters["ReflectionMap"].SetValue(ReflectionMap);
+
+        if (effect.Parameters["CloudMap"] != null)
+        effect.Parameters["CloudMap"].SetValue(CloudMap);
+
+        if (effect.Parameters["WaveMap"] != null)
+        effect.Parameters["WaveMap"].SetValue(WaveMap);
+
+        if (effect.Parameters["AtmosMap"] != null)
+        effect.Parameters["AtmosMap"].SetValue(AtmosMap);
+
+        if (effect.Parameters["AmbientIntensity"] != null)
+        effect.Parameters["AmbientIntensity"].SetValue(AmbientIntensity);
+
+        if (effect.Parameters["AmbientColor"] != null)
+        effect.Parameters["AmbientColor"].SetValue(AmbientColor);
+
+        if (effect.Parameters["LightDirection"] != null)
+        effect.Parameters["LightDirection"].SetValue(LightDirection);
+
+        if (effect.Parameters["time"] != null)
+        effect.Parameters["time"].SetValue(time);
+
+        if (effect.Parameters["cloudSpeed"] != null)
+        effect.Parameters["cloudSpeed"].SetValue(cloudSpeed);
+
+        if (effect.Parameters["cloudHeight"] != null)
+        effect.Parameters["cloudHeight"].SetValue(cloudHeight);
+
+        if (effect.Parameters["cloudShadowIntensity"] != null)
+        effect.Parameters["cloudShadowIntensity"].SetValue(cloudShadowIntensity);
+
+        }
+
+        }
+
+        }
+      </Code>
+      <Assemblies>
+        <Assembly>C:\\Program Files (x86)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\Microsoft.Xna.Framework.Graphics.dll</Assembly>
+        <Assembly>C:\\Program Files (x86)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\Microsoft.Xna.Framework.dll</Assembly>
+      </Assemblies>
+    </Content>
+  </Material>
+</Shader>

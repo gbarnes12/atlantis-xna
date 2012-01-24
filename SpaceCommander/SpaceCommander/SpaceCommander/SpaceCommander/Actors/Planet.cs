@@ -196,7 +196,8 @@
            
 
             Effect.World = AbsoluteTransform;
-            Effect.WVP = AbsoluteTransform * camera.View * camera.Projection;
+            Effect.View = camera.View;
+            Effect.Projection = camera.Projection;
 
             Effect.Time = (float)sceneGraph.GameTime.TotalGameTime.TotalSeconds * 3;
 

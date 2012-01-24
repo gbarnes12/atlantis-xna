@@ -14,8 +14,9 @@ float2 MoveInCircle(float2 texCoord,float time,float speed)
 	
 	return texRoll;
 }
-float4x4 wvp : WorldViewProjection;
-float4x4 world : World;
+float4x4 World;
+float4x4 View;
+float4x4 Projection;
 
 float AmbientIntensity = 1;
 float4 AmbientColor : AMBIENT = float4(0,0,0,1);
@@ -107,23 +108,23 @@ VS_OUT VS_Color(VS_IN input)
 {
 	VS_OUT output = (VS_OUT)0;
 	
-	output.Position = mul(input.Position,wvp);
+	output.Position = mul(input.Position,World * View * Projection);
 	
 	float3x3 worldToTangentSpace;
-	worldToTangentSpace[0] = mul(input.Tangent,world);
-	worldToTangentSpace[1] = mul(cross(input.Tangent,input.Normal),world);
-	worldToTangentSpace[2] = mul(input.Normal,world);
+	worldToTangentSpace[0] = mul(input.Tangent,World);
+	worldToTangentSpace[1] = mul(cross(input.Tangent,input.Normal),World);
+	worldToTangentSpace[2] = mul(input.Normal,World);
 	
-	float4 PosWorld = mul(input.Position,world);
+	float4 PosWorld = mul(input.Position,World);
 	
 	output.Light = mul(worldToTangentSpace,LightDirection);	
-	output.CamView = CameraPosition - mul(input.Position,world);
+	output.CamView = CameraPosition - mul(input.Position,World);
 	
 	output.posS = input.Position;
 	
 	output.TexCoord = input.TexCoord;
 	
-	output.Normal = mul(input.Normal,world);
+	output.Normal = mul(input.Normal,World);
 	
 	return output;
 }
@@ -235,10 +236,10 @@ PS_OUT PS_OuterAtmoshpere(VS_OUT2 input, uniform bool flip)
 VS_OUT2 VS_OuterAtmoshpere(VS_IN input, uniform float size)
 {
 	VS_OUT2 output = (VS_OUT2)0;
-	output.Normal = mul(input.Normal, world);
-	output.Position = mul(input.Position, wvp) + (mul(size, mul(input.Normal, wvp)));
+	output.Normal = mul(input.Normal, World);
+	output.Position = mul(input.Position, World * View * Projection) + (mul(size, mul(input.Normal, World * View * Projection)));
 	output.TexCoord = input.TexCoord;
-	output.pos = mul(input.Position,world);
+	output.pos = mul(input.Position,World);
 	
 	return output;
 }

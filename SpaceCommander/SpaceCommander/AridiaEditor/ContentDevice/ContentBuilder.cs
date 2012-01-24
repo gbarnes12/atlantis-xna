@@ -188,7 +188,7 @@ namespace AridiaEditor
         /// be autodetected based on the file extension, and if you leave the
         /// processor null, data will be passed through without any processing.
         /// </summary>
-        public void Add(string filename, string name, string importer, string processor)
+        public void Add(string filename, string name, string importer, string processor, Dictionary<String, String> parameters)
         {
             ProjectItem item = buildProject.AddItem("Compile", filename)[0];
 
@@ -200,6 +200,9 @@ namespace AridiaEditor
 
             if (!string.IsNullOrEmpty(processor))
                 item.SetMetadataValue("Processor", processor);
+
+            foreach (KeyValuePair<String, String> param in parameters)
+                item.SetMetadataValue("ProcessorParameters_" + param.Key, param.Value);
 
             projectItems.Add(item);
         }
@@ -296,20 +299,31 @@ namespace AridiaEditor
         /// </summary>
         void DeleteTempDirectory()
         {
-            Directory.Delete(buildDirectory, true);
-
-            // If there are no other instances of ContentBuilder still using their
-            // own temp directories, we can delete the process directory as well.
-            if (Directory.GetDirectories(processDirectory).Length == 0)
+            try
             {
-                Directory.Delete(processDirectory);
+                Directory.Delete(buildDirectory, true);
 
-                // If there are no other copies of the program still using their
-                // own temp directories, we can delete the base directory as well.
-                if (Directory.GetDirectories(baseDirectory).Length == 0)
+                // If there are no other instances of ContentBuilder still using their
+                // own temp directories, we can delete the process directory as well.
+                if (Directory.GetDirectories(processDirectory).Length == 0)
                 {
-                    Directory.Delete(baseDirectory);
+                    Directory.Delete(processDirectory);
+
+                    // If there are no other copies of the program still using their
+                    // own temp directories, we can delete the base directory as well.
+                    if (Directory.GetDirectories(baseDirectory).Length == 0)
+                    {
+                        Directory.Delete(baseDirectory);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Error error = new Error();
+                error.Name = "Content10001";
+                error.Type = ErrorType.INFO;
+                error.Description = e.Message;
+                Output.AddToError(error);
             }
         }
 

@@ -108,6 +108,11 @@ namespace TestEnvironment
                     Type = ResourceType.Texture2D
                 },
                 new Resource() {
+                    Name = "Spaceship_nor_hälfte_fertig_NRM",
+                    Path = GameApplication.Instance.TexturePath,
+                    Type = ResourceType.Texture2D
+                },
+                new Resource() {
                     Name = "wedge_p1_diff_v1",
                     Path = GameApplication.Instance.TexturePath + "SpaceShip\\",
                     Type = ResourceType.Texture2D
@@ -139,6 +144,11 @@ namespace TestEnvironment
                 },
                 new Resource() {
                     Name = "p1_wedge",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
+                new Resource() {
+                    Name = "Raumschiff_tex",
                     Path = GameApplication.Instance.ModelPath,
                     Type = ResourceType.Model
                 },
@@ -189,7 +199,8 @@ namespace TestEnvironment
             mat.LightDirection = new Vector3(1f, 1f, 1);
             mat.LightColor = Vector3.One;
 
-            NormalMapMaterial normal = new NormalMapMaterial(ResourceManager.Instance.GetResource<Texture2D>("wedge_p1_diff_v1_normal"));
+            NormalMapMaterial normal = new NormalMapMaterial();
+            normal.NormalMap = ResourceManager.Instance.GetResource<Texture2D>("Spaceship_nor_hälfte_fertig_NRM");
             normal.LightDirection = new Vector3(1f, 1f, .5f);
             normal.LightColor = Vector3.One;
             normal.SpecularPower = 32;
@@ -199,7 +210,7 @@ namespace TestEnvironment
             //lighting.LightColor = Color.Aqua.ToVector3();
             lighting.SpecularPower = 1;
 
-            MeshObject mesh = new MeshObject("ship", "p1_wedge", 0.01f);
+            MeshObject mesh = new MeshObject("ship", "Raumschiff_tex", 0.01f);
             mesh.Position = new Vector3(0, 3, 0);
             mesh.Scale = new Vector3(0.01f);
             mesh.LoadContent();

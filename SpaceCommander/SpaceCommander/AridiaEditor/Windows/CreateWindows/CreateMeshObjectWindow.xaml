@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Create Mesh Object" Height="331" Width="504">
     <Grid>
-        <Button Content="Create" Height="23" HorizontalAlignment="Left" Margin="17,191,0,0" Name="createButton" VerticalAlignment="Top" Width="75" Click="createButton_Click" />
-        <Button Content="Cancel" Height="23" HorizontalAlignment="Left" Margin="131,191,0,0" Name="cancelButton" VerticalAlignment="Top" Width="75" Click="cancelButton_Click" />
+        <Button Content="Create" Height="23" HorizontalAlignment="Left" Margin="12,247,0,0" Name="createButton" VerticalAlignment="Top" Width="75" Click="createButton_Click" />
+        <Button Content="Cancel" Height="23" HorizontalAlignment="Left" Margin="126,247,0,0" Name="cancelButton" VerticalAlignment="Top" Width="75" Click="cancelButton_Click" />
         <Label Content="ID:" Height="28" HorizontalAlignment="Left" Margin="11,10,0,0" Name="label1" VerticalAlignment="Top" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="51,10,0,0" Name="idTextBox" VerticalAlignment="Top" Width="343" />
-        <Grid Height="165" HorizontalAlignment="Left" Margin="214,39,0,0" Name="positionGrid" VerticalAlignment="Top" Visibility="Visible" Width="179">
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="51,10,0,0" Name="idTextBox" VerticalAlignment="Top" Width="419" />
+        <Grid Height="106" HorizontalAlignment="Left" Margin="290,41,0,0" Name="positionGrid" VerticalAlignment="Top" Visibility="Visible" Width="179">
             <Label Content="Position:" Height="28" HorizontalAlignment="Left" Margin="6,-3,0,0" Name="positionLabel" VerticalAlignment="Top" />
             <TextBox Height="23" HorizontalAlignment="Left" Margin="31,20,0,0" Name="positionX" Text="0" VerticalAlignment="Top" Width="27" />
             <TextBox Height="23" HorizontalAlignment="Left" Margin="89,20,0,0" Name="positionY" Text="0" VerticalAlignment="Top" Width="25" />
