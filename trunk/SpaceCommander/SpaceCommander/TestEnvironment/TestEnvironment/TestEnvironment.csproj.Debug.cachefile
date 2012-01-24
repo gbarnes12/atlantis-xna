@@ -11,6 +11,8 @@ Content\Assets\Effects\SSAO.xnb
 Content\Assets\Effects\TextureMappingEffect.xnb
 Content\Assets\Effects\PPLight.xnb
 Content\Assets\Effects\PPModel.xnb
+Content\Assets\Effects\SimpleEffect.xnb
+Content\Assets\Effects\SpotLightEffect.xnb
 Content\Editor\WebEffect.xnb
 Content\Assets\Textures\PlanetEarth\Earth_Atmos.xnb
 Content\Assets\Textures\PlanetEarth\Earth_Cloud.xnb
@@ -39,6 +41,8 @@ Content\Assets\Textures\Checker.xnb
 Content\Assets\Textures\brick_normal_map.xnb
 Content\Assets\Textures\brick_texture_map.xnb
 Content\Assets\Textures\crate_normal.xnb
+Content\Assets\Textures\Spaceship_tex_hälfte_fertig.xnb
+Content\Assets\Textures\Spaceship_nor_hälfte_fertig_NRM.xnb
 Content\Assets\Models\planet.xnb
 Content\Assets\Models\sphere.xnb
 Content\Assets\Models\skysphere.xnb
@@ -54,6 +58,7 @@ Content\Assets\Models\spaceship.xnb
 Content\Assets\Models\raumschiff7.xnb
 Content\Assets\Models\brick_wall.xnb
 Content\Assets\Models\PPLightMesh.xnb
+Content\Assets\Models\Raumschiff_tex.xnb
 Content\Assets\Models\teapot.xnb
 Content\Assets\Textures\level1_skymap_0.xnb
 Content\Assets\Textures\noise_0.xnb
@@ -61,6 +66,7 @@ Content\Assets\Textures\masonry-wall-texture_0.xnb
 Content\Assets\Textures\Checker_0.xnb
 Content\Assets\Textures\SpaceShip\wedge_p1_diff_v1_0.xnb
 Content\Assets\Textures\masonry-wall-texture_1.xnb
+Content\Assets\Textures\Spaceship_tex_hlfte_fertig_0.xnb
 Content\Assets\Audio\Sleep Away.wma
 Content\Editor\UI\top.html
 Content\Editor\UI\css\StyleSheet.css

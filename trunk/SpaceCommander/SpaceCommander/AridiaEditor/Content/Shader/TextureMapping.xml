@@ -5,6 +5,6 @@
   <File>TextureMappingEffect</File>
   <Material>
     <Type comment="Options: None, Engine, Compile">Engine</Type>
-    <Content>LightingMaterial</Content>
+    <Content>GameApplicationTools.Resources.Shader.LightingMaterial, GameApplication</Content>
   </Material>
 </Shader>

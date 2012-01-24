@@ -13,6 +13,8 @@ using System.Windows.Shapes;
 using Microsoft.Xna.Framework.Graphics;
 using GameApplicationTools;
 using Microsoft.Xna.Framework;
+using AridiaEditor.Databases;
+using AridiaEditor.Databases.Data;
 
 
 namespace AridiaEditor.Windows.CreateWindows
@@ -26,6 +28,7 @@ namespace AridiaEditor.Windows.CreateWindows
         public Vector3 Scale { get; set; }
         public String ID { get; set; }
         public String Model { get; set; }
+        public int Shader { get; set; }
 
         public CreateMeshObjectWindow()
         {
@@ -38,10 +41,10 @@ namespace AridiaEditor.Windows.CreateWindows
                 models.Items.Add(item);
             }
 
-            foreach (string texture in ResourceManager.Instance.GetResourcesOfType<Effect>().Keys)
+            foreach (Shader texture in Database.Instance.Shaders)
             {
                 ComboBoxItem item = new ComboBoxItem();
-                item.Content = texture;
+                item.Content = texture.Name;
                 shaders.Items.Add(item);
             }
         }
@@ -52,13 +55,14 @@ namespace AridiaEditor.Windows.CreateWindows
             if (idTextBox.Text != string.Empty && positionX.Text != string.Empty
                 && positionY.Text != string.Empty && positionZ.Text != string.Empty
                 && scaleX.Text != string.Empty && scaleY.Text != string.Empty
-                && scaleZ.Text != string.Empty && models.SelectedItem != null)
+                && scaleZ.Text != string.Empty && models.SelectedItem != null && shaders.SelectedItem != null)
             {
                 if (!WorldManager.Instance.GetActors().ContainsKey(idTextBox.Text))
                 {
                     Position = new Vector3(float.Parse(positionX.Text), float.Parse(positionY.Text), float.Parse(positionZ.Text));
                     Scale = new Vector3(float.Parse(scaleX.Text), float.Parse(scaleY.Text), float.Parse(scaleZ.Text));
                     Model = ((ComboBoxItem)models.SelectedItem).Content.ToString();
+                    Shader = shaders.SelectedIndex;
                     ID = idTextBox.Text.ToString();
                     DialogResult = true;
                     this.Close();

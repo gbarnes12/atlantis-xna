@@ -79,7 +79,25 @@ namespace AridiaEditor.ContentDevice
                 {
                     string fullPath = file.File.FullName;
                     string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fullPath);
-                    ContentBuilder.Add(fullPath, fileNameWithoutExtension, file.ContentBuilderInformation.Importer, file.ContentBuilderInformation.Processor);
+
+                    if (file.ContentBuilderInformation.Processor == "ModelProcessor")
+                    {
+                        
+                        Dictionary<String, String> parameter = new Dictionary<string, string>();
+                        if(Databases.Database.Instance.ModelProcessorData.ContainsKey(file.File.Name))
+                        {
+                            if (Databases.Database.Instance.ModelProcessorData[file.File.Name].GenerateTangentFrames)
+                                parameter.Add("GenerateTangentFrames", "True");
+                            else if (!Databases.Database.Instance.ModelProcessorData[file.File.Name].GenerateTangentFrames)
+                                parameter.Add("GenerateTangentFrames", "False");
+                        }
+
+                        ContentBuilder.Add(fullPath, fileNameWithoutExtension, file.ContentBuilderInformation.Importer, file.ContentBuilderInformation.Processor, parameter);
+                    }
+                    else
+                    {
+                        ContentBuilder.Add(fullPath, fileNameWithoutExtension, file.ContentBuilderInformation.Importer, file.ContentBuilderInformation.Processor, new Dictionary<string, string>());
+                    }
                 }
 
                 string buildError = ContentBuilder.Build();

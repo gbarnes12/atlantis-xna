@@ -5,14 +5,18 @@
     using System.Linq;
     using System.Text;
     using Microsoft.Xna.Framework.Graphics;
+    using System.ComponentModel;
+    using GameApplicationTools.Structures.Editor;
 
     public class NormalMapMaterial : LightingMaterial
     {
+#if !XBOX360
+        [EditorAttribute(typeof(EditorTextureList), typeof(System.Drawing.Design.UITypeEditor))]
+#endif
         public Texture2D NormalMap { get; set; }
 
-        public NormalMapMaterial(Texture2D NormalMap)
+        public NormalMapMaterial()
         {
-            this.NormalMap = NormalMap;
         }
 
         public override void SetEffectParameters(Effect effect)

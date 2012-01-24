@@ -14,7 +14,7 @@
         xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         xmlns:swf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:acc="http://schemas.rooijakkers.net/presentation"
-        Title="Aridia - World Editor" Height="556" Width="882" Closing="Window_Closing" Icon="/AridiaEditor;component/Images/icon.png" KeyDown="Window_KeyDown">
+        Title="Paradoxon Studio - World Editor" Height="556" Width="882" Closing="Window_Closing" Icon="/AridiaEditor;component/Images/icon.png" KeyDown="Window_KeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0"/>
@@ -131,13 +131,13 @@
                                     <acc:Accordion Orientation="Vertical" ClipToBounds="False" CanVerticallyScroll="True" UseLayoutRounding="False">
                                         <Expander Header="Actor Properties" IsExpanded="True">
                                             <wfi:WindowsFormsHost IsEnabled="True" Height="300">
-                                                <swf:PropertyGrid x:Name="propertyGrid" />
+                                                <swf:PropertyGrid x:Name="propertyGrid"/>
                                             </wfi:WindowsFormsHost>
                                         </Expander>
                                         <Expander Header="Properties"></Expander>
                                         <Expander Header="Shader">
                                             <wfi:WindowsFormsHost IsEnabled="True" Height="300">
-                                                <swf:PropertyGrid x:Name="shaderPropertyGrid" Enabled="False" />
+                                                <swf:PropertyGrid x:Name="shaderPropertyGrid" PropertyValueChanged="shaderPropertyGrid_PropertyValueChanged" Enabled="False" />
                                             </wfi:WindowsFormsHost>
                                         </Expander>
                                         <Expander Header="Scripts"></Expander>
@@ -147,10 +147,9 @@
                         </ad:DockableContent>
                     </ad:DockablePane>
                     <ad:DocumentPane>
-                        <ad:DocumentContent Title="Welcome to Aridia Editor">
+                        <ad:DocumentContent Title="Welcome">
                             <Grid Background="White">
-                                <Label Content="Welcome to Aridia Editor" Margin="92,6,98,293" Height="34" FontWeight="Normal" FontSize="18" Width="346" Foreground="#FF8D8D8D" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                                <Label Content="Use right-click on the world view and W,A,S,D to navigate through the 3D Space" Margin="92,6,98,393" Height="34" FontWeight="Normal" FontSize="12" Width="446" Foreground="#FF8D8D8D" HorizontalAlignment="Left" />
+                                <WebBrowser Name="webBrowser" SnapsToDevicePixels="True" Source="http://www.aridia.de" />
                             </Grid>
                         </ad:DocumentContent>
                         <ad:DocumentContent Title="World View">

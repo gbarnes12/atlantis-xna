@@ -86,7 +86,7 @@ namespace SpaceCommander.Actors
         public override void LoadContent()
         {
             //load standard model
-            model = ResourceManager.Instance.GetResource<Model>("raumschiff7");
+            model = ResourceManager.Instance.GetResource<Model>("Raumschiff_tex");
             sphere.LoadContent();
             CalculateBoundingSphere();
 

@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Models>
+  <Model Name="planet.x" GenerateTangentFrames="True"  />
+</Models>

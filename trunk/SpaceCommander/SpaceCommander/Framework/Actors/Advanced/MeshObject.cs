@@ -50,7 +50,7 @@
             // create properties
             PickableProperty pickableProperty = new PickableProperty();
             Properties.Add(ActorPropertyType.PICKABLE, pickableProperty);
-
+   
             Material = new Material();
         }
 

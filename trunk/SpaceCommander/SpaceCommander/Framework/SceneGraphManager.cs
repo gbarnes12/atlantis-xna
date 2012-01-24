@@ -20,12 +20,12 @@
         GraphicsDevice device;
         GameTime gameTime;
         int nodesCulled;
-
-        PrelightingRenderer lightRenderer;
         #endregion
         // Properties
 
         #region Public
+        public PrelightingRenderer Lighting { get; set; }
+
         public Actor RootNode
         {
             get { return rootNode; }
@@ -37,17 +37,15 @@
             get { return gameTime; }
         }
 
-
+       
         public int NodesCulled
         {
             get { return nodesCulled; }
         }
 
-        public bool CullingActive
-        {
-            get;
-            set;
-        }
+        public bool LightingActive { get; set; }
+
+        public bool CullingActive { get; set; }
         #endregion
 
         // Constructor
@@ -55,10 +53,11 @@
         {
             rootNode = new Actor("rootNode", null);
             CullingActive = true;
+            LightingActive = true;
 
-            lightRenderer = new PrelightingRenderer(GameApplication.Instance.GetGame().GraphicsDevice, GameApplication.Instance.GetGame().Content, this);
+            Lighting = new PrelightingRenderer(GameApplication.Instance.GetGraphics(), this);
 
-            lightRenderer.Lights = new List<PointLight>() 
+            Lighting.Lights = new List<PointLight>() 
             {
                 new PointLight("pointLight01",null,new Vector3(-1000, 1000, 0), Color.Red * .85f, 2000),
                 new PointLight("pointLight09",null,new Vector3(0, 0, 0), Color.Red * .85f, 2000),
@@ -170,17 +169,12 @@
             nodesCulled = 0;
             rootNode.AbsoluteTransform = Matrix.Identity;
 
-            applyLighting(rootNode);
+            if(LightingActive)
+                Lighting.Draw(rootNode);
 
-            GameApplication.Instance.GetGame().GraphicsDevice.Clear(Color.Black);
+            GameApplication.Instance.GetGraphics().Clear(Color.Black);
 
             DrawRecursive(rootNode);
-        }
-
-        private void applyLighting(Actor node)
-        {
-            lightRenderer.Draw(node);
-          
         }
     }
 }

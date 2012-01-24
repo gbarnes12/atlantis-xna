@@ -53,6 +53,7 @@
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Avatar, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
@@ -68,6 +69,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -89,6 +91,9 @@
     </ApplicationDefinition>
     <Compile Include="Cameras\EditorCamera.cs" />
     <Compile Include="ContentDevice\ResourceBuilder.cs" />
+    <Compile Include="Database\Database.cs" />
+    <Compile Include="Database\Data\ModelProcessorData.cs" />
+    <Compile Include="Database\Data\Shader.cs" />
     <Compile Include="ErrorStruct.cs" />
     <Compile Include="Utils\TextFile.cs" />
     <Compile Include="Windows\CreateWindows\CreateBoxWindow.xaml.cs">
@@ -235,7 +240,9 @@
     <Resource Include="Images\gnome_document_new.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Content\Shader\TextureMapping.xml" />
+    <None Include="Content\Shader\TextureMapping.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\iconsave_small.png" />
@@ -271,6 +278,26 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\saveasicon_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Shader\NormalMapping.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Shader\CustomPlanetShader.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Instructions\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\ModelProcessorData.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

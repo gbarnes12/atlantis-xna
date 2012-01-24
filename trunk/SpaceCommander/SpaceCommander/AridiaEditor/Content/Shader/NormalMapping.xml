@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shader>
+  <Name>Normal Mapping</Name>
+  <Description>Standard effect which draws a texture with different lighting options.</Description>
+  <File>NormalMappingEffect</File>
+  <Material>
+    <Type comment="Options: None, Engine, Compile">Engine</Type>
+    <Content>GameApplicationTools.Resources.Shader.NormalMapMaterial, GameApplication</Content>
+  </Material>
+</Shader>

@@ -329,6 +329,11 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
+    <Compile Include="Assets\Models\Raumschiff_tex.fbx">
+      <Name>Raumschiff_tex</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <Compile Include="Assets\Models\teapot.fbx">
       <Name>teapot</Name>
       <Importer>FbxImporter</Importer>
@@ -421,6 +426,20 @@
   <ItemGroup>
     <Compile Include="Assets\Textures\crate_normal.jpg">
       <Name>crate_normal</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Textures\Spaceship_tex_hälfte_fertig.png">
+      <Name>Spaceship_tex_hälfte_fertig</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Textures\Spaceship_nor_hälfte_fertig_NRM.jpg">
+      <Name>Spaceship_nor_hälfte_fertig_NRM</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -17,7 +17,8 @@
         // the effect parameters we can
         // use within the shader files.
         EffectParameter world;
-        EffectParameter wvp;
+        EffectParameter view;
+        EffectParameter projection;
         EffectParameter time;
         EffectParameter lightDirection;
         EffectParameter ambientColor;
@@ -47,24 +48,16 @@
 
         public Matrix Projection
         {
-            get;
-            set;
+            get { return projection.GetValueMatrix(); }
+            set { projection.SetValue(value); }
         }
 
         public Matrix View
         {
-            get;
-            set;
+            get { return view.GetValueMatrix(); }
+            set { view.SetValue(value); }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public Matrix WVP
-        {
-            get { return wvp.GetValueMatrix(); }
-            set { wvp.SetValue(value); }
-        }
 
         /// <summary>
         /// 
@@ -213,8 +206,9 @@
         {
             // just assign standard values to the
             // corresponding parameters.
-            world = Parameters["world"];
-            wvp = Parameters["wvp"];
+            world = Parameters["World"];
+            view = Parameters["View"];
+            projection = Parameters["Projection"];
             time = Parameters["time"];
             lightDirection = Parameters["LightDirection"];
             ambientColor = Parameters["AmbientColor"];
