@@ -68,6 +68,7 @@ namespace TestEnvironment
 
             sceneGraph = new SceneGraphManager();
             sceneGraph.CullingActive = false;
+            sceneGraph.LightingActive = true;
 
             #region RESOURCES
             List<Resource> resources = new List<Resource>()
@@ -98,9 +99,29 @@ namespace TestEnvironment
                     Type = ResourceType.Effect
                 },
                 new Resource() {
+                    Name = "PPModel",
+                    Path = GameApplication.Instance.EffectPath,
+                    Type = ResourceType.Effect
+                },
+                new Resource() {
+                    Name = "PPLight",
+                    Path = GameApplication.Instance.EffectPath,
+                    Type = ResourceType.Effect
+                },
+                new Resource() {
+                    Name = "PPDepthNormal",
+                    Path = GameApplication.Instance.EffectPath,
+                    Type = ResourceType.Effect
+                },
+                new Resource() {
                     Name = "chunkheightmap",
                     Path = GameApplication.Instance.TexturePath,
                     Type = ResourceType.Texture2D
+                },
+                new Resource() {
+                    Name = "PPLightMesh",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
                 },
                 new Resource() {
                     Name = "brick_normal_map",
@@ -185,6 +206,11 @@ namespace TestEnvironment
             };
 
             ResourceManager.Instance.LoadResources(resources);
+
+            sceneGraph.Lighting.Lights.Add(new PointLight("pointLight01", null, new Vector3(2, 1, 0), Color.Red * .85f, 5000));
+            sceneGraph.Lighting.Lights.Add(new PointLight("pointLight02", null, new Vector3(-2, 2, 0), Color.Green * .85f, 5000));
+            sceneGraph.Lighting.Lights.Add(new PointLight("pointLight02", null, new Vector3(10, 1, 0), Color.White * .85f, 5000));
+            sceneGraph.Lighting.LoadContent();
             #endregion
 
             #region CAMERA
@@ -208,22 +234,23 @@ namespace TestEnvironment
             LightingMaterial lighting = new LightingMaterial();
             lighting.LightDirection = new Vector3(.5f, .5f, .5f);
             //lighting.LightColor = Color.Aqua.ToVector3();
+            
             lighting.SpecularPower = 1;
 
-            MeshObject mesh = new MeshObject("ship", "Raumschiff_tex", 0.01f);
+            MeshObject mesh = new MeshObject("ship", "p1_wedge", 0.01f);
             mesh.Position = new Vector3(0, 3, 0);
             mesh.Scale = new Vector3(0.01f);
             mesh.LoadContent();
+            mesh.SetModelEffect(ResourceManager.Instance.GetResource<Effect>("PPModel"), true);
             mesh.Material = lighting;
-            mesh.SetModelEffect(ResourceManager.Instance.GetResource<Effect>("TextureMappingEffect"), true);
             sceneGraph.RootNode.Children.Add(mesh);
 
             MeshObject plane = new MeshObject("plane", "Ground", 0.01f);
             plane.Position = new Vector3(0, 0, 0);
             plane.Scale = new Vector3(0.01f);
             plane.LoadContent();
-            plane.Material = mat;
-            plane.SetModelEffect(ResourceManager.Instance.GetResource<Effect>("FogEffect"), true);
+            plane.Material = lighting;
+            plane.SetModelEffect(ResourceManager.Instance.GetResource<Effect>("PPModel"), true);
             sceneGraph.RootNode.Children.Add(plane);
 
             TextElement element = new TextElement("text", new Vector2(1, 1), Color.Black, "Test", ResourceManager.Instance.GetResource<SpriteFont>("Arial"));

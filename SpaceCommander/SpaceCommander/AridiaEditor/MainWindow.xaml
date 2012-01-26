@@ -104,13 +104,29 @@
             </r:RibbonTab>
             <r:RibbonTab Name="ActorsTab" Header="Actors" Height="75">
                 <r:RibbonGroup Header="Primitves">
-                    <r:RibbonButton Name="CreateBoxMenuItem" Label="Box" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateBoxMenuItem_Click" SnapsToDevicePixels="True" />
-                    <r:RibbonButton Name="CreatePlaneMenuItem"  Label="Plane" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreatePlaneMenuItem_Click" SnapsToDevicePixels="True" />
-                    <r:RibbonButton Name="CreateTriangleMenuItem" Label="Triangle" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateTriangleMenuItem_Click" SnapsToDevicePixels="True" />
+                    <r:RibbonButton Name="CreateBoxMenuItem" Label="Box" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateBoxMenuItem_Click" SnapsToDevicePixels="True" LargeImageSource="/AridiaEditor;component/Images/box_small.png">
+                        <r:RibbonButton.ControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.ControlSizeDefinition>
+                    </r:RibbonButton>
+                    <r:RibbonButton  Name="CreatePlaneMenuItem"  Label="Plane" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreatePlaneMenuItem_Click" SnapsToDevicePixels="True" LargeImageSource="/AridiaEditor;component/Images/ebene_small.png">
+                        <r:RibbonButton.QuickAccessToolBarControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.QuickAccessToolBarControlSizeDefinition>
+                    </r:RibbonButton>
+                    <r:RibbonButton  Name="CreateTriangleMenuItem" Label="Triangle" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateTriangleMenuItem_Click" SnapsToDevicePixels="True" LargeImageSource="/AridiaEditor;component/Images/icondreieck_small.png">
+                        <r:RibbonButton.QuickAccessToolBarControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition ImageSize="Large" RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.QuickAccessToolBarControlSizeDefinition>
+                    </r:RibbonButton>
                 </r:RibbonGroup>
                 <r:RibbonGroup Header="Advanced">
                     <r:RibbonButton Label="MeshObject" Name="CreateMeshObjectMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateMeshObjectMenuItem_Click" SnapsToDevicePixels="True" />
-                    <r:RibbonButton Label="SkySphere" Name="CreateSkySphereMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateSkySphereMenuItem_Click" SnapsToDevicePixels="True" />
+                    <r:RibbonButton  Label="SkySphere" Name="CreateSkySphereMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateSkySphereMenuItem_Click" SnapsToDevicePixels="True" LargeImageSource="/AridiaEditor;component/Images/iconskysphere_small.png">
+                        <r:RibbonButton.QuickAccessToolBarControlSizeDefinition>
+                            <r:RibbonControlSizeDefinition ImageSize="Large" RenderOptions.ClearTypeHint="Enabled" Width="32" />
+                        </r:RibbonButton.QuickAccessToolBarControlSizeDefinition>
+                    </r:RibbonButton>
                 </r:RibbonGroup>
                 <r:RibbonGroup Header="Tools">
                     <r:RibbonButton Label="Standard" Name="StandardMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeStandardButton_Click" SnapsToDevicePixels="True" />

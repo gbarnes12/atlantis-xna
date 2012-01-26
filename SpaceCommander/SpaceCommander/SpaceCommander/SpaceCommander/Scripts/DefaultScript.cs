@@ -58,6 +58,16 @@
                     Path = GameApplication.Instance.EffectPath,
                     Type = ResourceType.Effect
                 },
+                new Resource() {
+                    Name = "PPLight",
+                    Path = GameApplication.Instance.EffectPath,
+                    Type = ResourceType.Effect
+                },
+                new Resource() {
+                    Name = "PPDepthNormal",
+                    Path = GameApplication.Instance.EffectPath,
+                    Type = ResourceType.Effect
+                },
                 // FONTS
                 new Resource() {
                     Name = "Arial",
@@ -117,6 +127,11 @@
                 },
                  new Resource() {
                     Name = "teapot",
+                    Path = GameApplication.Instance.ModelPath,
+                    Type = ResourceType.Model
+                },
+                new Resource() {
+                    Name = "PPLightMesh",
                     Path = GameApplication.Instance.ModelPath,
                     Type = ResourceType.Model
                 },
