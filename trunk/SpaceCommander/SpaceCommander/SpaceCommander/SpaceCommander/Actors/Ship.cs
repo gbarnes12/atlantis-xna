@@ -68,8 +68,10 @@ namespace SpaceCommander.Actors
             : base(ID, GameViewID)
         {
             this.Scale = new Vector3(0.1f, 0.1f, 0.1f);
+#if RELEASE
             sphere = new Sphere(ID + "_sphere", 1f);
             this.Children.Add(sphere);
+#endif
         }
 
         public Ship(String ID, String GameViewID,Path path)
@@ -77,9 +79,12 @@ namespace SpaceCommander.Actors
         {
             this.Scale = new Vector3(0.1f, 0.1f, 0.1f);
             this.Scale = new Vector3(50,50,50);
+#if RELEASE
             sphere = new Sphere(ID + "_sphere", 1f);
-            this.path = path;
             this.Children.Add(sphere);
+                      
+#endif
+            this.path = path;
         }
 
 
@@ -87,7 +92,9 @@ namespace SpaceCommander.Actors
         {
             //load standard model
             model = ResourceManager.Instance.GetResource<Model>("Raumschiff_tex");
+#if RELEASE
             sphere.LoadContent();
+#endif
             CalculateBoundingSphere();
 
             base.LoadContent();

@@ -54,6 +54,8 @@ namespace GameApplicationTools
                 viewHeight, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
             this.graphicsDevice = GraphicsDevice;
+
+            Lights = new List<PointLight>();
         }
 
         public void LoadContent()
@@ -85,18 +87,6 @@ namespace GameApplicationTools
 
             // Clear the render target to 1 (infinite depth)
             graphicsDevice.Clear(Color.White);
-
-            // Draw each model with the PPDepthNormal effect
-            /*
-            foreach (MeshObject model in Models)
-            {
-                model.CacheEffects();
-                model.SetModelEffect(depthNormalEffect, false);
-
-                model.Render(this.sceneGraph);
-                model.RestoreCachedEffects();
-            }
-             * */
 
             //render recursive
             drawDepthNormalMapRecursive(rootNode);
@@ -144,34 +134,37 @@ namespace GameApplicationTools
             graphicsDevice.BlendState = BlendState.Additive;
             graphicsDevice.DepthStencilState = DepthStencilState.None;
 
-            foreach (PointLight light in Lights)
+            if (Lights.Count > 0)
             {
-                // Set the light's parameters to the effect
-                light.SetEffectParameters(lightingEffect);
+                foreach (PointLight light in Lights)
+                {
+                    // Set the light's parameters to the effect
+                    light.SetEffectParameters(lightingEffect);
 
-                // Calculate the world * view * projection matrix and set it to 
-                // the effect
-                Matrix wvp = (Matrix.CreateScale(light.Attenuation)
-                    * Matrix.CreateTranslation(light.Position)) * viewProjection;
+                    // Calculate the world * view * projection matrix and set it to 
+                    // the effect
+                    Matrix wvp = (Matrix.CreateScale(light.Attenuation)
+                        * Matrix.CreateTranslation(light.Position)) * viewProjection;
 
-                lightingEffect.Parameters["WorldViewProjection"].SetValue(wvp);
+                    lightingEffect.Parameters["WorldViewProjection"].SetValue(wvp);
 
-                // Determine the distance between the light and camera
-                float dist = Vector3.Distance(CameraManager.Instance.GetCurrentCamera().Position,
-                    light.Position);
+                    // Determine the distance between the light and camera
+                    float dist = Vector3.Distance(CameraManager.Instance.GetCurrentCamera().Position,
+                        light.Position);
 
-                // If the camera is inside the light-sphere, invert the cull mode
-                // to draw the inside of the sphere instead of the outside
-                if (dist < light.Attenuation)
+                    // If the camera is inside the light-sphere, invert the cull mode
+                    // to draw the inside of the sphere instead of the outside
+                    if (dist < light.Attenuation)
+                        graphicsDevice.RasterizerState =
+                            RasterizerState.CullClockwise;
+
+                    // Draw the point-light-sphere
+                    lightMesh.Meshes[0].Draw();
+
+                    // Revert the cull mode
                     graphicsDevice.RasterizerState =
-                        RasterizerState.CullClockwise;
-
-                // Draw the point-light-sphere
-                lightMesh.Meshes[0].Draw();
-
-                // Revert the cull mode
-                graphicsDevice.RasterizerState =
-                    RasterizerState.CullCounterClockwise;
+                        RasterizerState.CullCounterClockwise;
+                }
             }
 
             // Revert the blending and depth render states
@@ -184,23 +177,6 @@ namespace GameApplicationTools
 
         void prepareMainPass(Actor rootNode)
         {
-            /*
-            foreach (MeshObject model in Models)
-                foreach (ModelMesh mesh in model.Model.Meshes)
-                    foreach (ModelMeshPart part in mesh.MeshParts)
-                    {
-                        // Set the light map and viewport parameters to each model's effect
-                        if (part.Effect.Parameters["LightTexture"] != null)
-                            part.Effect.Parameters["LightTexture"].SetValue(lightTarg);
-
-                        if (part.Effect.Parameters["viewportWidth"] != null)
-                            part.Effect.Parameters["viewportWidth"].SetValue(viewWidth);
-
-                        if (part.Effect.Parameters["viewportHeight"] != null)
-                            part.Effect.Parameters["viewportHeight"].SetValue(viewHeight);
-                    }
-             * */
-
             prepareMainPassRecursive(rootNode);
         }
 

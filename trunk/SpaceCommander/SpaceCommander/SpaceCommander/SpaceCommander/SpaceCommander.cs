@@ -109,7 +109,7 @@ namespace SpaceCommander
            // blur.Effect.Parameters["targetSize"].SetValue(new Vector2(GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferWidth,
                 //GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferHeight));
             //PostProcessorManager.Instance.AddProcessor(blur);
-            PostProcessorManager.Instance.IsEnabled = true;
+            PostProcessorManager.Instance.IsEnabled = false;
 
             // Needs some rework! found a tutorial!
             //ssao = new SSAOProcessor("ScreenSpaceAmbientOcclusion", "SSAO", "noise");
@@ -182,12 +182,8 @@ namespace SpaceCommander
             GraphicsDevice.Clear(BackgroundColor);
 
             PostProcessorManager.Instance.BeginRender();
-
             GameViewManager.Instance.Render();
-
-      
-           // PostProcessorManager.Instance.Render();
-
+            PostProcessorManager.Instance.Render();
             UIManager.Instance.Render(gameTime);
 
             //make a screenshot

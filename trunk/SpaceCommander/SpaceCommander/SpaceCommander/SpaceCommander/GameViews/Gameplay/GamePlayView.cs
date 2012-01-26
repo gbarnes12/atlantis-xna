@@ -20,6 +20,7 @@ using GameApplicationTools.Actors.Properties;
 using SpaceCommander.UI;
 using SpaceCommander.GameViews.Gameplay.GameLogics;
 using GameApplicationTools.Cameras;
+using GameApplicationTools.Resources.Shader;
 
 
 namespace SpaceCommander.GameViews.Gameplay
@@ -35,7 +36,7 @@ namespace SpaceCommander.GameViews.Gameplay
             BlocksLoading = false;
             BlocksUpdating = false;
             BlocksRendering = false;
-
+            SceneGraphManager.LightingActive = false;
             ScriptManager.Instance.ExecuteScript(GamePlayScript.OnCreateEvent);
 
             //test in fullscreen
@@ -117,6 +118,7 @@ namespace SpaceCommander.GameViews.Gameplay
             #region 3D Stuff
 
             SceneGraphManager.CullingActive = false;
+   
 
             float testTimeOffset = 6000;
 
@@ -183,6 +185,7 @@ namespace SpaceCommander.GameViews.Gameplay
             //create a skySphere
             SkySphere skySphere = new SkySphere("skySphere", "level1_skymap", 30000f);
             skySphere.Position = Vector3.Zero;
+            skySphere.Visible = true;
             skySphere.LoadContent();
          
             SceneGraphManager.RootNode.Children.Add(skySphere);

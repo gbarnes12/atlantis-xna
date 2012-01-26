@@ -57,7 +57,7 @@
 
             Lighting = new PrelightingRenderer(GameApplication.Instance.GetGraphics(), this);
 
-            Lighting.Lights = new List<PointLight>() 
+           /* Lighting.Lights = new List<PointLight>() 
             {
                 new PointLight("pointLight01",null,new Vector3(-1000, 1000, 0), Color.Red * .85f, 2000),
                 new PointLight("pointLight09",null,new Vector3(0, 0, 0), Color.Red * .85f, 2000),
@@ -68,7 +68,7 @@
                 new PointLight("pointLight06",null,new Vector3(-1000, 1000, 1000), Color.Indigo * .85f, 2000),
                 new PointLight("pointLight07",null,new Vector3(1000, 1000, -1000), Color.Violet * .85f, 2000),
                 new PointLight("pointLight08",null,new Vector3(-1000, 1000, -1000), Color.White * .85f, 2000)
-            };
+            };*/
         }
 
         public void SetGameTime(GameTime gameTime)

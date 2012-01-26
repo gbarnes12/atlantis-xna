@@ -44,9 +44,11 @@
         {
             _modelFileName = modelFile;
             this.Scale = new Vector3(scale, scale, scale);
+
+#if DEBUG
             sphere = new Sphere(ID + "_sphere",scale);
             this.Children.Add(sphere);
-
+#endif
             // create properties
             PickableProperty pickableProperty = new PickableProperty();
             Properties.Add(ActorPropertyType.PICKABLE, pickableProperty);
@@ -189,8 +191,9 @@
         /// </summary>
         public override void LoadContent()
         {
+#if DEBUG
             sphere.LoadContent();
-
+#endif
             if (_modelFileName != "")
                 Model = ResourceManager.Instance.GetResource<Model>(_modelFileName);
 
