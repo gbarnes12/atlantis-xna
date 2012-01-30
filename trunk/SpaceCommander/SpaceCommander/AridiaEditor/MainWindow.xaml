@@ -14,7 +14,7 @@
         xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         xmlns:swf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:acc="http://schemas.rooijakkers.net/presentation"
-        Title="Paradoxon Studio - World Editor" Height="556" Width="882" Closing="Window_Closing" Icon="/AridiaEditor;component/Images/icon.png" KeyDown="Window_KeyDown">
+        Title="Paradoxon Studio - World Editor" Name="mainWindow"  Height="556" Width="882" Closing="Window_Closing" Icon="/AridiaEditor;component/Images/icon.png" KeyDown="Window_KeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0"/>
@@ -168,7 +168,7 @@
                                 <WebBrowser Name="webBrowser" SnapsToDevicePixels="True" Source="http://www.aridia.de" />
                             </Grid>
                         </ad:DocumentContent>
-                        <ad:DocumentContent Title="World View">
+                        <ad:DocumentContent Name="renderControlWindow" Title="World View">
                             <my:GraphicsDeviceControl x:Name="xnaControl" LoadContent="loadContent" RenderXna="xnaControl_RenderXna" HwndMouseMove="xnaControl_MouseMove" HwndLButtonDown="xnaControl_HwndLButtonDown" HwndLButtonUp="xnaControl_HwndLButtonUp" HwndRButtonDown="xnaControl_HwndRButtonDown" HwndRButtonUp="xnaControl_HwndRButtonUp" />
                         </ad:DocumentContent>
                     </ad:DocumentPane>

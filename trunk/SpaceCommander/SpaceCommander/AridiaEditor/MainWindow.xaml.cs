@@ -48,6 +48,8 @@ namespace AridiaEditor
     using System.CodeDom.Compiler;
     using AridiaEditor.Databases.Data;
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+    using GizmoModules = AridiaEditor.Gizmo;
+    using System.Windows.Media;
 
     public partial class MainWindow : RibbonWindow
     {
@@ -58,12 +60,22 @@ namespace AridiaEditor
         public static EditMode EditMode { get; set; }
         public static Level Level { get; set; }
 
-        Stopwatch watch = new Stopwatch();
+        // Elapsed and total time for the GameTime
+        Stopwatch elapsedTime = new Stopwatch();
+        Stopwatch totalTime = new Stopwatch();
+        GameTime gameTime;
+
+
+        // Timer to keep track of refreshes
+        Timer timer;
+
         ContentBuilder contentBuilder;
         ServiceContainer ServiceContainer;
 
         object SelectedObject = null;
-        
+        GizmoModules.GizmoComponent gizmo;
+        SpriteBatch spriteBatch;
+
 
         public MainWindow()
         {
@@ -116,7 +128,7 @@ namespace AridiaEditor
         {
             // Because this same event is hooked for both controls, we check if the Stopwatch
             // is running to avoid loading our content twice.
-            if (!watch.IsRunning)
+            if (!totalTime.IsRunning)
             {
 
                 ServiceContainer = new ServiceContainer();
@@ -137,12 +149,12 @@ namespace AridiaEditor
                 ServiceContainer.AddService<IGraphicsDeviceService>(GraphicsDeviceService.AddRef(new IntPtr(), 100, 100));
                 ResourceManager.Instance.Content = new ContentManager(ServiceContainer, contentBuilder.OutputDirectory);
                 ResourceManager.Instance.Content.Unload();
-                
-
 
                 sceneGraph = new SceneGraphManager();
                 sceneGraph.CullingActive = true;
                 sceneGraph.LightingActive = false; //deactivate lighting on beginning!
+
+                spriteBatch = new SpriteBatch(e.GraphicsDevice);
 
                 e.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
@@ -157,7 +169,7 @@ namespace AridiaEditor
                 StartContentBuilding();
 
                 // Start the watch now that we're going to be starting our draw loop
-                watch.Start();
+                totalTime.Start();
             }
         }
 
@@ -213,10 +225,25 @@ namespace AridiaEditor
                 progressBar.Value = 0;
                 Output.AddToOutput("Building of content files completed...");
                 sceneGraph.Lighting.LoadContent();
+
+                gizmo = new GizmoModules.GizmoComponent(GameApplication.Instance.GetGraphics(), spriteBatch);
+                gizmo.SetSelectionPool(WorldManager.Instance.GetActors().Values);
+                gizmo.ActiveSpace = GizmoModules.TransformSpace.Local;
+                gizmo.TranslateEvent += new GizmoModules.TransformationEventHandler(gizmo_TranslateEvent);
+
+                // Set up the frame update timer
+                timer = new Timer();
+
             };
             #endregion
 
             worker.RunWorkerAsync();
+        }
+
+
+        void gizmo_TranslateEvent(Actor transformable, GizmoModules.TransformationEventArgs e)
+        {
+            transformable.Position += (Vector3)e.Value;
         }
         #endregion
 
@@ -319,18 +346,52 @@ namespace AridiaEditor
             }
         }
 
+
+        private KeyboardState _previousKeys;
+        private MouseState _previousMouse;
+
         /// <summary>
         /// Invoked when our second control is ready to render.
         /// </summary>
         private void xnaControl_RenderXna(object sender, GraphicsDeviceEventArgs e)
         {
-            if (watch != null)
+            if (totalTime != null)
             {
-                sceneGraph.Update(new GameTime(new TimeSpan(watch.ElapsedMilliseconds), new TimeSpan(watch.ElapsedTicks)));
+                UpdateGameTime();
 
+                sceneGraph.Update(gameTime);
+
+                if (gizmo != null)
+                {
+                    if (CameraManager.Instance.CurrentCamera != null)
+                    {
+                        Camera currentCamera = CameraManager.Instance.GetCurrentCamera();
+
+                        MouseState stateMouse = Mouse.GetState();
+                        KeyboardState stateKeyboard = Keyboard.GetState();
+
+                        // update camera properties for rendering and ray-casting.
+                        gizmo.UpdateCameraProperties(currentCamera.View, currentCamera.Projection, currentCamera.Position);
+
+                        // select entities with your cursor (add the desired keys for add-to / remove-from -selection)
+                        if (stateMouse.LeftButton == ButtonState.Pressed && _previousMouse.LeftButton == ButtonState.Released)
+                            gizmo.SelectEntities(new Vector2(stateMouse.X, stateMouse.Y),
+                                  stateKeyboard.IsKeyDown(Keys.LeftControl) || stateKeyboard.IsKeyDown(Keys.RightControl),
+                                  stateKeyboard.IsKeyDown(Keys.LeftAlt) || stateKeyboard.IsKeyDown(Keys.RightAlt));
+
+
+                        System.Windows.Point relativePoint = renderControlWindow.TransformToAncestor(this).Transform(new System.Windows.Point(0, 0));
+
+                        gizmo.Update(gameTime, (float)relativePoint.X, (float)relativePoint.Y);
+
+                        _previousKeys = stateKeyboard;
+                        _previousMouse = stateMouse;
+                    }
+                }
+                
                 // Control the modes for the object rotation, scaling and moving
                 ControlEditMode();
-
+             
                 KeyboardDevice.Instance.Update();
                 MouseDevice.Instance.ResetMouseAfterUpdate = false;
                 MouseDevice.Instance.Update();
@@ -338,10 +399,36 @@ namespace AridiaEditor
                 if (CameraManager.Instance.CurrentCamera != null)
                     CameraPosition.Content = "Camera: " + CameraManager.Instance.GetCurrentCamera().Position;
 
-                e.GraphicsDevice.Clear(Color.White);
+                e.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.White);
 
                 sceneGraph.Render();
+
+                if (gizmo != null)
+                {
+                    if (CameraManager.Instance.CurrentCamera != null)
+                    {
+                        gizmo.Draw();
+                    }
+                }
             }
+        }
+
+        private System.Windows.Point GetControlPosition(UserControl myControl)
+        {
+            System.Windows.Point locationToScreen = myControl.PointToScreen(new System.Windows.Point(0, 0));
+
+            PresentationSource source = PresentationSource.FromVisual(myControl);
+            return source.CompositionTarget.TransformFromDevice.Transform(locationToScreen);
+
+        }
+
+        private void UpdateGameTime()
+        {
+            gameTime = new GameTime(totalTime.Elapsed, elapsedTime.Elapsed);
+
+            // Restart the elapsed timer that keeps track of time between frames
+            elapsedTime.Reset();
+            elapsedTime.Start();
         }
 
         // Invoked when the mouse moves over the second viewport
@@ -354,8 +441,14 @@ namespace AridiaEditor
         // to rotate the cube without ever leaving the control
         private void xnaControl_HwndLButtonDown(object sender, HwndMouseEventArgs e)
         {
+            float x = (float)e.Position.X;
+            float y = (float)e.Position.Y;
+
+            Output.AddToOutput("Mouse Position: " + e.Position.ToString());
+
+            Output.AddToOutput("Mouse Position different: X: " + Mouse.GetState().X + " Y: " + Mouse.GetState().Y);
             //xnaControl.CaptureMouse();
-            if (CameraManager.Instance.CurrentCamera != null)
+           /* if (CameraManager.Instance.CurrentCamera != null)
             {
                 if (SelectedObject == null)
                 {
@@ -394,7 +487,7 @@ namespace AridiaEditor
                         }
                     }
                 }
-            }
+            }*/
         }
 
         private void xnaControl_HwndLButtonUp(object sender, HwndMouseEventArgs e)
@@ -456,8 +549,6 @@ namespace AridiaEditor
 
                 if (createSkySphereWindow.ShowDialog().Value)
                 {
-
-                
                     SkySphere sphere = new SkySphere(createSkySphereWindow.ID, createSkySphereWindow.Texture, 1f);
                     sphere.Position = createSkySphereWindow.Position;
                     sphere.Scale = createSkySphereWindow.Scale;

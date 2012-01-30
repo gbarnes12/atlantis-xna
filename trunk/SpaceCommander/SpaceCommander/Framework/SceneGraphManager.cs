@@ -79,10 +79,10 @@
         // Methods
         void CalculateTransformsRecursive(Actor node)
         {
-            node.AbsoluteTransform = Matrix.CreateScale(node.Scale) * Matrix.CreateTranslation(node.Offset) *
+            node.AbsoluteTransform = Matrix.CreateScale(node.Scale) * Matrix.CreateWorld(node.Offset, node.Forward, node.Up) *
                 Matrix.CreateFromQuaternion(node.Rotation) *
                 node.AbsoluteTransform *
-                Matrix.CreateTranslation(node.Position);
+                Matrix.CreateWorld(node.Position, node.Forward, node.Up);
 
             //Update children recursively
             foreach (Actor childNode in node.Children)
