@@ -105,6 +105,24 @@
 #endif
         public virtual Vector3 Offset { get; set; }
 
+
+        /// <summary>
+        /// Points to the direction away from the vector
+        /// </summary>
+#if !XBOX360
+        [CategoryAttribute("World"), DescriptionAttribute("Forward direction of this actor")]
+#endif
+        public  Vector3 Forward = Vector3.Forward;
+
+
+        /// <summary>
+        /// Shows the direction in which is up!
+        /// </summary>
+#if !XBOX360
+        [CategoryAttribute("World"), DescriptionAttribute("Up direction of this actor!!")]
+#endif
+        public  Vector3 Up = Vector3.Up;
+
         /// <summary>
         /// Rotation of this node represented as 
         /// Quaternion.
@@ -230,6 +248,15 @@
         public virtual BoundingSphere GetBoundingSphere()
         {
             return new BoundingSphere(Vector3.Zero, 0);
+        }
+
+        /// <summary>
+        /// Get the BoundingBox 
+        /// </summary>
+        /// <returns>Return a valid bounding box <see cref="BoundingBox" /></returns>
+        public virtual BoundingBox GetBoundingBox()
+        {
+            return new BoundingBox(Position - (Vector3.One) * Scale, Position + (Vector3.One) * Scale); 
         }
 
         /// <summary>

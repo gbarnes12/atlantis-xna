@@ -50,6 +50,7 @@ Content\Assets\Models\wall.xnb
 Content\Assets\Models\Ground.xnb
 Content\Assets\Fonts\Arial.xnb
 Content\Assets\Fonts\ConsoleFont.xnb
+Content\Editor\gizmoFont.xnb
 Content\Assets\Audio\Sleep Away.xnb
 Content\Assets\Models\p1_wedge.xnb
 Content\Assets\Models\asteroid.xnb
@@ -60,6 +61,9 @@ Content\Assets\Models\brick_wall.xnb
 Content\Assets\Models\PPLightMesh.xnb
 Content\Assets\Models\Raumschiff_tex.xnb
 Content\Assets\Models\teapot.xnb
+Content\Editor\gizmo_rotate.xnb
+Content\Editor\gizmo_scale.xnb
+Content\Editor\gizmo_translate.xnb
 Content\Assets\Textures\level1_skymap_0.xnb
 Content\Assets\Textures\noise_0.xnb
 Content\Assets\Textures\masonry-wall-texture_0.xnb

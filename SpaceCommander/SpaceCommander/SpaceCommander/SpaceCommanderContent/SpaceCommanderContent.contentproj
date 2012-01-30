@@ -349,6 +349,26 @@
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>
+    <Compile Include="Editor\gizmoFont.spritefont">
+      <Name>gizmoFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+    <Compile Include="Editor\gizmo_scale.fbx">
+      <Name>gizmo_scale</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Editor\gizmo_translate.fbx">
+      <Name>gizmo_translate</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Editor\gizmo_rotate.fbx">
+      <Name>gizmo_rotate</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <None Include="Editor\UI\top.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Name>top</Name>
