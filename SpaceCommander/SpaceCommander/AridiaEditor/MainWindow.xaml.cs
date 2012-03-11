@@ -50,6 +50,7 @@ namespace AridiaEditor
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
     using GizmoModules = AridiaEditor.Gizmo;
     using System.Windows.Media;
+    using AridiaEditor.Gizmo;
 
     public partial class MainWindow : RibbonWindow
     {
@@ -75,7 +76,7 @@ namespace AridiaEditor
         object SelectedObject = null;
         GizmoModules.GizmoComponent gizmo;
         SpriteBatch spriteBatch;
-
+        GridComponent grid;
 
         public MainWindow()
         {
@@ -155,6 +156,7 @@ namespace AridiaEditor
                 sceneGraph.LightingActive = false; //deactivate lighting on beginning!
 
                 spriteBatch = new SpriteBatch(e.GraphicsDevice);
+                grid = new GridComponent(e.GraphicsDevice, 2);
 
                 e.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
@@ -230,9 +232,13 @@ namespace AridiaEditor
                 gizmo.SetSelectionPool(WorldManager.Instance.GetActors().Values);
                 gizmo.ActiveSpace = GizmoModules.TransformSpace.Local;
                 gizmo.TranslateEvent += new GizmoModules.TransformationEventHandler(gizmo_TranslateEvent);
+                gizmo.RotateEvent += new TransformationEventHandler(GizmoRotateEvent);
+                gizmo.ScaleEvent += new TransformationEventHandler(GizmoScaleEvent); 
 
                 // Set up the frame update timer
                 timer = new Timer();
+
+                xnaControl.ResetMouseState();
 
             };
             #endregion
@@ -240,10 +246,29 @@ namespace AridiaEditor
             worker.RunWorkerAsync();
         }
 
+        #endregion
 
+        #region Gizmo Event Hooks
         void gizmo_TranslateEvent(Actor transformable, GizmoModules.TransformationEventArgs e)
         {
             transformable.Position += (Vector3)e.Value;
+        }
+
+        private void GizmoRotateEvent(Actor transformable, TransformationEventArgs e)
+        {
+            gizmo.RotationHelper(transformable, e);
+        }
+
+        private void GizmoScaleEvent(Actor transformable, TransformationEventArgs e)
+        {
+            Vector3 delta = (Vector3)e.Value;
+
+            if (gizmo.ActiveMode == GizmoMode.UniformScale)
+                transformable.Scale *= 1 + ((delta.X + delta.Y + delta.Z) / 3);
+            else
+                transformable.Scale += delta;
+
+            transformable.Scale = Vector3.Clamp(transformable.Scale, Vector3.Zero, transformable.Scale);
         }
         #endregion
 
@@ -308,44 +333,21 @@ namespace AridiaEditor
         #endregion
 
         #region XNA Events
-        private void ControlEditMode()
+        private void clientSizeChanged(object sender, GraphicsDeviceEventArgs e)
         {
-            if(SelectedObject != null)
+            if (CameraManager.Instance.CurrentCamera != null)
             {
-                if(SelectedObject is Actor)
-                {
-                    Actor obj = SelectedObject as Actor;
-                    if (EditMode == EditMode.MOVE)
-                    {
-                
-                        Vector3 inputModifier = new Vector3(
-                        (KeyboardDevice.Instance.IsKeyDown(Keys.Left) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Right) ? 1 : 0),
-                        (KeyboardDevice.Instance.IsKeyDown(Keys.Down) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Up) ? 1 : 0),
-                        (KeyboardDevice.Instance.IsKeyDown(Keys.PageDown) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.PageUp) ? 1 : 0));
 
-                        obj.Position += inputModifier * 0.05f;
-                    }
-                    else if (EditMode == EditMode.SCALE)
-                    {
-                        Vector3 inputModifier = new Vector3(
-                        (KeyboardDevice.Instance.IsKeyDown(Keys.Left) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Right) ? 1 : 0),
-                        (KeyboardDevice.Instance.IsKeyDown(Keys.Down) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Up) ? 1 : 0),
-                        (KeyboardDevice.Instance.IsKeyDown(Keys.PageDown) ? -1 : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.PageUp) ? 1 : 0));
+                GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferWidth = (int)xnaControl.ActualWidth;
+                GameApplication.Instance.GetGraphics().PresentationParameters.BackBufferHeight = (int)xnaControl.ActualHeight;
 
-                        obj.Scale += inputModifier * 0.05f;
-                    }
-                    else if (EditMode == EditMode.ROTATE)
-                    {
-                        float yaw = (KeyboardDevice.Instance.IsKeyDown(Keys.Left) ? -1f : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Right) ? 1f : 0);
-                        float pitch = (KeyboardDevice.Instance.IsKeyDown(Keys.Down) ? -1f : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.Up) ? 1f : 0);
-                        float roll = (KeyboardDevice.Instance.IsKeyDown(Keys.PageDown) ? -1f : 0) + (KeyboardDevice.Instance.IsKeyDown(Keys.PageUp) ? 1f : 0);
-
-                        obj.Rotation *= Quaternion.CreateFromYawPitchRoll(yaw * 0.05f,  pitch * 0.05f, roll * 0.05f);
-                    }
-                }
+                CameraManager.Instance.GetCurrentCamera().Projection = Microsoft.Xna.Framework.Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
+                            (float)xnaControl.ActualWidth /
+                            (float)xnaControl.ActualHeight,
+                            GameApplication.Instance.NearPlane, GameApplication.Instance.FarPlane
+                        );
             }
         }
-
 
         private KeyboardState _previousKeys;
         private MouseState _previousMouse;
@@ -382,19 +384,31 @@ namespace AridiaEditor
 
                         System.Windows.Point relativePoint = renderControlWindow.TransformToAncestor(this).Transform(new System.Windows.Point(0, 0));
 
-                        gizmo.Update(gameTime, (float)relativePoint.X, (float)relativePoint.Y);
+                        gizmo.Update(gameTime, (float)xnaControl.mouseState.Position.X, (float)xnaControl.mouseState.Position.Y);
 
                         _previousKeys = stateKeyboard;
                         _previousMouse = stateMouse;
                     }
                 }
                 
-                // Control the modes for the object rotation, scaling and moving
-                ControlEditMode();
+ 
              
                 KeyboardDevice.Instance.Update();
                 MouseDevice.Instance.ResetMouseAfterUpdate = false;
                 MouseDevice.Instance.Update();
+
+
+                if (gizmo != null)
+                {
+                    if (KeyboardDevice.Instance.IsKeyDown(Keys.LeftShift))
+                    {
+                        gizmo.PrecisionModeEnabled = true;
+                    }
+                    else
+                    {
+                        gizmo.PrecisionModeEnabled = false;
+                    }
+                }
 
                 if (CameraManager.Instance.CurrentCamera != null)
                     CameraPosition.Content = "Camera: " + CameraManager.Instance.GetCurrentCamera().Position;
@@ -403,11 +417,14 @@ namespace AridiaEditor
 
                 sceneGraph.Render();
 
+                grid.Draw3D();
+
                 if (gizmo != null)
                 {
                     if (CameraManager.Instance.CurrentCamera != null)
                     {
                         gizmo.Draw();
+                        
                     }
                 }
             }
@@ -540,6 +557,22 @@ namespace AridiaEditor
         #endregion
 
         #region EditorEvents
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Up || e.Key == System.Windows.Input.Key.Down
+                || e.Key == System.Windows.Input.Key.Left || e.Key == System.Windows.Input.Key.Right)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void shaderPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            string test = e.ChangedItem.PropertyDescriptor.Category;
+
+        }
+
         private void CreateSkySphereMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (Level != null)
@@ -661,21 +694,33 @@ namespace AridiaEditor
         private void EditModeMoveButton_Click(object sender, RoutedEventArgs e)
         {
             EditMode = EditMode.MOVE;
+            if (gizmo != null)
+            {
+                gizmo.ActiveMode = GizmoMode.Translate;
+            }
         }
 
         private void EditModeRotateButton_Click(object sender, RoutedEventArgs e)
         {
             EditMode = EditMode.ROTATE;
+            if (gizmo != null)
+            {
+                gizmo.ActiveMode = GizmoMode.Rotate;
+            }
         }
 
         private void EditModeScaleButton_Click(object sender, RoutedEventArgs e)
         {
             EditMode = EditMode.SCALE;
-        }
+            if (gizmo != null)
+            {
+                RibbonButton button = (RibbonButton)sender;
 
-        private void EditModeStandardButton_Click(object sender, RoutedEventArgs e)
-        {
-            EditMode = EditMode.STANDARD;
+                if (button.Name == "UniformScaleMenutItem")
+                    gizmo.ActiveMode = GizmoMode.UniformScale;
+                else
+                    gizmo.ActiveMode = GizmoMode.NonUniformScale;
+            }
         }
 
         private void TextureBrowserItem_Click(object sender, RoutedEventArgs e)
@@ -862,23 +907,31 @@ namespace AridiaEditor
                 MessageBox.Show("Please create or load a level first before you add any actor");
             }
         }
-        #endregion  
 
-        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void ShowGridMenutItem_Click(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Up || e.Key == System.Windows.Input.Key.Down
-                || e.Key == System.Windows.Input.Key.Left || e.Key == System.Windows.Input.Key.Right)
+            if (grid != null)
             {
-                e.Handled = true;
+                grid.Enabled = Utils.ToggleBool(grid.Enabled);
             }
         }
 
-        private void shaderPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        private void SnappingMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string test = e.ChangedItem.PropertyDescriptor.Category;
-
+            if(gizmo != null)
+            {
+                gizmo.SnapEnabled = Utils.ToggleBool(gizmo.SnapEnabled);
+            }
         }
- 
+
+        private void TransformSpaceMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (gizmo != null)
+            {
+                gizmo.ToggleActiveSpace();
+            }
+        }
+        #endregion  
     }
 
     public enum EditorStatus
@@ -895,39 +948,4 @@ namespace AridiaEditor
         ROTATE,
         SCALE
     }
-
-    /*
-     * 
-     * try
-                {
-                    EditorCamera camera = new EditorCamera("camera", new Vector3(0, 0, 4), Vector3.Zero);
-                    camera.LoadContent();
-                    CameraManager.Instance.CurrentCamera = "camera";
-
-                    Axis axis = new Axis("axis", 1f);
-                    axis.LoadContent();
-                    sceneGraph.RootNode.Children.Add(axis);
-
-                    Box box = new Box("box", 1f);
-                    box.Position = new Vector3(0, 0, 0);
-                    box.Rotation *= Quaternion.CreateFromYawPitchRoll(0, 2f, 0);
-                    box.LoadContent();
-
-                    Sphere sphere = new Sphere("sphere", 2f);
-                    sphere.Offset = Vector3.Zero;
-                    sphere.LoadContent();
-
-                    box.Children.Add(sphere);
-                    sceneGraph.RootNode.Children.Add(box);
-
-                }
-                catch (System.Exception ex)
-                {
-                    Output.AddToError(new Error()
-                    {
-                        Name = "ACTOR_INITIALISING_FAILED",
-                        Description = ex.Message,
-                        Type = ErrorType.FATAL
-                    });
-                }*/
 }

@@ -96,6 +96,7 @@
     <Compile Include="Database\Data\Shader.cs" />
     <Compile Include="ErrorStruct.cs" />
     <Compile Include="Gizmo\GizmoComponent.cs" />
+    <Compile Include="Gizmo\GridComponent.cs" />
     <Compile Include="Gizmo\ITransformable.cs" />
     <Compile Include="Utils\TextFile.cs" />
     <Compile Include="Windows\CreateWindows\CreateBoxWindow.xaml.cs">

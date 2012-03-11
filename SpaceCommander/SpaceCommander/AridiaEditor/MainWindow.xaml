@@ -102,6 +102,19 @@
                     </r:RibbonButton>
                 </r:RibbonGroup>
             </r:RibbonTab>
+            <r:RibbonTab Name="ControlsTab" Header="Controls" Height="75">
+                <r:RibbonGroup Header="Transformation">
+                    <r:RibbonButton Label="Move" Name="MoveMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeMoveButton_Click" LargeImageSource="/AridiaEditor;component/Images/move_icon.png" SnapsToDevicePixels="True" />
+                    <r:RibbonButton Label="Scale" Name="ScaleMenutItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeScaleButton_Click" LargeImageSource="/AridiaEditor;component/Images/ImageScaleIconMono32.gif" SnapsToDevicePixels="True" />
+                    <r:RibbonButton Label="Uniform Scale" Name="UniformScaleMenutItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeScaleButton_Click" LargeImageSource="/AridiaEditor;component/Images/ImageScaleIconMono32.gif" SnapsToDevicePixels="True" />
+                    <r:RibbonButton Label="Rotate" Name="RotateMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeRotateButton_Click" LargeImageSource="/AridiaEditor;component/Images/redo.png" SnapsToDevicePixels="True" />
+                </r:RibbonGroup>
+                <r:RibbonGroup Header="Gizmo">
+                    <r:RibbonButton Label="Show Grid" Name="ShowGridMenutItem" Height="51" Width="50" FlowDirection="LeftToRight"  SnapsToDevicePixels="True" Click="ShowGridMenutItem_Click" />
+                    <r:RibbonButton Label="Snapping" Name="SnappingMenuItem" Height="51" Width="50" FlowDirection="LeftToRight"  SnapsToDevicePixels="True" Click="SnappingMenuItem_Click" />
+                    <r:RibbonButton Label="Transform Space" Name="TransformSpaceMenuItem" Height="51" Width="50" FlowDirection="LeftToRight"  SnapsToDevicePixels="True" Click="TransformSpaceMenuItem_Click" />
+                </r:RibbonGroup>
+            </r:RibbonTab>
             <r:RibbonTab Name="ActorsTab" Header="Actors" Height="75">
                 <r:RibbonGroup Header="Primitves">
                     <r:RibbonButton Name="CreateBoxMenuItem" Label="Box" Height="51" Width="50" FlowDirection="LeftToRight" Click="CreateBoxMenuItem_Click" SnapsToDevicePixels="True" LargeImageSource="/AridiaEditor;component/Images/box_small.png">
@@ -127,12 +140,6 @@
                             <r:RibbonControlSizeDefinition ImageSize="Large" RenderOptions.ClearTypeHint="Enabled" Width="32" />
                         </r:RibbonButton.QuickAccessToolBarControlSizeDefinition>
                     </r:RibbonButton>
-                </r:RibbonGroup>
-                <r:RibbonGroup Header="Tools">
-                    <r:RibbonButton Label="Standard" Name="StandardMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeStandardButton_Click" SnapsToDevicePixels="True" />
-                    <r:RibbonButton Label="Move" Name="MoveMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeMoveButton_Click" LargeImageSource="/AridiaEditor;component/Images/move_icon.png" SnapsToDevicePixels="True" />
-                    <r:RibbonButton Label="Scale" Name="ScaleMenutItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeScaleButton_Click" LargeImageSource="/AridiaEditor;component/Images/ImageScaleIconMono32.gif" SnapsToDevicePixels="True" />
-                    <r:RibbonButton Label="Rotate" Name="RotateMenuItem" Height="51" Width="50" FlowDirection="LeftToRight" Click="EditModeRotateButton_Click" LargeImageSource="/AridiaEditor;component/Images/redo.png" SnapsToDevicePixels="True" />
                 </r:RibbonGroup>
             </r:RibbonTab>
             <r:RibbonTab Name="TerrainTab" Header="Terrain" Height="75" SnapsToDevicePixels="True" />
@@ -169,7 +176,7 @@
                             </Grid>
                         </ad:DocumentContent>
                         <ad:DocumentContent Name="renderControlWindow" Title="World View">
-                            <my:GraphicsDeviceControl x:Name="xnaControl" LoadContent="loadContent" RenderXna="xnaControl_RenderXna" HwndMouseMove="xnaControl_MouseMove" HwndLButtonDown="xnaControl_HwndLButtonDown" HwndLButtonUp="xnaControl_HwndLButtonUp" HwndRButtonDown="xnaControl_HwndRButtonDown" HwndRButtonUp="xnaControl_HwndRButtonUp" />
+                            <my:GraphicsDeviceControl x:Name="xnaControl" ClientSizeChanged="clientSizeChanged"  LoadContent="loadContent" RenderXna="xnaControl_RenderXna" HwndMouseMove="xnaControl_MouseMove" HwndLButtonDown="xnaControl_HwndLButtonDown" HwndLButtonUp="xnaControl_HwndLButtonUp" HwndRButtonDown="xnaControl_HwndRButtonDown" HwndRButtonUp="xnaControl_HwndRButtonUp" />
                         </ad:DocumentContent>
                     </ad:DocumentPane>
                     <ad:DockablePane ad:ResizingPanel.ResizeWidth="150">

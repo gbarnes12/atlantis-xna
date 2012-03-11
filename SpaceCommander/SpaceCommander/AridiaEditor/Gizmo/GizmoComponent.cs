@@ -423,7 +423,9 @@ namespace AridiaEditor.Gizmo
       _currentMouseState = Mouse.GetState();
       _currentKeys = Keyboard.GetState();
 
-      Vector2 mousePosition = new Vector2(_currentMouseState.X, _currentMouseState.Y);
+      //Vector2 mousePosition = new Vector2(_currentMouseState.X, _currentMouseState.Y);
+
+      Vector2 mousePosition = new Vector2(mouseX, mouseY);
 
       // show or hide the orientation-lines helper.
       //_showLines = _currentKeys.IsKeyDown(Keys.Space);
@@ -563,7 +565,7 @@ namespace AridiaEditor.Gizmo
                 #region Rotate
 
                 float delta = mousePosition.X - _lastMouseState.X;
-                delta *= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                delta *= (float)gameTime.ElapsedGameTime.TotalSeconds * 0.01f;
 
                 if (SnapEnabled)
                 {
@@ -932,28 +934,29 @@ namespace AridiaEditor.Gizmo
     {
       if (_selectionPool == null)
         throw new Exception("SelectionPool is null, please set the pool by calling .SetSelectionPool()");
+
       Camera cam = CameraManager.Instance.GetCurrentCamera();
 
-      //Ray ray = ConvertMouseToRay(mousePosition);
+      Ray ray = ConvertMouseToRay(mousePosition);
       float closest = float.MaxValue;
       Actor obj = null;
       foreach (var entity in _selectionPool)
       {
-         
-        float? intersection = entity.GetBoundingBox().Intersects(cam.GetMouseRay(mousePosition));
-        if (intersection.HasValue && intersection < closest)
-        {
-            if(entity.Properties.ContainsKey(GameApplicationTools.Actors.Properties.ActorPropertyType.PICKABLE))
-            {
-                if (!Selection.Contains(entity))
-                {
-                obj = entity;
-                closest = intersection.Value;
-                }
-                if (removeFromSelection)
-                Selection.Remove(entity);
-            }
-        }
+          if (entity.Properties.ContainsKey(GameApplicationTools.Actors.Properties.ActorPropertyType.PICKABLE))
+          {
+              float? intersection = ray.Intersects(entity.GetBoundingBox());
+              if (intersection.HasValue && intersection < closest)
+              {
+                  if (!Selection.Contains(entity))
+                  {
+                      obj = entity;
+                      closest = intersection.Value;
+                  }
+                  if (removeFromSelection)
+                      Selection.Remove(entity);
+
+              }
+          }
       }
       if (obj != null)
         Selection.Add(obj);
@@ -1007,7 +1010,7 @@ namespace AridiaEditor.Gizmo
     {
       if (!_isActive) return;
 
-      //_graphics.DepthStencilState = DepthStencilState.None;
+      _graphics.DepthStencilState = DepthStencilState.None;
 
       if (_view == Matrix.Identity || _projection == Matrix.Identity)
         throw new Exception("Error: Must call .UpdateCameraProperties() before .Draw()");
@@ -1140,7 +1143,9 @@ namespace AridiaEditor.Gizmo
       if (SelectionBoxesIsVisible)
         DrawSelectionBox();
 
-     // _graphics.DepthStencilState = DepthStencilState.DepthRead;
+      _graphics.DepthStencilState = DepthStencilState.Default;
+
+      GameApplication.Instance.GetGraphics().DepthStencilState = DepthStencilState.Default;
 
       //if (_showLines)
       //  _lineRenderer.Draw(_gizmoWorld);
