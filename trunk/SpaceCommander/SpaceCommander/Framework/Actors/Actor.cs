@@ -12,6 +12,7 @@
     using Interfaces;
     using Interfaces.Collections;
     using Actors.Properties;
+    using Microsoft.Xna.Framework.Graphics;
 
 
     /// <summary>
@@ -307,7 +308,7 @@
         /// <summary>
         /// The pre render method. This just does nothing!
         /// </summary>
-        public virtual void PreRender() { }
+        public virtual void PreRender() { GameApplication.Instance.GetGraphics().DepthStencilState = DepthStencilState.Default; }
 
         /// <summary>
         /// The render method. This just does nothing!

@@ -41,7 +41,7 @@ namespace AridiaEditor
         private bool mouseInWindow = false;
 
         // Track the mouse state
-        private HwndMouseState mouseState = new HwndMouseState();
+        public HwndMouseState mouseState = new HwndMouseState();
 
         // Tracking whether we've "capture" the mouse
         private bool isMouseCaptured = false;
@@ -67,6 +67,11 @@ namespace AridiaEditor
         /// Invoked when the control is ready to render XNA content
         /// </summary>
         public event EventHandler<GraphicsDeviceEventArgs> RenderXna;
+
+        /// <summary>
+        /// Invoked when the control is ready to render XNA content
+        /// </summary>
+        public event EventHandler<GraphicsDeviceEventArgs> ClientSizeChanged;
 
         /// <summary>
         /// Invoked when the control receives a left mouse down message.
@@ -298,7 +303,10 @@ namespace AridiaEditor
         {
             // If we have a reference to the GraphicsDeviceService, we must reset it based on our updated size
             if (graphicsService != null)
+            {
                 graphicsService.ResetDevice((int)ActualWidth, (int)ActualHeight);
+                ClientSizeChanged(this, new GraphicsDeviceEventArgs(graphicsService.GraphicsDevice));
+            }
         }
 
         void Current_Activated(object sender, EventArgs e)
@@ -321,7 +329,7 @@ namespace AridiaEditor
             ReleaseMouseCapture();
         }
 
-        private void ResetMouseState()
+        public void ResetMouseState()
         {
             // We need to invoke events for any buttons that were pressed
             bool fireL = mouseState.LeftButton == MouseButtonState.Pressed;

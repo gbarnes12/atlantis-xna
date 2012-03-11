@@ -156,57 +156,37 @@
 
         public override BoundingBox GetBoundingBox()
         {
-            Matrix[] modelTransforms = new Matrix[Model.Bones.Count];
-            Model.CopyAbsoluteBoneTransformsTo(modelTransforms);
+            // Initialize minimum and maximum corners of the bounding box to max and min values
+            Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
-            // Create variables to hold min and max xyz values for the model. Initialise them to extremes
-            Vector3 modelMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-            Vector3 modelMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-
+            // For each mesh of the model
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                //Create variables to hold min and max xyz values for the mesh. Initialise them to extremes
-                Vector3 meshMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-                Vector3 meshMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-
-                // There may be multiple parts in a mesh (different materials etc.) so loop through each
-                foreach (ModelMeshPart part in mesh.MeshParts)
+                foreach (ModelMeshPart meshPart in mesh.MeshParts)
                 {
-                    // The stride is how big, in bytes, one vertex is in the vertex buffer
-                    // We have to use this as we do not know the make up of the vertex
-                    int stride = part.VertexBuffer.VertexDeclaration.VertexStride;
+                    // Vertex buffer parameters
+                    int vertexStride = meshPart.VertexBuffer.VertexDeclaration.VertexStride;
+                    int vertexBufferSize = meshPart.NumVertices * vertexStride;
 
-                    byte[] vertexData = new byte[stride * part.NumVertices];
-                    part.VertexBuffer.GetData(part.VertexOffset * stride, vertexData, 0, part.NumVertices, 1); // fixed 13/4/11
+                    // Get vertex data as float
+                    float[] vertexData = new float[vertexBufferSize / sizeof(float)];
+                    meshPart.VertexBuffer.GetData<float>(vertexData);
 
-                    // Find minimum and maximum xyz values for this mesh part
-                    // We know the position will always be the first 3 float values of the vertex data
-                    Vector3 vertPosition = new Vector3();
-                    for (int ndx = 0; ndx < vertexData.Length; ndx += stride)
+                    // Iterate through vertices (possibly) growing bounding box, all calculations are done in world space
+                    for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
                     {
-                        vertPosition.X = BitConverter.ToSingle(vertexData, ndx);
-                        vertPosition.Y = BitConverter.ToSingle(vertexData, ndx + sizeof(float));
-                        vertPosition.Z = BitConverter.ToSingle(vertexData, ndx + sizeof(float) * 2);
+                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), AbsoluteTransform);
 
-                        // update our running values from this vertex
-                        meshMin = Vector3.Min(meshMin, vertPosition);
-                        meshMax = Vector3.Max(meshMax, vertPosition);
+                        min = Vector3.Min(min, transformedPosition);
+                        max = Vector3.Max(max, transformedPosition);
                     }
                 }
-                
-
-                // transform by mesh bone transforms
-                meshMin = Vector3.Transform(meshMin, modelTransforms[mesh.ParentBone.Index]);
-                meshMax = Vector3.Transform(meshMax, modelTransforms[mesh.ParentBone.Index]);
-
-                // Expand model extents by the ones from this mesh
-                modelMin = Vector3.Min(modelMin, meshMin);
-                modelMax = Vector3.Max(modelMax, meshMax);
             }
 
+            // Create and return bounding box
+            return new BoundingBox(min, max);
 
-            // Create and return the model bounding box
-            return new BoundingBox(modelMin - Position *  Scale, modelMax + Position * Scale); 
         }
 
         /// <summary>
